@@ -4,7 +4,11 @@ filetype off
 set rtp+=/usr/local/opt/fzf
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'neovim/neovim'
-" Plug 'numirias/semshi'
+
+" LSP and Completion
+Plug 'nvim-lua/completion-nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/diagnostic-nvim'
 
 Plug 'itchyny/lightline.vim'
 Plug 'sinetoami/lightline-neomake'
@@ -14,6 +18,7 @@ Plug 'sinetoami/lightline-neomake'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'luochen1990/rainbow'
 Plug 'jaredgorski/spacecamp'
+" Plug 'numirias/semshi'
 
 " Movement
 Plug 'rhysd/clever-f.vim'
