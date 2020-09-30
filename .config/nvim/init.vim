@@ -4,13 +4,13 @@ filetype off
 set rtp+=/usr/local/opt/fzf
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'neovim/neovim'
-Plug 'numirias/semshi'
+" Plug 'numirias/semshi'
 
 Plug 'itchyny/lightline.vim'
 Plug 'sinetoami/lightline-neomake'
 
 " UI
-Plug 'Raimondi/delimitMate'
+" Plug 'Raimondi/delimitMate'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'luochen1990/rainbow'
 Plug 'jaredgorski/spacecamp'
@@ -25,7 +25,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
 
 " JSON
-Plug 'tpope/vim-jdaddy'
+" Plug 'tpope/vim-jdaddy'
 
 " Linter
 Plug 'neomake/neomake'
@@ -34,15 +34,15 @@ Plug 'neomake/neomake'
 Plug 'ekalinin/dockerfile.vim'
 
 " GO
-Plug 'fatih/vim-go'
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+" Plug 'fatih/vim-go'
+" Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 
 " TS/JS
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'mxw/vim-jsx'
-Plug 'pangloss/vim-javascript'
-Plug 'othree/javascript-libraries-syntax.vim'
+" Plug 'leafgarland/typescript-vim'
+" Plug 'peitalin/vim-jsx-typescript'
+" Plug 'mxw/vim-jsx'
+" Plug 'pangloss/vim-javascript'
+" Plug 'othree/javascript-libraries-syntax.vim'
 
 " Debuggers
 " Plug 'sebdah/vim-delve'
@@ -119,59 +119,59 @@ let g:lightline = {
       \             [ 'filename' ]
       \           ],
       \   'right': [ [ 'lineinfo' ],
-      \            ]
+      \            ],
       \ },
       \ 'tabline' : {
       \   'left'  : [ [ 'tabs' ] ],
-      \   'right' : [ [ 'close' ], [ 'session' ] ]
+      \   'right' : [ [ 'close' ], [ 'session' ] ],
       \ },
       \ 'tab' : {
       \   'active' : [ 'tabnum', 'filename', 'fticon', 'modified' ],
-      \   'inactive' : [ 'tabnum', 'filename', 'fticon', 'modified' ]
+      \   'inactive' : [ 'tabnum', 'filename', 'fticon', 'modified' ],
       \ },
 \ }
 let g:lightline.component_type = {
-\   'coc_error'        : 'error',
-\   'coc_warning'      : 'warning',
-\   'coc_info'         : 'tabsel',
-\   'coc_hint'         : 'middle',
-\   'coc_fix'          : 'middle',
+\ 'coc_error'        : 'error',
+\ 'coc_warning'      : 'warning',
+\ 'coc_info'         : 'tabsel',
+\ 'coc_hint'         : 'middle',
+\ 'coc_fix'          : 'middle',
 \ 'neomake_warnings': 'warning',
 \ 'neomake_errors': 'error',
 \ 'neomake_ok': 'left',
 \ }
 
-function! s:lightline_coc_diagnostic(kind, sign) abort
-  let info = get(b:, 'coc_diagnostic_info', 0)
-  if empty(info) || get(info, a:kind, 0) == 0
-    return ''
-  endif
-  try
-    let s = g:coc_user_config['diagnostic'][a:sign . 'Sign']
-  catch
-    let s = ''
-  endtry
-  return printf('%s %d', s, info[a:kind])
-endfunction
+" function! s:lightline_coc_diagnostic(kind, sign) abort
+"   let info = get(b:, 'coc_diagnostic_info', 0)
+"   if empty(info) || get(info, a:kind, 0) == 0
+"     return ''
+"   endif
+"   try
+"     let s = g:coc_user_config['diagnostic'][a:sign . 'Sign']
+"   catch
+"     let s = ''
+"   endtry
+"   return printf('%s %d', s, info[a:kind])
+" endfunction
 
-function! LightlineCocErrors() abort
-  return s:lightline_coc_diagnostic('error', 'error')
-endfunction
-
-function! LightlineCocWarnings() abort
-  return s:lightline_coc_diagnostic('warning', 'warning')
-endfunction
-
-function! LightlineCocInfos() abort
-  return s:lightline_coc_diagnostic('information', 'info')
-endfunction
-
-function! LightlineCocHints() abort
-  return s:lightline_coc_diagnostic('hints', 'hint')
-endfunction
-\ }
-
-autocmd User CocDiagnosticChange call lightline#update()
+" function! LightlineCocErrors() abort
+"   return s:lightline_coc_diagnostic('error', 'error')
+" endfunction
+" 
+" function! LightlineCocWarnings() abort
+"   return s:lightline_coc_diagnostic('warning', 'warning')
+" endfunction
+" 
+" function! LightlineCocInfos() abort
+"   return s:lightline_coc_diagnostic('information', 'info')
+" endfunction
+" 
+" function! LightlineCocHints() abort
+"   return s:lightline_coc_diagnostic('hints', 'hint')
+" endfunction
+" \ }
+" 
+" autocmd User CocDiagnosticChange call lightline#update()
 
 function! LightlineFilename()
   let root = fnamemodify(get(b:, 'git_dir'), ':h')
@@ -248,23 +248,23 @@ nmap <leader>p "+gP
 nnoremap gob  :s/\((\zs\\|,\ *\zs\\|)\)/\r&/g<CR><Bar>:'[,']normal ==<CR>
 
 " Golang
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_interfaces = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_extra_types = 1
-let g:go_auto_type_info = 0
-let g:go_fmt_command = "goimports"
-
-" Disable GOPLS for golang
-let g:go_def_mapping_enabled = 0
-let g:go_code_completion_enabled = 0
-let g:go_doc_keywordprg_enabled = 0
-let g:go_info_mode = 'gopls'
+" let g:go_highlight_functions = 1
+" let g:go_highlight_methods = 1
+" let g:go_highlight_fields = 1
+" let g:go_highlight_structs = 1
+" let g:go_highlight_interfaces = 1
+" let g:go_highlight_operators = 1
+" let g:go_highlight_build_constraints = 1
+" let g:go_highlight_function_calls = 1
+" let g:go_highlight_extra_types = 1
+" let g:go_auto_type_info = 0
+" let g:go_fmt_command = "goimports"
+" 
+" " Disable GOPLS for golang
+" let g:go_def_mapping_enabled = 0
+" let g:go_code_completion_enabled = 0
+" let g:go_doc_keywordprg_enabled = 0
+" let g:go_info_mode = 'gopls'
 " au FileType go nmap <leader>b :DlvToggleBreakpoint <CR>
 " au FileType go nmap <leader>B :DlvClearAll <CR>
 " au FileType go nmap <leader>ch :GoChannelPeers <CR>
@@ -314,51 +314,51 @@ nnoremap <silent> <leader>s <Plug>(VimspectorStepOver)
 let g:rainbow_active = 1
 
 " COC
-set completeopt=longest,menuone " auto complete setting
-inoremap <silent><expr> <c-space>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<c-space>" :
-      \ coc#refresh()
+" set completeopt=longest,menuone " auto complete setting
+" inoremap <silent><expr> <c-space>
+""       \ pumvisible() ? "\<C-n>" :
+""       \ <SID>check_back_space() ? "\<c-space>" :
+"       \ coc#refresh()
+" 
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+" inoremap <silent><expr> <c-r> coc#refresh()
+"" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" 
+" " Remap keys for gotos
+" nmap <silent> <leader>d <Plug>(coc-definition)
+" nmap <silent> <leader>t <Plug>(coc-type-definition)
+" nmap <silent> <leader>i <Plug>(coc-implementation)
+" nmap <silent> <leader>n <Plug>(coc-references)
+" nmap <silent> <leader>e <Plug>(coc-diagnostic-next-error)
+" nmap <leader>r <Plug>(coc-rename)
+" nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" 
+" " Use `[g` and `]g` to navigate diagnostics
+" nmap <silent> [g <Plug>(coc-diagnostic-prev)
+" nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" 
+" " Use K for show documentation in preview window
+" nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-inoremap <silent><expr> <c-r> coc#refresh()
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" function! s:show_documentation()
+"   if &filetype == 'vim'
+"     execute 'h '.expand('<cword>')
+"   else
+"     call CocActionAsync('doHover')
+"   endif
+" endfunction
 
-" Remap keys for gotos
-nmap <silent> <leader>d <Plug>(coc-definition)
-nmap <silent> <leader>t <Plug>(coc-type-definition)
-nmap <silent> <leader>i <Plug>(coc-implementation)
-nmap <silent> <leader>n <Plug>(coc-references)
-nmap <silent> <leader>e <Plug>(coc-diagnostic-next-error)
-nmap <leader>r <Plug>(coc-rename)
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocActionAsync('doHover')
-  endif
-endfunction
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocActionAsync('formatSelected')
-  " Update signature help on jump placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+" augroup mygroup
+"   autocmd!
+"   " Setup formatexpr specified filetype(s).
+"   autocmd FileType typescript,json setl formatexpr=CocActionAsync('formatSelected')
+"   " Update signature help on jump placeholder
+"   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+" augroup end
 
 " Searching
 " In Neovim, you can set up fzf window using a Vim command
