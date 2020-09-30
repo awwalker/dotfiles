@@ -150,10 +150,9 @@ mkvenv() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source  ~/.zsh/powerlevel9k/powerlevel9k.zsh-theme
-source ~/.zsh-nvm/zsh-nvm.plugin.zsh
+source ~/.zsh/powerlevel9k/powerlevel9k.zsh-theme
 POWERLEVEL9K_MODE='nerdfont-complete'
-
+bindkey -e
 # OPENSSL
 # export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 # export CFLAGS="-I$(brew --prefix openssl)/include"
