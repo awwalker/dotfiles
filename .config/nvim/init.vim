@@ -4,15 +4,20 @@ filetype off
 set rtp+=/usr/local/opt/fzf
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'neovim/neovim'
-Plug 'numirias/semshi'
 
-Plug 'itchyny/lightline.vim'
-Plug 'sinetoami/lightline-neomake'
+" LSP and Completion
+Plug 'nvim-lua/completion-nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/diagnostic-nvim'
 
 " UI
-Plug 'Raimondi/delimitMate'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'luochen1990/rainbow'
+Plug 'itchyny/lightline.vim'
+Plug 'sinetoami/lightline-neomake'
+Plug 'nvim-treesitter/nvim-treesitter'
+
+" Colorscheme
 Plug 'jaredgorski/spacecamp'
 
 " Movement
@@ -20,48 +25,55 @@ Plug 'rhysd/clever-f.vim'
 Plug 'tpope/vim-surround'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-
-" GIT
-Plug 'airblade/vim-gitgutter'
-
-" JSON
-Plug 'tpope/vim-jdaddy'
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
 " Linter
 Plug 'neomake/neomake'
+Plug 'psf/black', { 'branch': 'stable' }
 
 " Docker
 Plug 'ekalinin/dockerfile.vim'
 
-" GO
-Plug 'fatih/vim-go'
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-
-" TS/JS
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'mxw/vim-jsx'
-Plug 'pangloss/vim-javascript'
-Plug 'othree/javascript-libraries-syntax.vim'
-
 " Debuggers
-" Plug 'sebdah/vim-delve'
-Plug 'puremourning/vimspector'
-
+Plug 'mfussenegger/nvim-dap'
+Plug 'theHamsta/nvim-dap-virtual-text'
 
 " Snippets
+Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
-" Text
-Plug 'junegunn/limelight.vim'
+" Git
+Plug 'tpope/vim-fugitive'
+
 call plug#end()
 
 filetype plugin indent on
 colorscheme spacecamp
+set background=dark
+set termguicolors
 syntax enable
+set cursorline
+" colorscheme onehalfdark
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = {"go", "python", "json", "typescript"},
+  highlight = {
+    enable = true
+  }
+}
+require "nvim-treesitter.highlight"
+local hlmap = vim.treesitter.highlighter.hl_map
+
+--Misc
+hlmap.error = nil
+hlmap["punctuation.delimiter"] = "Delimiter"
+hlmap["punctuation.bracket"] = nil
+EOF
+
+
 let g:python_host_prog = '/Users/awalker/.pyenv/versions/neovim2/bin/python'
 let g:python3_host_prog = '/Users/awalker/.pyenv/versions/neovim3/bin/python'
-let g:black_virtualenv = '/Users/awalker/.pyenv/versions/neovim3'
 
 set backup
 set backupdir=~/.vim/_backups
@@ -94,15 +106,10 @@ let g:lightline = {
       \ },
       \ 'colorscheme': 'powerline',
       \ 'component_expand': {
-      \   'coc_error'        : 'LightlineCocErrors',
-      \   'coc_warning'      : 'LightlineCocWarnings',
-      \   'coc_info'         : 'LightlineCocInfos',
-      \   'coc_hint'         : 'LightlineCocHints',
-      \   'coc_fix'          : 'LightlineCocFixes',
-      \   'neomake_infos': 'lightline#neomake#infos',
+      \   'neomake_infos':    'lightline#neomake#infos',
       \   'neomake_warnings': 'lightline#neomake#warnings',
-      \   'neomake_errors': 'lightline#neomake#errors',
-      \   'neomake_ok': 'lightline#neomake#ok',
+      \   'neomake_errors':   'lightline#neomake#errors',
+      \   'neomake_ok':       'lightline#neomake#ok',
       \ },
       \ 'active': {
       \   'left': [ [ 'mode', 'paste'],
@@ -115,63 +122,26 @@ let g:lightline = {
       \            ]
       \ },
       \ 'inactive' : {
-      \   'left': [ [ 'mode' ],
-      \             [ 'filename' ]
-      \           ],
+      \   'left':  [ [ 'mode' ],
+      \              [ 'filename' ]
+      \            ],
       \   'right': [ [ 'lineinfo' ],
-      \            ]
+      \            ],
       \ },
-      \ 'tabline' : {
-      \   'left'  : [ [ 'tabs' ] ],
-      \   'right' : [ [ 'close' ], [ 'session' ] ]
+      \ 'tabline': {
+      \   'left':   [ [ 'tabs' ] ],
+      \   'right':  [ [ 'close' ], [ 'session' ] ],
       \ },
       \ 'tab' : {
-      \   'active' : [ 'tabnum', 'filename', 'fticon', 'modified' ],
-      \   'inactive' : [ 'tabnum', 'filename', 'fticon', 'modified' ]
+      \   'active':   [ 'tabnum', 'filename', 'fticon', 'modified' ],
+      \   'inactive': [ 'tabnum', 'filename', 'fticon', 'modified' ],
       \ },
 \ }
 let g:lightline.component_type = {
-\   'coc_error'        : 'error',
-\   'coc_warning'      : 'warning',
-\   'coc_info'         : 'tabsel',
-\   'coc_hint'         : 'middle',
-\   'coc_fix'          : 'middle',
 \ 'neomake_warnings': 'warning',
 \ 'neomake_errors': 'error',
 \ 'neomake_ok': 'left',
 \ }
-
-function! s:lightline_coc_diagnostic(kind, sign) abort
-  let info = get(b:, 'coc_diagnostic_info', 0)
-  if empty(info) || get(info, a:kind, 0) == 0
-    return ''
-  endif
-  try
-    let s = g:coc_user_config['diagnostic'][a:sign . 'Sign']
-  catch
-    let s = ''
-  endtry
-  return printf('%s %d', s, info[a:kind])
-endfunction
-
-function! LightlineCocErrors() abort
-  return s:lightline_coc_diagnostic('error', 'error')
-endfunction
-
-function! LightlineCocWarnings() abort
-  return s:lightline_coc_diagnostic('warning', 'warning')
-endfunction
-
-function! LightlineCocInfos() abort
-  return s:lightline_coc_diagnostic('information', 'info')
-endfunction
-
-function! LightlineCocHints() abort
-  return s:lightline_coc_diagnostic('hints', 'hint')
-endfunction
-\ }
-
-autocmd User CocDiagnosticChange call lightline#update()
 
 function! LightlineFilename()
   let root = fnamemodify(get(b:, 'git_dir'), ':h')
@@ -181,8 +151,7 @@ function! LightlineFilename()
   endif
   return expand('%')
 endfunction
-set termguicolors
-set background=dark
+
 set lazyredraw " redraw only when we need to
 set showmatch " highlight matching [{())}]
 set number " show line numbers
@@ -192,9 +161,6 @@ set showcmd " show command in bottom bar
 set incsearch " search as characters are entered
 set smartcase " case insensitive if no caps entered.
 set hlsearch " highlight matches
-
-" turn off search highlight
-nnoremap <leader>x :noh<CR>
 
 " folding
 set foldenable " enable folding
@@ -235,7 +201,7 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
 
-" " Copy to clipboard
+" Copy to clipboard
 vnoremap  <leader>y  "+y
 nnoremap  <leader>y  "+y
 
@@ -244,30 +210,6 @@ nnoremap <leader>yn :let @*=expand("%") . ':' . line(".")<CR>
 
 " paste from clipboard
 nmap <leader>p "+gP
-
-nnoremap gob  :s/\((\zs\\|,\ *\zs\\|)\)/\r&/g<CR><Bar>:'[,']normal ==<CR>
-
-" Golang
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_interfaces = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_extra_types = 1
-let g:go_auto_type_info = 0
-let g:go_fmt_command = "goimports"
-
-" Disable GOPLS for golang
-let g:go_def_mapping_enabled = 0
-let g:go_code_completion_enabled = 0
-let g:go_doc_keywordprg_enabled = 0
-let g:go_info_mode = 'gopls'
-" au FileType go nmap <leader>b :DlvToggleBreakpoint <CR>
-" au FileType go nmap <leader>B :DlvClearAll <CR>
-" au FileType go nmap <leader>ch :GoChannelPeers <CR>
 
 " Typescript
 function SetTSOpts()
@@ -278,31 +220,73 @@ function SetTSOpts()
 endfunction
 au FileType typescript call SetTSOpts()
 
-" Neomake
-let g:neomake_go_enabled_makers = [ 'go', 'gometalinter' ]
-let g:neomake_python_enabled_makers = [ 'python', 'flake8']
-let g:neomake_go_gometalinter_maker = {
-  \ 'args': [
-  \   '--tests',
-  \   '--enable-gc',
-  \   '--concurrency=3',
-  \   '--fast',
-  \   '-D', 'aligncheck',
-  \   '-D', 'dupl',
-  \   '-D', 'gocyclo',
-  \   '-D', 'gotype',
-  \   '-E', 'errcheck',
-  \   '-E', 'misspell',
-  \   '-E', 'unused',
-  \   '%:p:h',
-  \ ],
-  \ 'append_file': 0,
-  \ 'errorformat':
-  \   '%E%f:%l:%c:%trror: %m,' .
-  \   '%W%f:%l:%c:%tarning: %m,' .
-  \   '%E%f:%l::%trror: %m,' .
-  \   '%W%f:%l::%tarning: %m'
-  \ }
+" Linting
+let g:neomake_go_enabled_makers = [ 'golangci_lint' ]
+let g:neomake_python_enabled_makers = [ 'flake8' ]
+let g:black_linelength = 100
+autocmd BufWritePre *.py execute ':Black'
+
+" Full config: when writing or reading a buffer, and on changes in insert and
+" normal mode (after 500ms; no delay when writing).
+call neomake#configure#automake('nrwi', 500)
+
+" LSP
+set completeopt=menuone,noinsert,noselect
+
+"map <c-space> to manually trigger completion
+imap <silent> <c-space> <Plug>(completion_trigger)
+
+lua << EOF
+local on_attach_vim = function(client)
+  require'completion'.on_attach(client)
+  require'diagnostic'.on_attach(client)
+  print("LSP Attached.")
+end
+
+require'nvim_lsp'.pyls.setup{
+  on_attach=on_attach_vim,
+  cmd={'/Users/awalker/.pyenv/versions/neovim3/bin/pyls'}
+}
+
+require'nvim_lsp'.gopls.setup{on_attach=on_attach_vim}
+
+require'nvim_lsp'.tsserver.setup{on_attach=on_attach_vim}
+EOF
+lua << EOF
+  function goimports(timeoutms)
+    local context = { source = { organizeImports = true } }
+    vim.validate { context = { context, "t", true } }
+
+    local params = vim.lsp.util.make_range_params()
+    params.context = context
+
+    local method = "textDocument/codeAction"
+    local resp = vim.lsp.buf_request_sync(0, method, params, timeoutms)
+    if resp and resp[1] then
+      local result = resp[1].result
+      if result and result[1] then
+        local edit = result[1].edit
+        vim.lsp.util.apply_workspace_edit(edit)
+      end
+    end
+    vim.lsp.buf.formatting()
+  end
+EOF
+
+autocmd BufWritePre *.go lua goimports(1000)
+
+let g:diagnostic_enable_virtual_text = 1
+
+nnoremap <silent> <leader>d <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <leader>t <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> <leader>i <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <leader>n <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> <leader>k <cmd>lua vim.lsp.buf.hover()<CR>
+
+nmap <silent> <leader>E :PrevDiagnosticCycle<CR>
+nmap <silent> <leader>e :NextDiagnosticCycle<CR>
+
+let g:completion_enable_snippet = 'UltiSnips'
 
 " Debugging
 nnoremap <silent> <leader>b <Plug>(VimspectorToggleBreakpoint)
@@ -312,53 +296,6 @@ nnoremap <silent> <leader>s <Plug>(VimspectorStepOver)
 
 " RAINBOW
 let g:rainbow_active = 1
-
-" COC
-set completeopt=longest,menuone " auto complete setting
-inoremap <silent><expr> <c-space>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<c-space>" :
-      \ coc#refresh()
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-inoremap <silent><expr> <c-r> coc#refresh()
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" Remap keys for gotos
-nmap <silent> <leader>d <Plug>(coc-definition)
-nmap <silent> <leader>t <Plug>(coc-type-definition)
-nmap <silent> <leader>i <Plug>(coc-implementation)
-nmap <silent> <leader>n <Plug>(coc-references)
-nmap <silent> <leader>e <Plug>(coc-diagnostic-next-error)
-nmap <leader>r <Plug>(coc-rename)
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocActionAsync('doHover')
-  endif
-endfunction
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocActionAsync('formatSelected')
-  " Update signature help on jump placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
 
 " Searching
 " In Neovim, you can set up fzf window using a Vim command
@@ -405,6 +342,10 @@ endfunction
 autocmd! User FzfStatusLine call <SID>fzf_statusline()
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*~
+
+" GIT
+nnoremap <leader>gs :G<CR>
+nnoremap <leader>gd :Gdiffsplit<CR>
 
 packloadall
 silent! helptags ALL
