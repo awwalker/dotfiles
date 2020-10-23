@@ -1,17 +1,22 @@
 # ---------------------
 #   PATH
 # ---------------------
+export GOPATH="$HOME/go"
+export GOROOT="/usr/local/opt/go/libexec"
+
 export PATH="$HOME/bin:/usr/local/bin:${PATH}"
 export PATH="$PATH:/usr/local/opt/gnupg@2.0/bin"
+# export PATH="$PATH:$GOPATH/"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$GOROOT/bin"
+
+source ~/.plaid_env ~/.quovo_env
+
 export PATH="$PATH:${PLAID_PATH}/go.git"
 export PATH="$PATH:${PLAID_PATH}/go.git/bin"
 export PATH="$PATH:$PYENV_ROOT/bin"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
-
-source .plaid_env .quovo_env
 
 # NVM & RVM
 export NVM_DIR="$HOME/.nvm"
@@ -81,10 +86,6 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 # GO
 # -------------------------
 
-
-export GOPATH="$HOME/go"
-export GOROOT="/usr/local/opt/go/libexec"
-
 export GO11MODULE="on"
 
 # ------------------------
@@ -148,10 +149,10 @@ mkvenv() {
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+POWERLEVEL9K_MODE='nerdfont-complete'
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/powerlevel9k/powerlevel9k.zsh-theme
-POWERLEVEL9K_MODE='nerdfont-complete'
 bindkey -e
 # OPENSSL
 # export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
