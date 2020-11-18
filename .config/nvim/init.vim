@@ -139,8 +139,8 @@ let g:lightline = {
 \ }
 let g:lightline.component_type = {
 \ 'neomake_warnings': 'warning',
-\ 'neomake_errors': 'error',
-\ 'neomake_ok': 'left',
+\ 'neomake_errors':   'error',
+\ 'neomake_ok':       'left',
 \ }
 
 function! LightlineFilename()
@@ -210,15 +210,14 @@ nnoremap <leader>yn :let @*=expand("%") . ':' . line(".")<CR>
 
 " paste from clipboard
 nmap <leader>p "+gP
-
-" Typescript
-function SetTSOpts()
-    set tabstop=2 " number of visual spaces per TAB
-    set softtabstop=2 " number of spaces in tab when editing
-    set shiftwidth=2
-    set expandtab	" tabs are spaces
-endfunction
-au FileType typescript call SetTSOpts()
+augroup two_space_ft
+    autocmd!
+    autocmd FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+    autocmd FileType ts setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+    autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+    autocmd FileType yml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+    autocmd FileType tf setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+augroup end
 
 " Linting
 let g:neomake_go_enabled_makers = [ 'golangci_lint' ]
@@ -288,58 +287,15 @@ nmap <silent> <leader>e :NextDiagnosticCycle<CR>
 
 let g:completion_enable_snippet = 'UltiSnips'
 
-" Debugging
-nnoremap <silent> <leader>b <Plug>(VimspectorToggleBreakpoint)
-nnoremap <silent> <leader>c <Plug>(VimspectorContinue)
-nnoremap <silent> <leader>s <Plug>(VimspectorStepOver)
-
-
 " RAINBOW
 let g:rainbow_active = 1
 
-" Searching
-" In Neovim, you can set up fzf window using a Vim command
-let g:fzf_layout = { 'window': 'call FloatingFZF()' }
-
-" Function to create the custom floating window
-function! FloatingFZF()
-    let width = float2nr(&columns * 0.9)
-    let height = float2nr(&lines * 0.6)
-    let opts = { 'relative': 'editor',
-               \ 'row': (&lines - height) / 2,
-               \ 'col': (&columns - width) / 2,
-               \ 'width': width,
-               \ 'height': height }
-
-    let win = nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
-    call setwinvar(win, '&winhighlight', 'NormalFloat:Normal')
-endfunction
-
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-" [Buffers] Jump to the existing window if possible
-let g:fzf_buffers_jump = 0
-
-" [[B]Commits] Customize the options used by 'git log':
-let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-
-nnoremap <c-f> :Files<CR>
-nnoremap <silent> <c-g> :Rg <C-R><C-W><Cr>
-nnoremap <c-b> :Buffers<CR>
-nnoremap <leader>h :History:<CR>
-
-function! s:fzf_statusline()
-  " Override statusline as you like
-  highlight fzf1 ctermfg=161 ctermbg=251
-  highlight fzf2 ctermfg=23 ctermbg=251
-  highlight fzf3 ctermfg=237 ctermbg=251
-  setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
-endfunction
-
-autocmd! User FzfStatusLine call <SID>fzf_statusline()
+" CLAP
+let g:clap_open_action = { 'ctrl-t': 'tab split', 'ctrl-s': 'split', 'ctrl-v': 'vsplit' }
+nnoremap <c-f> <cmd> :Clap files <CR>
+nnoremap <c-b> <cmd> :Clap buffers <CR>
+nnoremap <c-g> <cmd> :Clap grep ++query=<cword> <CR>
+nnoremap <leader>vg <cmd> :Clap grep ++query=@visual <CR>
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*~
 
