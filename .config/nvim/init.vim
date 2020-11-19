@@ -273,30 +273,6 @@ lua << EOF
   end
 EOF
 
-" DAP
-lua << EOF
-  local dap = require "dap"
-  dap.adapters.python = {
-    type = 'executable';
-    command = os.getenv('HOME') .. '/.pyenv/versions/neovim3/bin/python';
-    args = { '-m', 'debugpy.adapter' };
-  }
-  dap.configurations.python = {
-    {
-      type = 'python';
-      request = 'launch';
-      name = "Launch file";
-      program = "${file}";
-      pythonPath = function(adapter)
-        local fh = io.popen("pyenv which python");
-        local pyenvPath = fh:read('*a')
-        fh:close()
-        return pyenvPath
-      end
-    },
-  }
-EOF
-
 nnoremap <silent> <leader>c :lua require'dap'.continue()<CR>
 nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
 nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
