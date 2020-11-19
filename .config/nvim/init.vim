@@ -272,6 +272,28 @@ lua << EOF
   end
 EOF
 
+lua << EOF
+  local dap = require "dap"
+  dap.adapters.markdown = {
+    type = "executable",
+    name = "mockdebug",
+    command = "node",
+    args = {"./out/debugAdapter.js"},
+    cwd = "~/vscode-mock-debug/"
+  }
+
+  dap.configurations.markdown = {
+     {
+        type = "mock",
+        request = "launch",
+        name = "mock test",
+        program = "~/vscode-mock-debug/readme.md",
+        stopOnEntry = true,
+        debugServer = 4711
+     }
+   }
+EOF
+
 autocmd BufWritePre *.go lua goimports(1000)
 
 let g:diagnostic_enable_virtual_text = 1
