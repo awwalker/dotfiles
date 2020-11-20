@@ -236,21 +236,22 @@ set completeopt=menuone,noinsert,noselect
 imap <silent> <c-space> <Plug>(completion_trigger)
 
 lua << EOF
-local on_attach_vim = function(client)
-  require'completion'.on_attach(client)
-  require'diagnostic'.on_attach(client)
-  print("LSP Attached.")
-end
+  local on_attach_vim = function(client)
+    require'completion'.on_attach(client)
+    require'diagnostic'.on_attach(client)
+    print("LSP Attached.")
+  end
 
-require'nvim_lsp'.pyls.setup{
-  on_attach=on_attach_vim,
-  cmd={'/Users/awalker/.pyenv/versions/neovim3/bin/pyls'}
-}
+  require'lspconfig'.pyls.setup{
+    on_attach=on_attach_vim,
+    cmd={'/Users/awalker/.pyenv/versions/neovim3/bin/pyls'}
+  }
 
-require'nvim_lsp'.gopls.setup{on_attach=on_attach_vim}
+  require'lspconfig'.gopls.setup{on_attach=on_attach_vim}
 
-require'nvim_lsp'.tsserver.setup{on_attach=on_attach_vim}
+  require'lspconfig'.tsserver.setup{on_attach=on_attach_vim}
 EOF
+
 lua << EOF
   function goimports(timeoutms)
     local context = { source = { organizeImports = true } }
@@ -272,27 +273,36 @@ lua << EOF
   end
 EOF
 
+" DAP
 lua << EOF
   local dap = require "dap"
-  dap.adapters.markdown = {
-    type = "executable",
-    name = "mockdebug",
-    command = "node",
-    args = {"./out/debugAdapter.js"},
-    cwd = "~/vscode-mock-debug/"
+  dap.adapters.python = {
+    type = 'executable';
+    command = os.getenv('HOME') .. '/.pyenv/versions/neovim3/bin/python';
+    args = { '-m', 'debugpy.adapter' };
   }
-
-  dap.configurations.markdown = {
-     {
-        type = "mock",
-        request = "launch",
-        name = "mock test",
-        program = "~/vscode-mock-debug/readme.md",
-        stopOnEntry = true,
-        debugServer = 4711
-     }
-   }
+  dap.configurations.python = {
+    {
+      type = 'python';
+      request = 'launch';
+      name = "Launch file";
+      program = "${file}";
+      pythonPath = function(adapter)
+        local fh = io.popen("pyenv which python");
+        local pyenvPath = fh:read('*a')
+        fh:close()
+        return pyenvPath
+      end
+    },
+  }
 EOF
+
+nnoremap <silent> <leader>c :lua require'dap'.continue()<CR>
+nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
+nnoremap <silent> <leader>st :lua require'dap'.step_over()<CR>
+nnoremap <silent> <leader>si :lua require'dap'.step_into()<CR>
+nnoremap <silent> <leader>so :lua require'dap'.step_out()<CR>
 
 autocmd BufWritePre *.go lua goimports(1000)
 
