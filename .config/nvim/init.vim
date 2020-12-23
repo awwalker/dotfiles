@@ -1,14 +1,12 @@
 " Vim Plug Package Management
 set nocompatible
 filetype off
-set rtp+=/usr/local/opt/fzf
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'neovim/neovim'
 
 " LSP and Completion
 Plug 'nvim-lua/completion-nvim'
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/diagnostic-nvim'
 
 " UI
 Plug 'ntpeters/vim-better-whitespace'
@@ -23,7 +21,7 @@ Plug 'jaredgorski/spacecamp'
 " Movement
 Plug 'rhysd/clever-f.vim'
 Plug 'tpope/vim-surround'
-Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
@@ -36,6 +34,7 @@ Plug 'ekalinin/dockerfile.vim'
 
 " Debuggers
 Plug 'mfussenegger/nvim-dap'
+Plug 'mfussenegger/nvim-dap-python'
 Plug 'theHamsta/nvim-dap-virtual-text'
 
 " Snippets
@@ -44,6 +43,9 @@ Plug 'honza/vim-snippets'
 
 " Git
 Plug 'tpope/vim-fugitive'
+
+" Syntax
+Plug 'raimon49/requirements.txt.vim'
 
 call plug#end()
 
@@ -221,9 +223,10 @@ augroup end
 
 " Linting
 let g:neomake_go_enabled_makers = [ 'golangci_lint' ]
-let g:neomake_python_enabled_makers = [ 'flake8' ]
+let g:neomake_python_enabled_makers = [ 'flake8', 'mypy' ]
 let g:black_linelength = 100
 autocmd BufWritePre *.py execute ':Black'
+let g:neomake_open_list = 2
 
 " Full config: when writing or reading a buffer, and on changes in insert and
 " normal mode (after 500ms; no delay when writing).
@@ -238,7 +241,6 @@ imap <silent> <c-space> <Plug>(completion_trigger)
 lua << EOF
   local on_attach_vim = function(client)
     require'completion'.on_attach(client)
-    require'diagnostic'.on_attach(client)
     print("LSP Attached.")
   end
 
@@ -250,6 +252,18 @@ lua << EOF
   require'lspconfig'.gopls.setup{on_attach=on_attach_vim}
 
   require'lspconfig'.tsserver.setup{on_attach=on_attach_vim}
+  require'lspconfig'.yamlls.setup{on_attach=on_attach_vim}
+  require'lspconfig'.sumneko_lua.setup{
+    on_attach=on_attach_vim,
+    cmd = { "/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/macOS/lua-language-server", "-E", "/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/main.lua" },
+    settings = {
+      Lua = {
+        diagnostics = {
+          globals = { 'vim' }
+        }
+      }
+    }
+  }
 EOF
 
 lua << EOF
@@ -273,25 +287,38 @@ lua << EOF
   end
 EOF
 
+" DAP
+lua << EOF
+  local dap = require('dap')
+  dap.set_log_level('TRACE')
+  -- Python
+  local dapPython = require('dap-python')
+  dapPython.setup('/Users/awalker/.pyenv/versions/neovim3/bin/python')
+  dapPython.test_runner = 'pytest'
+EOF
+
+command! -complete=file -nargs=* DebugGo lua require"debuggers".attach_go_debugger({<f-args>})
+
 nnoremap <silent> <leader>c :lua require'dap'.continue()<CR>
 nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
 nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
-nnoremap <silent> <leader>st :lua require'dap'.step_over()<CR>
+nnoremap <silent> <leader>s :lua require'dap'.step_over()<CR>
 nnoremap <silent> <leader>si :lua require'dap'.step_into()<CR>
 nnoremap <silent> <leader>so :lua require'dap'.step_out()<CR>
 
-autocmd BufWritePre *.go lua goimports(1000)
-
+" Diagnostics
+nnoremap <leader>e <cmd>lua vim.lsp.diagnostic.goto_next { wrap = false }<CR>
+nnoremap <leader>E <cmd>lua vim.lsp.diagnostic.goto_prev { wrap = false }<CR>
 let g:diagnostic_enable_virtual_text = 1
 
+autocmd BufWritePre *.go lua goimports(1000)
+
+" LSP
 nnoremap <silent> <leader>d <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> <leader>t <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> <leader>i <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <leader>n <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> <leader>k <cmd>lua vim.lsp.buf.hover()<CR>
-
-nmap <silent> <leader>E :PrevDiagnosticCycle<CR>
-nmap <silent> <leader>e :NextDiagnosticCycle<CR>
 
 let g:completion_enable_snippet = 'UltiSnips'
 
@@ -310,6 +337,27 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*~
 " GIT
 nnoremap <leader>gs :G<CR>
 nnoremap <leader>gd :Gdiffsplit<CR>
+
+" Quickfix
+autocmd BufWinEnter quickfix nnoremap <silent> <buffer>
+  \   q :cclose<cr>:lclose<cr>
+autocmd BufEnter * if (winnr('$') == 1 && &buftype ==# 'quickfix' ) |
+  \   bd|
+  \   q | endif
+
+" FZF
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
 
 packloadall
 silent! helptags ALL
