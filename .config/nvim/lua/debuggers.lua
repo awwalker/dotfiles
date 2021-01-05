@@ -1,6 +1,13 @@
 local M = {}
 local goAttachConfig
 local goAttachAdapter
+local pythonAttachConfig
+local pythonAttachAdapter
+
+local function wait(seconds)
+    local start = os.time()
+    repeat until os.time() > start + seconds
+end
 
 local function get_debugging_port(appName)
     local ports_compose = io.open(os.getenv("PLAID_PATH") .. "/go.git/proto/src/plaidtypes/coretypes/service.proto", "r")
@@ -53,8 +60,68 @@ M.attach_go_debugger = function(args)
         return
     end
     io.write("Connecting to: ", serviceName, ":", goAttachConfig.port)
-     vim.fn.system({"/Users/awalker/plaid/go.git/scripts/ensure_debugger_session.sh", serviceName})
+    vim.fn.system({"/Users/awalker/plaid/go.git/scripts/ensure_debugger_session.sh", serviceName})
     local session = dap.launch(goAttachAdapter, goAttachConfig)
+    if session == nil then
+        io.write("Error launching adapter");
+    end
+    dap.repl.open()
+end
+
+M.attach_python_debugger = function(args)
+    local dap = require "dap"
+    local serviceName = args[1]
+    local host = "127.0.0.1"
+    if args and #args > 1 then
+        host = "10.100.10.44"
+    end
+    -- Spawn the debugpy server and adapter in the container.
+    local co = coroutine.create(function()
+        vim.fn.system({"/Users/awalker/plaid/go.git/scripts/ensure_debugger_session.sh", serviceName})
+    end)
+    print(coroutine.resume(co))
+    local raw_port = get_debugging_port(serviceName)
+    if raw_port == nil then
+        io.write("Unable to get port; quitting");
+        return
+    end
+
+    if args and #args > 0 then
+        pythonAttachConfig = {
+            type = "python";
+            request = "attach";
+            connect = {
+                host = host;
+                port = tonumber(raw_port);
+            };
+            mode = "remote";
+            name = "Remote Attached Debugger";
+            cwd = vim.fn.getcwd();
+            pathMappings = {
+                {
+                    localRoot = vim.fn.getcwd();
+                    remoteRoot = "/usr/src/app";
+                };
+            };
+        }
+        -- The adapter has been started.
+        -- Connect to it.
+        pythonAttachAdapter = {
+            type = "server";
+            host = host;
+            port = tonumber(raw_port);
+        }
+    end
+    if not pythonAttachConfig or not pythonAttachAdapter then
+        io.write("Config or Adapter not setup! Use :DebugPy <app name>");
+        return
+    end
+    while coroutine.status(co) ~= "dead" do
+        print("waiting")
+        wait(2)
+    end
+    io.write("Connecting to: ", serviceName, ":", tonumber(raw_port))
+    local session = dap.attach(host, tonumber(raw_port), pythonAttachConfig)
     if session == nil then
         io.write("Error launching adapter");
     end
