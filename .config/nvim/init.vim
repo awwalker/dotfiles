@@ -298,6 +298,7 @@ lua << EOF
 EOF
 
 command! -complete=file -nargs=* DebugGo lua require"debuggers".attach_go_debugger({<f-args>})
+command! -complete=file -nargs=* DebugPy lua require"debuggers".attach_python_debugger({<f-args>})
 
 nnoremap <silent> <leader>c :lua require'dap'.continue()<CR>
 nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
