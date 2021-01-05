@@ -1,3 +1,5 @@
+fpath=(~/.zsh/completions $fpath)
+autoload -U compinit && compinit
 # ---------------------
 #   PATH
 # ---------------------
@@ -6,7 +8,6 @@ export GOROOT="/usr/local/opt/go/libexec"
 
 export PATH="$HOME/bin:/usr/local/bin:${PATH}"
 export PATH="$PATH:/usr/local/opt/gnupg@2.0/bin"
-# export PATH="$PATH:$GOPATH/"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$GOROOT/bin"
 
@@ -33,7 +34,9 @@ export EDITOR=/usr/local/bin/nvim
 alias vim="nvim"
 
 setopt menu_complete
-setopt no_complete_aliases
+setopt appendhistory     #Append history to the history file (no overwriting)
+setopt sharehistory      #Share history across terminals
+setopt incappendhistory  #Immediately append to the history file, not just when a term is killed
 export HISTCONTROL=ignoredups:ignorespace
 export HISTFILESIZE=999999
 export HISTSIZE=999999
@@ -58,11 +61,7 @@ f_running() { ps vwaxr -o pid,stat,%cpu,time,command | grep $1 | head -10; }
 # GIT
 # ---------------------
 
-if typeset -f hub > /dev/null; then
-    alias g = hub
-    alias git = hub
-fi
-
+eval "$(hub alias -s)"
 alias gs='git status'
 alias gc='git commit'
 alias gp='git push'
@@ -98,6 +97,16 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PYTHONPATH="$PLAID_PYTHON:$QUOVO_PYTHON"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
+# ------------------------
+# DOCKER
+# ------------------------
+alias rdocker='
+    env
+    DOCKER_TLS_VERIFY="1" \
+    DOCKER_HOST="tcp://awalker.devenv.plaid.io:2376" \
+    DOCKER_CERT_PATH="/Users/awalker/plaid/go.git/resources/development-certs/remote_devenv_certs" \
+    docker'
+
 function stop_docks() {
     docker stop `docker ps -aq` && docker rm `docker ps -aq`
 }
@@ -105,7 +114,6 @@ function rm_docks() {
     docker stop `docker ps -aq` && docker rm `docker ps -aq`
     docker system prune --all --volumes
 }
-
 
 # --------------------
 # FZF
@@ -150,9 +158,9 @@ mkvenv() {
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 POWERLEVEL9K_MODE='nerdfont-complete'
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/powerlevel9k/powerlevel9k.zsh-theme
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey -e
 # OPENSSL
 # export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
