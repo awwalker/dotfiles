@@ -1,6 +1,6 @@
 local M = {}
-local goAttachConfig
-local goAttachAdapter
+local goLaunchConfig
+local goLaunchAdapter
 local pythonAttachConfig
 local pythonAttachAdapter
 
@@ -37,7 +37,7 @@ M.attach_go_debugger = function(args)
     end
 
     if args and #args > 0 then
-        goAttachConfig = {
+        goLaunchConfig = {
             type = "go";
             request = "attach";
             mode = "remote";
@@ -49,23 +49,23 @@ M.attach_go_debugger = function(args)
         }
         -- The adapter has not been started yet.
         -- Spin it up.
-        goAttachAdapter = {
+        goLaunchAdapter = {
             type = "executable";
             command = "node";
             args = {os.getenv("HOME") .. "/vscode-go/dist/debugAdapter.js"};
         }
     end
-    if not goAttachConfig or not goAttachAdapter then
+    if not goLaunchConfig or not goLaunchAdapter then
         io.write("Config or Adapter not setup! Use :DebugGo <app name>");
         return
     end
-    io.write("Connecting to: ", serviceName, ":", goAttachConfig.port)
+    io.write("Connecting to: ", serviceName, ":", goLaunchConfig.port)
     vim.fn.system({"/Users/awalker/plaid/go.git/scripts/ensure_debugger_session.sh", serviceName})
-    local session = dap.launch(goAttachAdapter, goAttachConfig)
+    local session = dap.launch(goLaunchAdapter, goLaunchConfig, {})
     if session == nil then
         io.write("Error launching adapter");
     end
-    dap.repl.open()
+    dap.repl.open({}, 'vsplit')
 end
 
 M.attach_python_debugger = function(args)
@@ -123,9 +123,42 @@ M.attach_python_debugger = function(args)
     io.write("Connecting to: ", serviceName, ":", tonumber(raw_port))
     local session = dap.attach(host, tonumber(raw_port), pythonAttachConfig)
     if session == nil then
+        io.write("Error connecting to adapter");
+    end
+    dap.repl.open({}, 'vsplit')
+end
+
+--- Works with `make watch` running in separate terminal BEFORE debugger started.
+M.pdaas = function()
+    local dap = require "dap"
+    local pdaasAdapter = {
+        type = "executable";
+        name = "node2";
+        command = "node";
+        args = { "/Users/awalker/vscode-node-debug2/out/src/nodeDebug.js" };
+    };
+    local pdaasConfig = {
+        type = "node2";
+        request = "launch";
+        program = "/Users/awalker/plaid/pdaas/build/pd2/scripts/cli/index.js";
+        cwd = vim.fn.getcwd();
+        sourceMaps = true;
+        outFiles = {
+            "${workspaceFolder}/build/**/*.js",
+            "!**/node_modules/**",
+        };
+        sourceMapPathOverrides = {
+            ["${workspaceFolder}/src/pd2/extractor/**/*.ts"] = "${workspaceFolder}/build/pd2/extractor/**/*.js",
+        };
+        protocol = "inspector";
+        console = "integratedTerminal";
+    };
+
+    local session = dap.launch(pdaasAdapter, pdaasConfig, {})
+    if session == nil then
         io.write("Error launching adapter");
     end
-    dap.repl.open()
+    dap.repl.open({}, 'vsplit')
 end
 
 return M
