@@ -12,7 +12,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'luochen1990/rainbow'
 Plug 'itchyny/lightline.vim'
-Plug 'sinetoami/lightline-neomake'
+" Plug 'sinetoami/lightline-neomake'
 Plug 'nvim-treesitter/nvim-treesitter'
 
 " Colorscheme
@@ -21,9 +21,10 @@ Plug 'jaredgorski/spacecamp'
 " Movement
 Plug 'rhysd/clever-f.vim'
 Plug 'tpope/vim-surround'
+" Installed via homebrew
+Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
 " Linter
 Plug 'neomake/neomake'
@@ -49,6 +50,7 @@ Plug 'raimon49/requirements.txt.vim'
 
 call plug#end()
 
+set mouse=a
 filetype plugin indent on
 colorscheme spacecamp
 set background=dark
@@ -107,19 +109,12 @@ let g:lightline = {
       \   'gitbranch': 'FugitiveHead',
       \ },
       \ 'colorscheme': 'powerline',
-      \ 'component_expand': {
-      \   'neomake_infos':    'lightline#neomake#infos',
-      \   'neomake_warnings': 'lightline#neomake#warnings',
-      \   'neomake_errors':   'lightline#neomake#errors',
-      \   'neomake_ok':       'lightline#neomake#ok',
-      \ },
       \ 'active': {
       \   'left': [ [ 'mode', 'paste'],
       \             [ 'fugitive', 'filename' ],
       \             [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
       \           ],
       \   'right': [ [ 'lineinfo' ],
-      \              [ 'neomake_warnings', 'neomake_errors', 'neomake_infos', 'neomake_ok' ],
       \              [ 'gitbranch'],
       \            ]
       \ },
@@ -138,11 +133,6 @@ let g:lightline = {
       \   'active':   [ 'tabnum', 'filename', 'fticon', 'modified' ],
       \   'inactive': [ 'tabnum', 'filename', 'fticon', 'modified' ],
       \ },
-\ }
-let g:lightline.component_type = {
-\ 'neomake_warnings': 'warning',
-\ 'neomake_errors':   'error',
-\ 'neomake_ok':       'left',
 \ }
 
 function! LightlineFilename()
@@ -205,17 +195,17 @@ nnoremap <C-h> <C-w>h
 
 " Copy to clipboard
 vnoremap  <leader>y  "+y
-nnoremap  <leader>y  "+y
 
 " yank current file name and line number
 nnoremap <leader>yn :let @*=expand("%") . ':' . line(".")<CR>
 
 " paste from clipboard
 nmap <leader>p "+gP
+
 augroup two_space_ft
     autocmd!
     autocmd FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
-    autocmd FileType ts setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+    autocmd FileType typescript setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
     autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
     autocmd FileType yml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
     autocmd FileType tf setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
@@ -243,16 +233,18 @@ lua << EOF
     require'completion'.on_attach(client)
     print("LSP Attached.")
   end
-
+  -- python
   require'lspconfig'.pyls.setup{
     on_attach=on_attach_vim,
     cmd={'/Users/awalker/.pyenv/versions/neovim3/bin/pyls'}
   }
-
+  -- go
   require'lspconfig'.gopls.setup{on_attach=on_attach_vim}
-
+  -- typescript
   require'lspconfig'.tsserver.setup{on_attach=on_attach_vim}
+  -- yaml
   require'lspconfig'.yamlls.setup{on_attach=on_attach_vim}
+  -- lua
   require'lspconfig'.sumneko_lua.setup{
     on_attach=on_attach_vim,
     cmd = { "/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/macOS/lua-language-server", "-E", "/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/main.lua" },
@@ -290,16 +282,20 @@ EOF
 " DAP
 lua << EOF
   local dap = require('dap')
-  dap.set_log_level('TRACE')
   -- Python
+  dap.set_log_level('TRACE');
   local dapPython = require('dap-python')
   dapPython.setup('/Users/awalker/.pyenv/versions/neovim3/bin/python')
   dapPython.test_runner = 'pytest'
 EOF
 
 command! -complete=file -nargs=* DebugGo lua require"debuggers".attach_go_debugger({<f-args>})
+command! -complete=file -nargs=* DebugPdaas lua require"debuggers".pdaas({<f-args>})
 command! -complete=file -nargs=* DebugPy lua require"debuggers".attach_python_debugger({<f-args>})
 
+lua << EOF
+  vim.g.dap_virtual_text = true
+EOF
 nnoremap <silent> <leader>c :lua require'dap'.continue()<CR>
 nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
 nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
@@ -326,13 +322,6 @@ let g:completion_enable_snippet = 'UltiSnips'
 " RAINBOW
 let g:rainbow_active = 1
 
-" CLAP
-let g:clap_open_action = { 'ctrl-t': 'tab split', 'ctrl-s': 'split', 'ctrl-v': 'vsplit' }
-nnoremap <c-f> <cmd> :Clap files <CR>
-nnoremap <c-b> <cmd> :Clap buffers <CR>
-nnoremap <c-g> <cmd> :Clap grep ++query=<cword> <CR>
-nnoremap <leader>vg <cmd> :Clap grep ++query=@visual <CR>
-
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*~
 
 " GIT
@@ -347,15 +336,45 @@ autocmd BufEnter * if (winnr('$') == 1 && &buftype ==# 'quickfix' ) |
   \   q | endif
 
 " FZF
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
+"function! RipgrepFzf(query, fullscreen)
+"  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case --hidden -g "!{node_modules/*,.git/*}" -- %s || true'
+"  let initial_command = printf(command_fmt, shellescape(a:query))
+"  let reload_command = printf(command_fmt, '{q}')
+"  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+"  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+"endfunction
 
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+" Run FZF based on the cwd & git detection
+" 1. Runs :Files, If cwd is not a git repository
+" 2. Runs :GitFiles <cwd> If root is a git repository
+fun! FzfOmniFiles()
+  " Throws v:shell_error if is not a git directory
+  let git_status = system('git status')
+  if v:shell_error != 0
+    :Files
+  else
+    " Reference examples which made this happen:
+    " https://github.com/junegunn/fzf.vim/blob/master/doc/fzf-vim.txt#L209
+    " https://github.com/junegunn/fzf.vim/blob/master/doc/fzf-vim.txt#L290
+    " --exclude-standard - Respect gitignore
+    " --others - Show untracked git files
+    " dir: getcwd() - Shows file names relative to cwd
+    let git_files_cmd = ":GitFiles --cached --others --exclude-standard"
+    call fzf#vim#gitfiles('--cached --others --exclude-standard', {'dir': getcwd()})
+  endif
+endfun
+" }}}
+
+nnoremap <silent> <C-p> :call FzfOmniFiles()<CR>
+nnoremap <c-f> :Files <CR>
+nnoremap <c-b> :Buffers <CR>
+" command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
+nnoremap <c-g> :Rg <C-R><C-W><CR>
+
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
 " [Buffers] Jump to the existing window if possible
 let g:fzf_buffers_jump = 1
