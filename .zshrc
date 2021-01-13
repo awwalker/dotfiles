@@ -130,11 +130,11 @@ CTRL-E    Exec a shell on the container
 CTRL-A    Attach to pod' | less@,ctrl-l:execute(kubectl logs {1} | less),ctrl-d:execute(kubectl describe po {1} | less),ctrl-r:reload(kubectl get po),ctrl-e:execute(kubectl exec -ti {1} bash < /dev/tty > /dev/tty 2>&1),ctrl-a:execute(kubectl attach {1})"
 }
 
-FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{node_modules/*,.git/*}" -- '
 
 # If current selection is a text file show its content,
 # if its a directory show its content the rest is ignored
-FZF_CTRL_T_OPTS="--preview-window wrap --preview '
+export FZF_CTRL_T_OPTS="--preview-window wrap --preview '
 if [[ -f {} ]]; then
     file --mime {} | grep -q \"text\/.*;\" && bat --color \"always\" {} || (tput setaf 1; file --mime {})
 elif [[ -d {} ]]; then
