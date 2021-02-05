@@ -134,12 +134,12 @@ lsp.yamlls.setup{
     on_attach = on_attach,
 }
 
-lsp.util.nvim_multiline_command [[
+vim.api.nvim_exec([[
 augroup format
     autocmd!
     autocmd Filetype go autocmd BufWritePre * lua require"lsp".document_format_and_organize_sync()
     autocmd Filetype python autocmd BufWritePre * lua require"lsp".document_format_and_organize_sync()
 augroup END
-]]
+]], false)
 
 return M
