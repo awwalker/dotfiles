@@ -128,7 +128,7 @@ M.attach_python_debugger = function(args)
     dap.repl.open({}, 'vsplit')
 end
 
---- Works with `make watch` running in separate terminal BEFORE debugger started.
+-- Used to Work with `make watch` running in separate terminal BEFORE debugger started???
 M.pdaas = function()
     local dap = require "dap"
     local pdaasAdapter = {
@@ -143,15 +143,12 @@ M.pdaas = function()
         program = "/Users/awalker/plaid/pdaas/build/pd2/scripts/cli/index.js";
         cwd = vim.fn.getcwd();
         sourceMaps = true;
-        outFiles = {
-            "${workspaceFolder}/build/**/*.js",
-            "!**/node_modules/**",
-        };
-        sourceMapPathOverrides = {
-            ["${workspaceFolder}/src/pd2/extractor/**/*.ts"] = "${workspaceFolder}/build/pd2/extractor/**/*.js",
-        };
         protocol = "inspector";
         console = "integratedTerminal";
+        sourceMapPathOverrides = {
+            ["${workspaceFolder}/src/pd2/extractor/**/*.ts"] = "${workspaceFolder}/build/pd2/extractor/**/*.js"
+        };
+        outFiles = { "${workspaceFolder}/build/**/*.js", "!**/node_modules/**" };
     };
 
     local session = dap.launch(pdaasAdapter, pdaasConfig, {})
