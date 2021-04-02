@@ -5,8 +5,8 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'neovim/neovim'
 
 " LSP and Completion
-Plug 'nvim-lua/completion-nvim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-compe'
 
 " UI
 Plug 'ntpeters/vim-better-whitespace'
@@ -206,6 +206,7 @@ augroup two_space_ft
   autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
   autocmd FileType yml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
   autocmd FileType tf setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+  autocmd FileType proto setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 augroup end
 
 " Linting
@@ -220,6 +221,7 @@ EOF
 " DAP
 lua << EOF
   local dap = require('dap')
+  vim.g.dap_virtual_text = true
   -- Python
   dap.set_log_level('TRACE');
   local dapPython = require('dap-python')
@@ -231,9 +233,6 @@ command! -complete=file -nargs=* DebugGo lua require"debuggers".attach_go_debugg
 command! -complete=file -nargs=* DebugPdaas lua require"debuggers".pdaas({<f-args>})
 command! -complete=file -nargs=* DebugPy lua require"debuggers".attach_python_debugger({<f-args>})
 
-lua << EOF
-  vim.g.dap_virtual_text = true
-EOF
 nnoremap <silent> <leader>c :lua require'dap'.continue()<CR>
 nnoremap <silent> <leader>n :lua require'dap'.step_over()<CR>
 nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
