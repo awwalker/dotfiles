@@ -2,8 +2,6 @@
 set nocompatible
 filetype off
 call plug#begin('~/.local/share/nvim/plugged')
-Plug 'neovim/neovim'
-
 " LSP and Completion
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
@@ -239,9 +237,6 @@ nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
 nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
 nnoremap <silent> <leader>si :lua require'dap'.step_into()<CR>
 nnoremap <silent> <leader>so :lua require'dap'.step_out()<CR>
-
-" Diagnostics
-let g:diagnostic_enable_virtual_text = 1
 
 let g:completion_enable_snippet = 'UltiSnips'
 
