@@ -1,5 +1,6 @@
 local lsp = require('lspconfig')
 local compe = require('compe')
+local kind = require('lspkind')
 
 local function debug_print (tbl, indent)
   if not indent then indent = 0 end
@@ -70,6 +71,11 @@ lsp.sumneko_lua.setup{
 lsp.tsserver.setup{}
 
 lsp.yamlls.setup{}
+
+-- =============================
+--             UI
+-- =============================
+kind.init()
 
 -- =============================
 --          COMPLETION

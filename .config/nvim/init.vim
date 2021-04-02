@@ -7,6 +7,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 
 " UI
+Plug 'onsails/lspkind-nvim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'luochen1990/rainbow'
 Plug 'itchyny/lightline.vim'
