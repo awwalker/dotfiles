@@ -1,10 +1,6 @@
 local lsp = require('lspconfig')
 local compe = require('compe')
 
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
 local function debug_print (tbl, indent)
   if not indent then indent = 0 end
   local toprint = string.rep(" ", indent) .. "{\r\n"
@@ -33,6 +29,20 @@ end
 -- =============================
 --           LSP
 -- =============================
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      -- disable virtual text
+      virtual_text = true,
+
+      -- show signs
+      signs = true,
+      underline = true,
+
+      -- delay update diagnostics
+      update_in_insert = false,
+      -- display_diagnostic_autocmds = { "InsertLeave" },
+    }
+)
 
 lsp.dockerls.setup{}
 
