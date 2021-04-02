@@ -100,12 +100,12 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 # ------------------------
 # DOCKER
 # ------------------------
-alias rdocker='
-    env
-    DOCKER_TLS_VERIFY="1" \
-    DOCKER_HOST="tcp://awalker.devenv.plaid.io:2376" \
-    DOCKER_CERT_PATH="/Users/awalker/plaid/go.git/resources/development-certs/remote_devenv_certs" \
-    docker'
+function rdocker() {
+    export DOCKER_TLS_VERIFY='1'
+    export DOCKER_HOST='tcp://awalker.devenv.plaid.io:2376'
+    export DOCKER_CERT_PATH='/Users/awalker/plaid/go.git/resources/development-certs/remote_devenv_certs'
+    docker "$@"
+}
 
 function stop_docks() {
     docker stop `docker ps -aq` && docker rm `docker ps -aq`
