@@ -73,8 +73,8 @@ hlmap["punctuation.bracket"] = nil
 EOF
 
 
-let g:python_host_prog = '/Users/awalker/.pyenv/versions/neovim2/bin/python'
-let g:python3_host_prog = '/Users/awalker/.pyenv/versions/neovim3/bin/python'
+let g:python_host_prog = '/Users/aaronwalker/.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog = '/Users/aaronwalker/.pyenv/versions/neovim3/bin/python'
 
 set backup
 set backupdir=~/.vim/_backups
@@ -213,23 +213,16 @@ let g:black_linelength = 100
 autocmd BufWritePre *.py execute ':Black'
 
 " LSP
-lua << EOF
-  require"lsp"
-EOF
+lua require('lsp')
 
 " DAP
-lua << EOF
-  local dap = require('dap')
-  -- Python
-  dap.set_log_level('TRACE');
-  local dapPython = require('dap-python')
-  dapPython.setup('/Users/awalker/.pyenv/versions/neovim3/bin/python')
-  dapPython.test_runner = 'pytest'
-EOF
+lua require('debuggers')
+" lua require('dap-python').setup('~/.pyenv/versions/neovim3/bin/python')
 
-command! -complete=file -nargs=* DebugGo lua require"debuggers".attach_go_debugger({<f-args>})
-command! -complete=file -nargs=* DebugPdaas lua require"debuggers".pdaas({<f-args>})
-command! -complete=file -nargs=* DebugPy lua require"debuggers".attach_python_debugger({<f-args>})
+" command! -complete=file -nargs=* DebugGo lua require"debuggers".attach_go_debugger({<f-args>})
+" command! -complete=file -nargs=* DebugPdaas lua require"debuggers".pdaas({<f-args>})
+" command! -complete=file -nargs=* DebugPy lua require"debuggers".attach_python_debugger({<f-args>})
+" command! -complete=file -nargs=* DebugLaunchPy lua require"debuggers".launch_python({<f-args>})
 
 lua << EOF
   vim.g.dap_virtual_text = true
@@ -240,7 +233,7 @@ nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
 nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
 nnoremap <silent> <leader>si :lua require'dap'.step_into()<CR>
 nnoremap <silent> <leader>so :lua require'dap'.step_out()<CR>
-
+nnoremap <silent> <leader>ro :lua require'dap'.repl.open({}, 'vsplit')<CR>
 " Diagnostics
 let g:diagnostic_enable_virtual_text = 1
 

@@ -16,3 +16,5 @@
     insteadOf = https://github.com/quovo
 [url "git@quovo.com:"]
     insteadOf = ssh://git@github.com:
+[init]
+	defaultBranch = master

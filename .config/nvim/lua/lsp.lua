@@ -107,15 +107,15 @@ lsp.gopls.setup{
 
 lsp.pyls.setup{
     on_attach = on_attach,
-    cmd = { '/Users/awalker/.pyenv/versions/neovim3/bin/pyls' },
+    cmd = { '/Users/aaronwalker/.pyenv/versions/neovim3/bin/pyls' },
 }
 
 lsp.sumneko_lua.setup{
     on_attach = on_attach,
     cmd = {
-        '/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/macOS/lua-language-server',
+        '/Users/aaronwalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/macOS/lua-language-server',
         '-E',
-        '/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/main.lua',
+        '/Users/aaronwalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/main.lua',
     },
     settings = {
         Lua = {

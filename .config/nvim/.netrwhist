@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/Users/aaronwalker/interview/leetcode'
+let g:netrw_dirhist_3='/Users/aaronwalker/covid-apt'
+let g:netrw_dirhist_2='/Users/aaronwalker/.config/nvim/lua'
+let g:netrw_dirhist_1='/Users/aaronwalker/.config/nvim'
+let g:netrw_dirhist_0='/Users/aaronwalker/.config'
+let g:netrw_dirhist_9='/Users/aaronwalker/.config/nvim/lua'
+let g:netrw_dirhist_8='/Users/aaronwalker/.config/nvim'
+let g:netrw_dirhist_7='/Users/aaronwalker/.config'
+let g:netrw_dirhist_6='/Users/aaronwalker/.config/nvim/lua'
+let g:netrw_dirhist_5='/Users/aaronwalker/.config/nvim'

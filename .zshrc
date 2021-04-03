@@ -11,7 +11,7 @@ export PATH="$PATH:/usr/local/opt/gnupg@2.0/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$GOROOT/bin"
 
-source ~/.plaid_env ~/.quovo_env
+# source ~/.plaid_env ~/.quovo_env
 
 export PATH="$PATH:${PLAID_PATH}/go.git"
 export PATH="$PATH:${PLAID_PATH}/go.git/bin"
