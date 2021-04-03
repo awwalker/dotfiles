@@ -1,162 +1,187 @@
-local M = {}
-local goLaunchConfig
-local goLaunchAdapter
-local pythonAttachConfig
-local pythonAttachAdapter
+-- local M = {}
+local dap = require('dap')
+dap.set_log_level('TRACE');
 
-local function wait(seconds)
-    local start = os.time()
-    repeat until os.time() > start + seconds
+local ensure_script = '/Users/awalker/plaid/go.git/scripts/ensure_debugger_session.sh';
+
+local function get_debugging_port(service_name)
+  local ports_compose = io.open(
+    os.getenv('PLAID_PATH') .. '/go.git/proto/src/plaidtypes/coretypes/service.proto', 'r'
+  )
+  local port = nil
+  for line in ports_compose:lines() do
+    -- Match lines like: "    SERVICE_FEATURE_SERVER_CONSUMER = 181 [" and pull the 181.
+    local proto_base = string.match(
+      line,
+      '^%s-SERVICE_' .. string.upper(service_name) .. '%s-=%s-(%d+)%s-%['
+    )
+    if proto_base ~= nil then
+      port = 50000 + (proto_base + 1) * 10 - 1
+      break
+    end
+  end
+  ports_compose:close()
+  return port
 end
 
-local function get_debugging_port(appName)
-    local ports_compose = io.open(os.getenv("PLAID_PATH") .. "/go.git/proto/src/plaidtypes/coretypes/service.proto", "r")
-    for line in ports_compose:lines() do
-        -- Match lines like: "    SERVICE_FEATURE_SERVER_CONSUMER = 181 [" and pull the 181.
-        local proto_base = string.match(line, "^%s-SERVICE_" .. string.upper(appName) .. "%s-=%s-(%d+)%s-%[")
-        if proto_base ~= nil then
-            return 50000 + (proto_base + 1) * 10 - 1
-        end
-    end
-    ports_compose:close()
-    io.write("Unable to dynamically find port for: ", appName);
-    io.write("Please input port now or `q` to quit");
-    local input = io.read();
-    if input == "q" or string.match(input, "%d+") == nil then
-        return nil
-    end
+local function start_devenv_debug_session()
+  local service_name = vim.fn.input('Debugee Service: ')
+  local port = get_debugging_port(service_name) or vim.fn.input('Debuggee Port: ')
+  -- Start the debugger in the devenv service.
+  vim.fn.system({ensure_script, service_name})
+  io.write(string.format('Debug session for %s with port %d', service_name, port))
+  return service_name, port;
 end
 
-M.attach_go_debugger = function(args)
-    local dap = require "dap"
-    local serviceName = args[1]
-    local raw_port = get_debugging_port(serviceName)
-    if raw_port == nil then
-        io.write("Unable to get port; quitting");
-        return
-    end
+-- =============================
+--              DAP
+-- =============================
 
-    if args and #args > 0 then
-        goLaunchConfig = {
-            type = "go";
-            request = "attach";
-            mode = "remote";
-            name = "Remote Attached Debugger";
-            dlvToolPath = os.getenv('HOME') .. "/go/bin/dlv";
-            remotePath = "/opt/gopath/src/github.plaid.com/plaid/go.git";
-            port = tonumber(raw_port);
-            cwd = vim.fn.getcwd();
-        }
-        -- The adapter has not been started yet.
-        -- Spin it up.
-        goLaunchAdapter = {
-            type = "executable";
-            command = os.getenv("HOME") .. "/.nvm/versions/node/v12.18.2/bin/node";
-            args = {os.getenv("HOME") .. "/vscode-go/dist/debugAdapter.js"};
-        }
-    end
-    if not goLaunchConfig or not goLaunchAdapter then
-        io.write("Config or Adapter not setup! Use :DebugGo <app name>");
-        return
-    end
-    io.write("Connecting to: ", serviceName, ":", goLaunchConfig.port)
-    vim.fn.system({"/Users/awalker/plaid/go.git/scripts/ensure_debugger_session.sh", serviceName})
-    local session = dap.launch(goLaunchAdapter, goLaunchConfig, {})
-    if session == nil then
-        io.write("Error launching adapter");
-    end
-    dap.repl.open({}, 'vsplit')
+-- =============================
+--            ADAPTERS
+-- =============================
+
+-- PYTHON
+dap.adapters.python = {
+  type = 'executable';
+  command = os.getenv('HOME') .. '/.pyenv/versions/neovim3/bin/python';
+  args = { '-m', 'debugpy.adapter' };
+}
+
+dap.adapters.devenv_python = function(cb, config)
+  local _, port = start_devenv_debug_session();
+  local remoteness = vim.fn.input('Remote or Local Devenv: ')
+  local host;
+  if remoteness == 'remote' then
+    host = '10.131.1.149';
+  elseif remoteness == 'local' then
+    host = '127.0.0.1';
+  else
+    io.write(string.format('Unusable remoteness value: %s', remoteness));
+  end
+  cb({
+    type = 'server';
+    host = host;
+    port = port;
+    enrich_config = function(config, on_config)
+      local f_config = vim.deepcopy(config)
+      if f_config.connect ~= nil then
+        f_config.connect.port = port;
+        f_config.connect.host = host;
+      end
+      on_config(f_config)
+    end;
+  })
 end
 
-M.attach_python_debugger = function(args)
-    local dap = require "dap"
-    local serviceName = args[1]
-    local host = "127.0.0.1"
-    if args and #args > 1 then
-        host = "10.100.10.44"
-    end
-    -- Spawn the debugpy server and adapter in the container.
-    local co = coroutine.create(function()
-        vim.fn.system({"/Users/awalker/plaid/go.git/scripts/ensure_debugger_session.sh", serviceName})
-    end)
-    print(coroutine.resume(co))
-    local raw_port = get_debugging_port(serviceName)
-    if raw_port == nil then
-        io.write("Unable to get port; quitting");
-        return
-    end
+-- GO
+dap.adapters.go = function(cb, config)
+  local cb_input = {
+    type = 'executable';
+    command = os.getenv('HOME') .. '/.nvm/versions/node/v12.18.2/bin/node';
+    args = { os.getenv('HOME') .. '/vscode-go/dist/debugAdapter.js' };
+  };
+  if config.request == 'attach' and config.mode == 'remote' then
+    local _, port = start_devenv_debug_session()
+    cb_input.enrich_config = function(config, on_config)
+      local f_config = vim.deepcopy(config)
+      f_config.port = tonumber(port)
+      on_config(f_config)
+    end;
+  end
+  cb(cb_input)
+end;
 
-    if args and #args > 0 then
-        pythonAttachConfig = {
-            type = "python";
-            request = "attach";
-            connect = {
-                host = host;
-                port = tonumber(raw_port);
-            };
-            mode = "remote";
-            name = "Remote Attached Debugger";
-            cwd = vim.fn.getcwd();
-            pathMappings = {
-                {
-                    localRoot = vim.fn.getcwd();
-                    remoteRoot = "/usr/src/app";
-                };
-            };
-        }
-        -- The adapter has been started.
-        -- Connect to it.
-        pythonAttachAdapter = {
-            type = "server";
-            host = host;
-            port = tonumber(raw_port);
-        }
-    end
-    if not pythonAttachConfig or not pythonAttachAdapter then
-        io.write("Config or Adapter not setup! Use :DebugPy <app name>");
-        return
-    end
-    while coroutine.status(co) ~= "dead" do
-        print("waiting")
-        wait(2)
-    end
-    io.write("Connecting to: ", serviceName, ":", tonumber(raw_port))
-    local session = dap.attach(host, tonumber(raw_port), pythonAttachConfig)
-    if session == nil then
-        io.write("Error connecting to adapter");
-    end
-    dap.repl.open({}, 'vsplit')
-end
+-- NODE / TYPESCRIPT
+dap.adapters.node2 = {
+  type = 'executable';
+  command = os.getenv('HOME') .. '/.nvm/versions/node/v12.18.2/bin/node';
+  args = { os.getenv('HOME') .. '/vscode-node-debug2/out/src/nodeDebug.js' };
+}
 
--- Used to Work with `make watch` running in separate terminal BEFORE debugger started???
-M.pdaas = function()
-    local dap = require "dap"
-    local pdaasAdapter = {
-        type = "executable";
-        name = "node2";
-        command = os.getenv("HOME") .. "/.nvm/versions/node/v12.18.2/bin/node";
-        args = { "/Users/awalker/vscode-node-debug2/out/src/nodeDebug.js" };
+-- =============================
+--         CONFIGURATIONS
+-- =============================
+dap.configurations.python = {
+  {
+    type = 'python';
+    request = 'launch';
+    name = 'Launch File';
+    program = '${file}';
+    console = 'integratedTerminal';
+    pythonPath = function()
+      return os.getenv('HOME') .. '/.pyenv/versions/neovim3/bin/python';
+    end;
+  },
+  {
+    type = 'devenv-python';
+    request = 'attach';
+    mode = 'remote';
+    connect = {};
+    name = 'Devenv Debugger';
+    cwd = vim.fn.getcwd();
+    pathMappings = {
+      {
+        localRoot = vim.fn.getcwd();
+        remoteRoot = '/usr/src/app';
+      };
     };
-    local pdaasConfig = {
-        type = "node2";
-        request = "launch";
-        program = "/Users/awalker/plaid/pdaas/build/pd2/scripts/cli/index.js";
-        runtimeExecutable = os.getenv("HOME") .. "/.nvm/versions/node/v12.18.2/bin/node";
-        cwd = vim.fn.getcwd();
-        sourceMaps = true;
-        protocol = "inspector";
-        console = "integratedTerminal";
-        sourceMapPathOverrides = {
-            ["${workspaceFolder}/src/pd2/extractor/**/*.ts"] = "${workspaceFolder}/build/pd2/extractor/**/*.js"
-        };
-        outFiles = { "${workspaceFolder}/build/**/*.js", "!**/node_modules/**" };
+  },
+}
+
+dap.configurations.go = {
+  {
+    type = 'go';
+    request = 'attach';
+    mode = 'remote';
+    name = 'Remote Attached Debugger';
+    remotePath = '/opt/gopath/src/github.plaid.com/plaid/go.git';
+    cwd = vim.fn.getcwd();
+    dlvToolPath = vim.fn.exepath('dlv');
+  },
+  {
+    type = 'go';
+    request = 'launch';
+    program = '${file}';
+    dlvToolPath = vim.fn.exepath('dlv');
+  },
+}
+
+dap.configurations.javascript = {
+  {
+    type = 'node2';
+    request = 'launch';
+    program = '${file}';
+    cwd = vim.fn.getcwd();
+    sourceMaps = true;
+    protocol = 'inspector';
+    console = 'integratedTerminal';
+  },
+  {
+    type = 'node2';
+    request = 'launch';
+    name = 'pdaas';
+    program = os.getenv('PLAID_PATH') .. '/pdaas/build/pd2/scripts/cli/index.js';
+    runtimeExecutable = os.getenv('HOME') .. '/.nvm/versions/node/v12.18.2/bin/node';
+    cwd = vim.fn.getcwd();
+    sourceMaps = true;
+    protocol = 'inspector';
+    console = 'integratedTerminal';
+    sourceMapPathOverrides = {
+      ['${workspaceFolder}/src/pd2/extractor/**/*.ts'] = '${workspaceFolder}/build/pd2/extractor/**/*.js'
     };
+    outFiles = { '${workspaceFolder}/build/**/*.js', '!**/node_modules/**' };
+  },
+}
 
-    local session = dap.launch(pdaasAdapter, pdaasConfig, {})
-    if session == nil then
-        io.write("Error launching adapter");
-    end
-    dap.repl.open({}, 'vsplit')
-end
+-- Enable virtual text.
+vim.g.dap_virtual_text = true
 
-return M
+local silent = { silent=true }
+
+vim.api.nvim_set_keymap('n', '<leader>c', '<cmd> lua require"dap".continue()<CR>', silent)
+vim.api.nvim_set_keymap('n', '<leader>n', '<cmd> lua require"dap".step_over()<CR>', silent)
+vim.api.nvim_set_keymap('n', '<leader>b', '<cmd> lua require"dap".toggle_breakpoint()<CR>', silent)
+vim.api.nvim_set_keymap('n', '<leader>dr', '<cmd> lua require"dap".repl.open()<CR>', silent)
+vim.api.nvim_set_keymap('n', '<leader>si', '<cmd> lua require"dap".step_into()<CR>', silent)
+vim.api.nvim_set_keymap('n', '<leader>si', '<cmd> lua require"dap".step_out()<CR>', silent)

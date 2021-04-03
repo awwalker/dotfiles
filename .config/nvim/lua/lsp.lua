@@ -31,18 +31,18 @@ end
 --           LSP
 -- =============================
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      -- disable virtual text
-      virtual_text = true,
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    -- disable virtual text
+    virtual_text = true,
 
-      -- show signs
-      signs = true,
-      underline = true,
+    -- show signs
+    signs = true,
+    underline = true,
 
-      -- delay update diagnostics
-      update_in_insert = false,
-      -- display_diagnostic_autocmds = { "InsertLeave" },
-    }
+    -- delay update diagnostics
+    update_in_insert = false,
+    -- display_diagnostic_autocmds = { "InsertLeave" },
+  }
 )
 
 lsp.dockerls.setup{}
@@ -50,22 +50,22 @@ lsp.dockerls.setup{}
 lsp.gopls.setup{}
 
 lsp.pyls.setup{
-    cmd = { '/Users/awalker/.pyenv/versions/neovim3/bin/pyls' },
+  cmd = { '/Users/awalker/.pyenv/versions/neovim3/bin/pyls' },
 }
 
 lsp.sumneko_lua.setup{
-    cmd = {
-        '/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/macOS/lua-language-server',
-        '-E',
-        '/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/main.lua',
-    },
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = { 'vim' }
-            }
-        }
-    },
+  cmd = {
+      '/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/macOS/lua-language-server',
+      '-E',
+      '/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/main.lua',
+  },
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { 'vim' }
+      }
+    }
+  },
 }
 
 lsp.tsserver.setup{}
@@ -105,21 +105,22 @@ compe.setup {
   };
 }
 
-local opts = { noremap=true, silent=true }
+local noremap_silent = { noremap=true, silent=true }
+local noremap_silent_expr = { noremap=true, silent=true, expr=true }
 local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(0, ...) end
 
 vim.o.completeopt = "menuone,noselect"
 
-buf_set_keymap('n', '<leader>d', '<cmd> lua vim.lsp.buf.definition()<CR>', opts)
-buf_set_keymap('n', '<leader>t', '<cmd> lua vim.lsp.buf.type_definition()<CR>', opts)
-buf_set_keymap('n', '<leader>i', '<cmd> lua vim.lsp.buf.implementation()<CR>', opts)
-buf_set_keymap('n', '<leader>r', '<cmd> lua vim.lsp.buf.references()<CR>', opts)
-buf_set_keymap('n', '<leader>K', '<cmd> lua vim.lsp.buf.hover()<CR>', opts)
-buf_set_keymap('n', '<leader>e', '<cmd> lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-buf_set_keymap('n', '<leader>E', '<cmd> lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-buf_set_keymap('n', '<leader><space>', '<cmd> lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+buf_set_keymap('n', '<leader>d', '<cmd> lua vim.lsp.buf.definition()<CR>', noremap_silent)
+buf_set_keymap('n', '<leader>t', '<cmd> lua vim.lsp.buf.type_definition()<CR>', noremap_silent)
+buf_set_keymap('n', '<leader>i', '<cmd> lua vim.lsp.buf.implementation()<CR>', noremap_silent)
+buf_set_keymap('n', '<leader>r', '<cmd> lua vim.lsp.buf.references()<CR>', noremap_silent)
+buf_set_keymap('n', '<leader>K', '<cmd> lua vim.lsp.buf.hover()<CR>', noremap_silent)
+buf_set_keymap('n', '<leader>e', '<cmd> lua vim.lsp.diagnostic.goto_next()<CR>', noremap_silent)
+buf_set_keymap('n', '<leader>E', '<cmd> lua vim.lsp.diagnostic.goto_prev()<CR>', noremap_silent)
+buf_set_keymap('n', '<leader><space>', '<cmd> lua vim.lsp.diagnostic.set_loclist()<CR>', noremap_silent)
 
-vim.api.nvim_set_keymap('i', '<C-space>', [[compe#complete()]], { expr=true, noremap=true, silent=true })
-vim.api.nvim_set_keymap('i', '<CR>', [[compe#confirm('<CR>')]], { expr=true, noremap=true, silent=true })
-vim.api.nvim_set_keymap('i', '<C-c>', [[compe#close("<C-c>")]], { expr=true, noremap=true, silent=true })
-vim.api.nvim_set_keymap('i', '<C-p>', [[compe#close("<C-c>")]], { expr=true, noremap=true, silent=true })
+vim.api.nvim_set_keymap('i', '<C-space>', [[compe#complete()]], noremap_silent_expr)
+vim.api.nvim_set_keymap('i', '<CR>', [[compe#confirm('<CR>')]], noremap_silent_expr)
+vim.api.nvim_set_keymap('i', '<C-c>', [[compe#close("<C-c>")]], noremap_silent_expr)
+vim.api.nvim_set_keymap('i', '<C-p>', [[compe#close("<C-c>")]], noremap_silent_expr)
