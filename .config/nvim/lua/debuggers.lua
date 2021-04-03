@@ -2,31 +2,6 @@
 local dap = require('dap')
 dap.set_log_level('TRACE');
 
-local function debug_print (tbl, indent)
-  if not indent then indent = 0 end
-  local toprint = string.rep(" ", indent) .. "{\r\n"
-  indent = indent + 2
-  for k, v in pairs(tbl) do
-    toprint = toprint .. string.rep(" ", indent)
-    if (type(k) == "number") then
-      toprint = toprint .. "[" .. k .. "] = "
-    elseif (type(k) == "string") then
-      toprint = toprint  .. k ..  "= "
-    end
-    if (type(v) == "number") then
-      toprint = toprint .. v .. ",\r\n"
-    elseif (type(v) == "string") then
-      toprint = toprint .. "\"" .. v .. "\",\r\n"
-    elseif (type(v) == "table") then
-      toprint = toprint .. debug_print(v, indent + 2) .. ",\r\n"
-    else
-      toprint = toprint .. "\"" .. tostring(v) .. "\",\r\n"
-    end
-  end
-  toprint = toprint .. string.rep(" ", indent-2) .. "}"
-  return toprint
-end
-
 local ensure_script = '/Users/awalker/plaid/go.git/scripts/ensure_debugger_session.sh';
 
 local function get_debugging_port(service_name)
@@ -102,9 +77,9 @@ end
 -- GO
 dap.adapters.go = function(cb, config)
   local cb_input = {
-    type = "executable";
-    command = os.getenv("HOME") .. "/.nvm/versions/node/v12.18.2/bin/node";
-    args = { os.getenv("HOME") .. "/vscode-go/dist/debugAdapter.js" };
+    type = 'executable';
+    command = os.getenv('HOME') .. '/.nvm/versions/node/v12.18.2/bin/node';
+    args = { os.getenv('HOME') .. '/vscode-go/dist/debugAdapter.js' };
   };
   if config.request == 'attach' and config.mode == 'remote' then
     local _, port = start_devenv_debug_session()
@@ -198,6 +173,9 @@ dap.configurations.javascript = {
     outFiles = { '${workspaceFolder}/build/**/*.js', '!**/node_modules/**' };
   },
 }
+
+-- Enable virtual text.
+vim.g.dap_virtual_text = true
 
 local silent = { silent=true }
 

@@ -222,18 +222,6 @@ EOF
 lua << EOF
   require('debuggers')
 EOF
-" lua << EOF
-"   local dap = require('dap')
-"   vim.g.dap_virtual_text = true
-"   -- Python
-"   local dapPython = require('dap-python')
-"   dapPython.setup('/Users/awalker/.pyenv/versions/neovim3/bin/python')
-"   dapPython.test_runner = 'pytest'
-" EOF
-
-" command! -complete=file -nargs=* DebugGo lua require"debuggers".attach_go_debugger({<f-args>})
-" command! -complete=file -nargs=* DebugPdaas lua require"debuggers".pdaas({<f-args>})
-" command! -complete=file -nargs=* DebugPy lua require"debuggers".attach_python_debugger({<f-args>})
 
 let g:completion_enable_snippet = 'UltiSnips'
 
