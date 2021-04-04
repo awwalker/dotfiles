@@ -36,12 +36,10 @@ export EDITOR=/usr/local/bin/nvim
 alias vim="nvim"
 
 setopt menu_complete
-setopt appendhistory     #Append history to the history file (no overwriting)
-setopt sharehistory      #Share history across terminals
-setopt incappendhistory  #Immediately append to the history file, not just when a term is killed
+HISTFILE=~/.zsh_history
+setopt SHARE_HISTORY #Share history across terminals
 export HISTCONTROL=ignoredups:ignorespace
-export HISTFILESIZE=999999
-export HISTSIZE=999999
+export SAVEHIST=5000
 export DISABLE_UPDATE_PROMPT=true
 
 # ---------------------
