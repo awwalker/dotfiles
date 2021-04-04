@@ -1,5 +1,7 @@
 fpath=(~/.zsh/completions $fpath)
 autoload -U compinit && compinit
+autoload -U promptinit; promptinit
+prompt pure
 # ---------------------
 #   PATH
 # ---------------------
@@ -157,8 +159,6 @@ mkvenv() {
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-POWERLEVEL9K_MODE='nerdfont-complete'
-source ~/.zsh/powerlevel9k/powerlevel9k.zsh-theme
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey -e

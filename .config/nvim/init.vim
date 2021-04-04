@@ -9,12 +9,15 @@ Plug 'hrsh7th/nvim-compe'
 " UI
 Plug 'onsails/lspkind-nvim'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'luochen1990/rainbow'
-Plug 'itchyny/lightline.vim'
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
+Plug 'akinsho/nvim-bufferline.lua'
+
+" If you want to display icons, then use one of these plugins:
+Plug 'kyazdani42/nvim-web-devicons' " lua
 
 " Colorscheme
-Plug 'jaredgorski/spacecamp'
+Plug 'christianchiarulli/nvcode-color-schemes.vim'
 
 " Movement
 Plug 'rhysd/clever-f.vim'
@@ -32,7 +35,6 @@ Plug 'ekalinin/dockerfile.vim'
 
 " Debuggers
 Plug 'mfussenegger/nvim-dap'
-Plug 'mfussenegger/nvim-dap-python'
 Plug 'theHamsta/nvim-dap-virtual-text'
 
 " Snippets
@@ -49,28 +51,11 @@ call plug#end()
 
 set mouse=a
 filetype plugin indent on
-colorscheme spacecamp
-set background=dark
 set termguicolors
-syntax enable
+let g:nvcode_termcolors=256
+syntax on
+colorscheme snazzy
 set cursorline
-
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"go", "python", "json", "typescript"},
-  highlight = {
-    enable = true
-  }
-}
-require "nvim-treesitter.highlight"
-local hlmap = vim.treesitter.highlighter.hl_map
-
---Misc
-hlmap.error = nil
-hlmap["punctuation.delimiter"] = "Delimiter"
-hlmap["punctuation.bracket"] = nil
-EOF
-
 
 let g:python_host_prog = '/Users/awalker/.pyenv/versions/neovim2/bin/python'
 let g:python3_host_prog = '/Users/awalker/.pyenv/versions/neovim3/bin/python'
@@ -98,48 +83,6 @@ set textwidth=0
 " ui
 set nocursorline
 set hidden
-" Lightline Plugin
-let g:lightline = {
-      \ 'component_function': {
-      \   'filename': 'LightlineFilename',
-      \   'gitbranch': 'FugitiveHead',
-      \ },
-      \ 'colorscheme': 'powerline',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste'],
-      \             [ 'fugitive', 'filename' ],
-      \             [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
-      \           ],
-      \   'right': [ [ 'lineinfo' ],
-      \              [ 'gitbranch'],
-      \            ]
-      \ },
-      \ 'inactive' : {
-      \   'left':  [ [ 'mode' ],
-      \              [ 'filename' ]
-      \            ],
-      \   'right': [ [ 'lineinfo' ],
-      \            ],
-      \ },
-      \ 'tabline': {
-      \   'left':   [ [ 'tabs' ] ],
-      \   'right':  [ [ 'close' ], [ 'session' ] ],
-      \ },
-      \ 'tab' : {
-      \   'active':   [ 'tabnum', 'filename', 'fticon', 'modified' ],
-      \   'inactive': [ 'tabnum', 'filename', 'fticon', 'modified' ],
-      \ },
-\ }
-
-function! LightlineFilename()
-  let root = fnamemodify(get(b:, 'git_dir'), ':h')
-  let path = expand('%:p')
-  if path[:len(root)-1] ==# root
-    return path[len(root)+1:]
-  endif
-  return expand('%')
-endfunction
-
 set lazyredraw " redraw only when we need to
 set showmatch " highlight matching [{())}]
 set number " show line numbers
@@ -213,13 +156,12 @@ augroup end
 let g:black_linelength = 100
 autocmd BufWritePre *.py execute ':Black'
 
-" LSP
 lua << EOF
+  -- LSP
   require('lsp')
-EOF
-
-" DAP
-lua << EOF
+  -- Appearance
+  require('appearance')
+  -- DAP
   require('debuggers')
 EOF
 

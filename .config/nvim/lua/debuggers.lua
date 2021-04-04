@@ -1,8 +1,11 @@
--- local M = {}
+-- =============================
+--              DAP
+-- =============================
+
 local dap = require('dap')
 dap.set_log_level('TRACE');
 
-local ensure_script = '/Users/awalker/plaid/go.git/scripts/ensure_debugger_session.sh';
+local ensure_script = os.getenv('PLAID_PATH') .. '/go.git/scripts/ensure_debugger_session.sh';
 
 local function get_debugging_port(service_name)
   local ports_compose = io.open(
@@ -32,10 +35,6 @@ local function start_devenv_debug_session()
   io.write(string.format('Debug session for %s with port %d', service_name, port))
   return service_name, port;
 end
-
--- =============================
---              DAP
--- =============================
 
 -- =============================
 --            ADAPTERS
@@ -184,4 +183,4 @@ vim.api.nvim_set_keymap('n', '<leader>n', '<cmd> lua require"dap".step_over()<CR
 vim.api.nvim_set_keymap('n', '<leader>b', '<cmd> lua require"dap".toggle_breakpoint()<CR>', silent)
 vim.api.nvim_set_keymap('n', '<leader>dr', '<cmd> lua require"dap".repl.open()<CR>', silent)
 vim.api.nvim_set_keymap('n', '<leader>si', '<cmd> lua require"dap".step_into()<CR>', silent)
-vim.api.nvim_set_keymap('n', '<leader>si', '<cmd> lua require"dap".step_out()<CR>', silent)
+vim.api.nvim_set_keymap('n', '<leader>so', '<cmd> lua require"dap".step_out()<CR>', silent)
