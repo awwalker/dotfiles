@@ -3,7 +3,7 @@ autoload -U compinit && compinit
 autoload -U promptinit; promptinit
 prompt pure
 # ---------------------
-#   PATH
+#   	  PATH
 # ---------------------
 export GOPATH="$HOME/go"
 export GOROOT="/usr/local/opt/go/libexec"
@@ -43,7 +43,7 @@ export SAVEHIST=5000
 export DISABLE_UPDATE_PROMPT=true
 
 # ---------------------
-#   Commands
+#   	Commands
 # ---------------------
 #
 alias cat='bat'
@@ -58,7 +58,7 @@ alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 f_running() { ps vwaxr -o pid,stat,%cpu,time,command | grep $1 | head -10; }
 
 # ---------------------
-# GIT
+# 	      GIT
 # ---------------------
 
 eval "$(hub alias -s)"
@@ -81,15 +81,15 @@ alias gmpt="git checkout --theirs"
 # For interacing with dot files.
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
-# -------------------------
-# GO
-# -------------------------
+# -------------------
+# 	      GO
+# -------------------
 
 export GO11MODULE="on"
 
-# ------------------------
-# PYTHON
-# ------------------------
+# -------------------
+# 	  PYTHON
+# -------------------
 
 export PYTHONDONTWRITEBYTECODE=True
 eval "$(pyenv init -)"
@@ -97,15 +97,9 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PYTHONPATH="$PLAID_PYTHON:$QUOVO_PYTHON"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
-# ------------------------
-# DOCKER
-# ------------------------
-function rdocker() {
-    export DOCKER_TLS_VERIFY='1'
-    export DOCKER_HOST='tcp://awalker.devenv.plaid.io:2376'
-    export DOCKER_CERT_PATH='/Users/awalker/plaid/go.git/resources/development-certs/remote_devenv_certs'
-    docker "$@"
-}
+# -------------------
+# 	   DOCKER
+# -------------------
 
 function stop_docks() {
     docker stop `docker ps -aq` && docker rm `docker ps -aq`
@@ -116,52 +110,26 @@ function rm_docks() {
 }
 
 # --------------------
-# FZF
+# 	  FZF
 # --------------------
-
-pods ()
-{
-    k config set --current --namespace invst-team
-    k get po | fzf --preview="kubectl logs {1}" --bind="ctrl-h:execute@printf 'KEYBINDINGS
-CTRL-L    Get pod logs
-CTRL-D    Describe pod
-CTRL-R    Reload pods
-CTRL-E    Exec a shell on the container
-CTRL-A    Attach to pod' | less@,ctrl-l:execute(kubectl logs {1} | less),ctrl-d:execute(kubectl describe po {1} | less),ctrl-r:reload(kubectl get po),ctrl-e:execute(kubectl exec -ti {1} bash < /dev/tty > /dev/tty 2>&1),ctrl-a:execute(kubectl attach {1})"
-}
 
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{node_modules/*,.git/*}" -- '
 
-# If current selection is a text file show its content,
-# if its a directory show its content the rest is ignored
-export FZF_CTRL_T_OPTS="--preview-window wrap --preview '
-if [[ -f {} ]]; then
-    file --mime {} | grep -q \"text\/.*;\" && bat --color \"always\" {} || (tput setaf 1; file --mime {})
-elif [[ -d {} ]]; then
-    exa -l --color always {}
-else;
-    tput setaf 1; echo YOU ARE NOT SUPPOSED TO SEE THIS!
-fi'"
-
 export KEYTIMEOUT=1
 
-# PYENV HELPERS
-vzv() {
-    pyenv activate $(pyenv virtualenvs | fzf | cut -d '(' -f 1)
-}
-rmvenv() {
-    pyenv virtualenv-delete $(pyenv virtualenvs | fzf | cut -d '(' -f 1)
-}
-mkvenv() {
-    pyenv virtualenv $(pyenv versions | fzf | cut -d '(' -f 1) $1
-}
+# --------------------
+# 	VI MODE
+# --------------------
+# Change the escape key to `jk`.
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+ZVM_VI_VISUAL_ESCAPE_BINDKEY=jk
+ZVM_VI_OPPEND_ESCAPE_BINDKEY=jk
+# Always starting with insert mode for each command line
+ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
+zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
 bindkey -e
-# OPENSSL
-# export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
-# export CFLAGS="-I$(brew --prefix openssl)/include"
-# export CPPFLAGS="-I$(brew --prefix openssl)/include"
-# export LDFLAGS="-L$(brew --prefix openssl)/lib"
