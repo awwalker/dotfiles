@@ -2,34 +2,55 @@ local lsp = require('lspconfig')
 local compe = require('compe')
 local kind = require('lspkind')
 
-local function debug_print (tbl, indent)
-  if not indent then indent = 0 end
-  local toprint = string.rep(" ", indent) .. "{\r\n"
-  indent = indent + 2
-  for k, v in pairs(tbl) do
-    toprint = toprint .. string.rep(" ", indent)
-    if (type(k) == "number") then
-      toprint = toprint .. "[" .. k .. "] = "
-    elseif (type(k) == "string") then
-      toprint = toprint  .. k ..  "= "
-    end
-    if (type(v) == "number") then
-      toprint = toprint .. v .. ",\r\n"
-    elseif (type(v) == "string") then
-      toprint = toprint .. "\"" .. v .. "\",\r\n"
-    elseif (type(v) == "table") then
-      toprint = toprint .. debug_print(v, indent + 2) .. ",\r\n"
-    else
-      toprint = toprint .. "\"" .. tostring(v) .. "\",\r\n"
-    end
-  end
-  toprint = toprint .. string.rep(" ", indent-2) .. "}"
-  return toprint
-end
-
+local home = os.getenv('HOME')
 -- =============================
 --           LSP
 -- =============================
+
+_G.lsp_organize_imports = function()
+  local context = { source = { organizeImports = true } }
+  vim.validate { context = { context, "table", true } }
+
+  local params = vim.lsp.util.make_range_params()
+  params.context = context
+
+  local method = "textDocument/codeAction"
+  local timeout = 1000 -- ms
+
+  local resp = vim.lsp.buf_request_sync(0, method, params, timeout)
+  if not resp then return end
+
+  for _, client in ipairs(vim.lsp.get_active_clients()) do
+    if resp[client.id] then
+      local result = resp[client.id].result
+      if not result or not result[1] then return end
+
+      local edit = result[1].edit
+      vim.lsp.util.apply_workspace_edit(edit)
+    end
+  end
+end
+
+local function on_attach(client, bufnr)
+  if client.resolved_capabilities.code_action then
+    vim.api.nvim_exec([[
+      augroup lsp_organize_imports
+        autocmd!
+        autocmd BufWritePre <buffer> lua lsp_organize_imports()
+      augroup END
+    ]], false)
+  end
+
+  if client.resolved_capabilities.document_formatting then
+    vim.api.nvim_exec([[
+      augroup lsp_format
+        autocmd!
+        autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+      augroup END
+    ]], false)
+  end
+end
+
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     -- disable virtual text
@@ -47,10 +68,17 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 
 lsp.dockerls.setup{}
 
-lsp.gopls.setup{}
+lsp.gopls.setup{ on_attach = on_attach }
 
+-- lsp.pyright.setup{
+-- settings = {
+--   python = {
+--     venvPath = '/Users/awalker/.pyenv/versions/3.6.5';
+--   }
+-- }
+-- }
 lsp.pyls.setup{
-  cmd = { '/Users/awalker/.pyenv/versions/neovim3/bin/pyls' },
+  cmd = { home .. '/.pyenv/versions/neovim3/bin/pyls' },
 }
 
 lsp.sumneko_lua.setup{
@@ -66,9 +94,10 @@ lsp.sumneko_lua.setup{
       }
     }
   },
+  on_attach = on_attach,
 }
 
-lsp.tsserver.setup{}
+lsp.tsserver.setup{ on_atach = on_attach }
 
 lsp.yamlls.setup{}
 
@@ -80,7 +109,6 @@ kind.init()
 -- =============================
 --          COMPLETION
 -- =============================
-
 compe.setup {
   enabled = true;
   autocomplete = true;
@@ -102,25 +130,6 @@ compe.setup {
     calc = true;
     nvim_lsp = true;
     nvim_lua = true;
+    ultisnips = true;
   };
 }
-
-local noremap_silent = { noremap=true, silent=true }
-local noremap_silent_expr = { noremap=true, silent=true, expr=true }
-local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(0, ...) end
-
-vim.o.completeopt = "menuone,noselect"
-
-buf_set_keymap('n', '<leader>d', '<cmd> lua vim.lsp.buf.definition()<CR>', noremap_silent)
-buf_set_keymap('n', '<leader>t', '<cmd> lua vim.lsp.buf.type_definition()<CR>', noremap_silent)
-buf_set_keymap('n', '<leader>i', '<cmd> lua vim.lsp.buf.implementation()<CR>', noremap_silent)
-buf_set_keymap('n', '<leader>r', '<cmd> lua vim.lsp.buf.references()<CR>', noremap_silent)
-buf_set_keymap('n', '<leader>K', '<cmd> lua vim.lsp.buf.hover()<CR>', noremap_silent)
-buf_set_keymap('n', '<leader>e', '<cmd> lua vim.lsp.diagnostic.goto_next()<CR>', noremap_silent)
-buf_set_keymap('n', '<leader>E', '<cmd> lua vim.lsp.diagnostic.goto_prev()<CR>', noremap_silent)
-buf_set_keymap('n', '<leader><space>', '<cmd> lua vim.lsp.diagnostic.set_loclist()<CR>', noremap_silent)
-
-vim.api.nvim_set_keymap('i', '<C-space>', [[compe#complete()]], noremap_silent_expr)
-vim.api.nvim_set_keymap('i', '<CR>', [[compe#confirm('<CR>')]], noremap_silent_expr)
-vim.api.nvim_set_keymap('i', '<C-c>', [[compe#close("<C-c>")]], noremap_silent_expr)
-vim.api.nvim_set_keymap('i', '<C-p>', [[compe#close("<C-c>")]], noremap_silent_expr)
