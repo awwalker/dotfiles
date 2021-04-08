@@ -1,9 +1,11 @@
 -- =============================
 --              DAP
 -- =============================
-
 local dap = require('dap')
 dap.set_log_level('TRACE');
+
+-- Enable virtual text.
+vim.g.dap_virtual_text = true
 
 local ensure_script = os.getenv('PLAID_PATH') .. '/go.git/scripts/ensure_debugger_session.sh';
 
@@ -173,14 +175,4 @@ dap.configurations.javascript = {
   },
 }
 
--- Enable virtual text.
-vim.g.dap_virtual_text = true
 
-local silent = { silent=true }
-
-vim.api.nvim_set_keymap('n', '<leader>c', '<cmd> lua require"dap".continue()<CR>', silent)
-vim.api.nvim_set_keymap('n', '<leader>n', '<cmd> lua require"dap".step_over()<CR>', silent)
-vim.api.nvim_set_keymap('n', '<leader>b', '<cmd> lua require"dap".toggle_breakpoint()<CR>', silent)
-vim.api.nvim_set_keymap('n', '<leader>dr', '<cmd> lua require"dap".repl.open()<CR>', silent)
-vim.api.nvim_set_keymap('n', '<leader>si', '<cmd> lua require"dap".step_into()<CR>', silent)
-vim.api.nvim_set_keymap('n', '<leader>so', '<cmd> lua require"dap".step_out()<CR>', silent)
