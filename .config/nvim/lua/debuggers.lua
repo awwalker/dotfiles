@@ -89,6 +89,13 @@ dap.adapters.go = function(cb, config)
       f_config.port = tonumber(port)
       on_config(f_config)
     end;
+  elseif config.mode == 'test' then
+    local package = vim.fn.input('Go package to debug: ');
+    cb_input.enrich_config = function(config, on_config)
+      local f_config = vim.deepcopy(config)
+      f_config.program = os.getenv('PLAID_PATH') .. '/go.git/' .. package
+      on_config(f_config)
+    end;
   end
   cb(cb_input)
 end;
@@ -142,10 +149,19 @@ dap.configurations.go = {
   },
   {
     type = 'go';
+    name = 'Local File Debugger';
     request = 'launch';
     program = '${file}';
     dlvToolPath = vim.fn.exepath('dlv');
   },
+  {
+    type = 'go';
+    request = 'launch';
+    mode = 'test';
+    name = 'Local Test Debugger';
+    envFile = os.getenv('PLAID_PATH') .. '/go.git/environment/experimental';
+    dlvToolPath = vim.fn.exepath('dlv');
+  }
 }
 
 dap.configurations.javascript = {

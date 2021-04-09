@@ -11,9 +11,7 @@ Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'p00f/nvim-ts-rainbow'
 Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
 Plug 'akinsho/nvim-bufferline.lua'
-
-" If you want to display icons, then use one of these plugins:
-Plug 'kyazdani42/nvim-web-devicons' " lua
+Plug 'kyazdani42/nvim-web-devicons'
 
 " Colorscheme
 Plug 'christianchiarulli/nvcode-color-schemes.vim'
