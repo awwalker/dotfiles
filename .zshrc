@@ -6,7 +6,7 @@ prompt pure
 #   	  PATH
 # ---------------------
 export GOPATH="$HOME/go"
-export GOROOT="/usr/local/opt/go/libexec"
+export GOROOT=/usr/local/Cellar/go@1.15/1.15.10/libexec/
 
 export PATH="$HOME/bin:/usr/local/bin:${PATH}"
 export PATH="$PATH:/usr/local/opt/gnupg@2.0/bin"
