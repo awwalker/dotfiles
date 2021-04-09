@@ -37,7 +37,7 @@ alias vim="nvim"
 
 setopt menu_complete
 HISTFILE=~/.zsh_history
-setopt SHARE_HISTORY #Share history across terminals
+setopt SHARE_HISTORY # Share history across terminals
 export HISTCONTROL=ignoredups:ignorespace
 export SAVEHIST=5000
 export DISABLE_UPDATE_PROMPT=true
@@ -102,10 +102,10 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 # -------------------
 
 function stop_docks() {
-    docker stop `docker ps -aq` && docker rm `docker ps -aq`
+    docker stop $( docker ps -aq ) && docker rm $( docker ps -aq )
 }
 function rm_docks() {
-    docker stop `docker ps -aq` && docker rm `docker ps -aq`
+    docker stop $( docker ps -aq ) && docker rm $( docker ps -aq )
     docker system prune --all --volumes
 }
 
@@ -132,4 +132,4 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
 zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
-bindkey -e
+bindkey -v

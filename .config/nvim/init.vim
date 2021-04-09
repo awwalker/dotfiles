@@ -47,6 +47,10 @@ Plug 'raimon49/requirements.txt.vim'
 " Terminal
 Plug 'kassio/neoterm'
 
+" Testing
+Plug 'janko/vim-test'
+Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
+
 call plug#end()
 
 lua << EOF
@@ -55,6 +59,7 @@ lua << EOF
   require('mappings');
   require('lsp');
   require('debuggers');
+  require('testing');
 EOF
 
 au FocusGained * :checktime

@@ -43,12 +43,12 @@ vim.o.hlsearch = true;
 vim.o.termguicolors = true;
 vim.o.syntax = 'on';
 vim.g.nvcode_termcolors = 256;
-vim.cmd [[ color snazzy]]
+vim.cmd [[ color snazzy ]]
 
 -- LINES
 vim.o.cursorline = true;
 vim.o.tabstop = 4;
-vim.o.softtabstop = 4;
+-- vim.o.softtabstop = 4;
 vim.o.shiftwidth = 4;
 vim.o.expandtab = true;
 vim.o.backspace = 'indent,eol,start';
@@ -56,6 +56,7 @@ vim.o.textwidth = 0;
 vim.o.hidden = true;
 vim.o.lazyredraw = true; -- Redraw only as needed.
 vim.o.showmatch = true; -- Highlight matching parens.
+
 
 -- SIDEBAR
 vim.o.number = true; -- Showw line numbers.
