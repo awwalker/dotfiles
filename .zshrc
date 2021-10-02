@@ -1,14 +1,14 @@
-fpath=(~/.zsh/completions $fpath)
-autoload -U compinit && compinit
+autoload -U compinit; compinit
 autoload -U promptinit; promptinit
 prompt pure
 # ---------------------
 #   	  PATH
 # ---------------------
 export GOPATH="$HOME/go"
-export GOROOT=/usr/local/Cellar/go@1.15/1.15.10/libexec/
+export GOROOT=/usr/local/Cellar/go@1.15/1.15.13/libexec/
 
-export PATH="$HOME/bin:/usr/local/bin:${PATH}"
+# export PATH="$HOME/bin:/usr/local/bin:${PATH}"
+export PATH="$HOME/bin::${PATH}"
 export PATH="$PATH:/usr/local/opt/gnupg@2.0/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$GOROOT/bin"
@@ -20,6 +20,7 @@ export PATH="$PATH:${PLAID_PATH}/go.git/bin"
 export PATH="$PATH:$PYENV_ROOT/bin"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$PATH:/usr/local/bin"
 
 # NVM & RVM
 export NVM_DIR="$HOME/.nvm"
@@ -33,9 +34,9 @@ export LC_ALL="en_US.UTF-8"
 
 # Preferred editor for local and remote sessions
 export EDITOR=/usr/local/bin/nvim
-alias vim="nvim"
+alias vim=$EDITOR
+alias vi=$EDITOR
 
-setopt menu_complete
 HISTFILE=~/.zsh_history
 setopt SHARE_HISTORY # Share history across terminals
 export HISTCONTROL=ignoredups:ignorespace
@@ -67,7 +68,9 @@ alias gc='git commit'
 alias gp='git push'
 alias gu='git pull'
 alias ga='git add'
-alias gch='git checkout '
+
+alias gch='git checkout'
+
 alias gchm='git checkout master'
 alias gchb='git checkout -b '
 alias gd='git diff '
@@ -109,27 +112,21 @@ function rm_docks() {
     docker system prune --all --volumes
 }
 
+# -------------------
+#       LUA
+# -------------------
+
+alias luamake=/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/3rd/luamake/luamake
+
 # --------------------
 # 	  FZF
 # --------------------
 
-export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{node_modules/*,.git/*}" -- '
+# export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{node_modules/*,.git/*}" -- '
 
-export KEYTIMEOUT=1
-
-# --------------------
-# 	VI MODE
-# --------------------
-# Change the escape key to `jk`.
-ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
-ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
-ZVM_VI_VISUAL_ESCAPE_BINDKEY=jk
-ZVM_VI_OPPEND_ESCAPE_BINDKEY=jk
-# Always starting with insert mode for each command line
-ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
-
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/local/share/fzf-tab/fzf-tab.plugin.zsh
+source /usr/local/share/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
-zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
-bindkey -v
+
+# disable sort when completing options of any command
+zstyle ':completion:complete:*:options' sort false

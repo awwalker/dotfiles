@@ -46,21 +46,23 @@ vim.g.nvcode_termcolors = 256;
 vim.cmd [[ color snazzy ]]
 
 -- LINES
-vim.o.cursorline = true;
-vim.o.tabstop = 4;
--- vim.o.softtabstop = 4;
-vim.o.shiftwidth = 4;
-vim.o.expandtab = true;
+vim.bo.autoindent = true;
+vim.bo.softtabstop = 4;
+vim.bo.shiftwidth = 4;
+vim.bo.tabstop = 4;
+vim.bo.expandtab = true;
+
+vim.wo.cursorline = true;
+
 vim.o.backspace = 'indent,eol,start';
-vim.o.textwidth = 0;
 vim.o.hidden = true;
 vim.o.lazyredraw = true; -- Redraw only as needed.
 vim.o.showmatch = true; -- Highlight matching parens.
 
-
 -- SIDEBAR
-vim.o.number = true; -- Showw line numbers.
 vim.o.showcmd = true; -- Show command in bottom bar.
+vim.wo.number = true;
+vim.wo.relativenumber = true;
 
 -- IGNORANCE
 vim.o.wildignore = vim.o.wildignore .. '*/tmp/*,*.so,*.swp,*.zip,*~';
