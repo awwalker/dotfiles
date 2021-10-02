@@ -78,7 +78,6 @@ lsp.gopls.setup{
     )
   },
 }
-}
 
 -- lsp.pyright.setup{
 -- settings = {
