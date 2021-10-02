@@ -19,6 +19,7 @@ Plug 'christianchiarulli/nvcode-color-schemes.vim'
 " Movement
 Plug 'rhysd/clever-f.vim'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 " Installed via homebrew
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -66,6 +67,7 @@ augroup two_space_ft
   autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
   autocmd FileType yml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
   autocmd FileType tf setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+  autocmd FileType json setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
   autocmd FileType proto setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
   autocmd FileType lua setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 augroup end

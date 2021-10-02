@@ -7,10 +7,22 @@ local noremap = { noremap=true };
 local noremap_silent = { noremap=true, silent=true }
 local noremap_silent_expr = { noremap=true, silent=true, expr=true }
 
+local lcl_open = false;
+
 function _G.filepath_and_lineno()
   local path_and_no = string.format('%s:%s', vim.fn.expand('%:p'), vim.fn.line('.'))
   local subbed = string.gsub(path_and_no, os.getenv('PLAID_PATH') .. '/', '');
   vim.api.nvim_command(string.format('call setreg("+", "%s")', subbed, {}))
+end
+
+function _G.toggle_diagnostics()
+  if lcl_open then
+    vim.cmd('lcl');
+    lcl_open = false;
+  else
+    vim.lsp.diagnostic.set_loclist();
+    lcl_open = true;
+  end
 end
 
 function _G.terminal_buffer()
@@ -46,6 +58,7 @@ vim.api.nvim_set_keymap('n', '<c-j>', '<c-w>j', noremap);
 vim.api.nvim_set_keymap('n', '<c-k>', '<c-w>k', noremap);
 vim.api.nvim_set_keymap('n', '<c-l>', '<c-w>l', noremap);
 vim.api.nvim_set_keymap('n', '<c-h>', '<c-w>h', noremap);
+ vim.api.nvim_set_keymap('n', '<c-p>', '<c-w>p', noremap);
 vim.api.nvim_set_keymap('n', '<c-t>', '<cmd> lua terminal_buffer() <CR>', noremap); -- Open new neoterm buffer and command prompt.
 
 -- TABS
@@ -62,7 +75,9 @@ vim.api.nvim_set_keymap('n', '<leader>r', '<cmd> lua vim.lsp.buf.references()<CR
 vim.api.nvim_set_keymap('n', '<leader>K', '<cmd> lua vim.lsp.buf.hover()<CR>', noremap_silent)
 vim.api.nvim_set_keymap('n', '<leader>e', '<cmd> lua vim.lsp.diagnostic.goto_next()<CR>', noremap_silent)
 vim.api.nvim_set_keymap('n', '<leader>E', '<cmd> lua vim.lsp.diagnostic.goto_prev()<CR>', noremap_silent)
-vim.api.nvim_set_keymap('n', '<leader><space>', '<cmd> lua vim.lsp.diagnostic.set_loclist()<CR>', noremap_silent)
+vim.api.nvim_set_keymap('n', '<leader>u', '<cmd> lua vim.lsp.buf.incoming_calls()<CR>', noremap_silent)
+vim.api.nvim_set_keymap('n', '<leader>U', '<cmd> lua vim.lsp.buf.outgoing_calls()<CR>', noremap_silent)
+vim.api.nvim_set_keymap('n', '<leader><space>', '<cmd> lua toggle_diagnostics()<CR>', noremap_silent)
 
 vim.api.nvim_set_keymap('i', '<C-space>', [[compe#complete()]], noremap_silent_expr)
 vim.api.nvim_set_keymap('i', '<CR>', [[compe#confirm('<CR>')]], noremap_silent_expr)
@@ -80,9 +95,10 @@ vim.api.nvim_set_keymap('n', '<leader>si', '<cmd> lua require"dap".step_into()<C
 vim.api.nvim_set_keymap('n', '<leader>so', '<cmd> lua require"dap".step_out()<CR>', silent);
 
 -- FUGITIVE
-vim.api.nvim_set_keymap('n', '<leader>gs', ':Gstatus<CR>', noremap);
+vim.api.nvim_set_keymap('n', '<leader>gs', ':Git<CR>', noremap);
 vim.api.nvim_set_keymap('n', '<leader>gd', ':Gdiffsplit<CR>', noremap);
-vim.api.nvim_set_keymap('n', '<leader>gp', ':Gpush<CR>', noremap);
+vim.api.nvim_set_keymap('n', '<leader>gp', ':Git push<CR>', noremap);
+vim.api.nvim_set_keymap('n', '<leader>gc', ':Git commit<CR>', noremap);
 
 -- FZF
 vim.api.nvim_set_keymap('n', '<c-f>', ':Files <CR>', noremap);
