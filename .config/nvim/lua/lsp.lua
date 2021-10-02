@@ -7,28 +7,34 @@ local home = os.getenv('HOME')
 --           LSP
 -- =============================
 
-_G.lsp_organize_imports = function()
-  local context = { source = { organizeImports = true } }
-  vim.validate { context = { context, "table", true } }
+_G.organize_imports_sync = function(timeout_ms)
+    local context = { source = { organizeImports = true } }
+    vim.validate { context = { context, "t", true } }
 
-  local params = vim.lsp.util.make_range_params()
-  params.context = context
+    local params = vim.lsp.util.make_range_params()
+    params.context = context
 
-  local method = "textDocument/codeAction"
-  local timeout = 1000 -- ms
+    -- See the implementation of the textDocument/codeAction callback
+    -- (lua/vim/lsp/handler.lua) for how to do this properly.
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
+    if not result or next(result) == nil then return end
+    local actions = result[1].result
+    if not actions then return end
+    local action = actions[1]
 
-  local resp = vim.lsp.buf_request_sync(0, method, params, timeout)
-  if not resp then return end
-
-  for _, client in ipairs(vim.lsp.get_active_clients()) do
-    if resp[client.id] then
-      local result = resp[client.id].result
-      if not result or not result[1] then return end
-
-      local edit = result[1].edit
-      vim.lsp.util.apply_workspace_edit(edit)
+    -- textDocument/codeAction can return either Command[] or CodeAction[]. If it
+    -- is a CodeAction, it can have either an edit, a command or both. Edits
+    -- should be executed first.
+    if action.edit or type(action.command) == "table" then
+      if action.edit then
+        vim.lsp.util.apply_workspace_edit(action.edit)
+      end
+      if type(action.command) == "table" then
+        vim.lsp.buf.execute_command(action.command)
+      end
+    else
+      vim.lsp.buf.execute_command(action)
     end
-  end
 end
 
 local function on_attach(client, bufnr)
@@ -36,7 +42,7 @@ local function on_attach(client, bufnr)
     vim.api.nvim_exec([[
       augroup lsp_organize_imports
         autocmd!
-        autocmd BufWritePre <buffer> lua lsp_organize_imports()
+        autocmd BufWritePre <buffer> lua organize_imports_sync(1000)
       augroup END
     ]], false)
   end
@@ -51,24 +57,27 @@ local function on_attach(client, bufnr)
   end
 end
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    -- disable virtual text
-    virtual_text = true,
-
-    -- show signs
-    signs = true,
-    underline = true,
-
-    -- delay update diagnostics
-    update_in_insert = false,
-    -- display_diagnostic_autocmds = { "InsertLeave" },
-  }
-)
-
 lsp.dockerls.setup{}
 
-lsp.gopls.setup{ on_attach = on_attach }
+lsp.gopls.setup{
+  cmd = {"gopls", "serve"},
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 300,
+  },
+  handlers = {
+    ["textDocument/publishDiagnostics"] = vim.lsp.with(
+      vim.lsp.diagnostic.on_publish_diagnostics,
+      {
+        -- Disable virtual_text
+        virtual_text = false,
+        signs = false,
+        underline = false,
+        update_in_insert = false,
+      }
+    )
+  },
+}
 
 -- lsp.pyright.setup{
 -- settings = {
@@ -77,8 +86,8 @@ lsp.gopls.setup{ on_attach = on_attach }
 --   }
 -- }
 -- }
-lsp.pyls.setup{
-  cmd = { home .. '/.pyenv/versions/neovim3/bin/pyls' },
+lsp.pylsp.setup{
+  cmd = { home .. '/.pyenv/versions/neovim3/bin/pylsp' },
 }
 
 lsp.sumneko_lua.setup{
@@ -99,8 +108,9 @@ lsp.sumneko_lua.setup{
 
 lsp.tsserver.setup{ on_atach = on_attach }
 
-lsp.yamlls.setup{}
+lsp.yamlls.setup{ on_attach = on_attach }
 
+lsp.clangd.setup{ on_attach = on_attach }
 -- =============================
 --             UI
 -- =============================
@@ -115,7 +125,7 @@ compe.setup {
   debug = false;
   min_length = 1;
   preselect = 'enable';
-  throttle_time = 80;
+  throttle_time = 100;
   source_timeout = 200;
   incomplete_delay = 400;
   max_abbr_width = 100;

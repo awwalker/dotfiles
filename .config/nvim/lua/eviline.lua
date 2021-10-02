@@ -6,7 +6,9 @@ local gls = gl.section
 
 gls.left[1] = {
   RainbowRed = {
-    provider = function() return '▊ ' end,
+    provider = function()
+      return vim.fn.expand("%:F")
+    end,
     highlight = { colors.blue, colors.bg }
   },
 }
