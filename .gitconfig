@@ -16,3 +16,7 @@
     insteadOf = https://github.com/quovo
 [url "git@quovo.com:"]
     insteadOf = ssh://git@github.com:
+[pull]
+    rebase = false
+[remote "origin"]
+    tagOpt = --no-tags
