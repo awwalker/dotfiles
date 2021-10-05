@@ -7,6 +7,7 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-path'
 Plug 'ray-x/lsp_signature.nvim'
+Plug 'ray-x/lsp_signature.nvim'
 
 " UI
 Plug 'onsails/lspkind-nvim'
@@ -20,7 +21,6 @@ Plug 'nvim-treesitter/nvim-treesitter-textobjects' " additional text objects
 Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
 Plug 'akinsho/nvim-bufferline.lua'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'ray-x/lsp_signature.nvim'
 
 " Colorscheme
 Plug 'christianchiarulli/nvcode-color-schemes.vim'
@@ -45,6 +45,9 @@ Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
 " Git
 Plug 'tpope/vim-fugitive'
+
+" Terminal
+Plug 'akinsho/toggleterm.nvim'
 
 call plug#end()
 

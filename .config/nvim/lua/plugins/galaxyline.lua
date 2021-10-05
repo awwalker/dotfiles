@@ -4,7 +4,7 @@
 local gl = require('galaxyline')
 local colors = require('galaxyline.theme').default
 local condition = require('galaxyline.condition')
-local utils = require('utils')
+local utils = require('utils.core')
 local gls = gl.section
 
 gls.left[1] = {
