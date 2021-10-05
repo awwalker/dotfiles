@@ -2,16 +2,25 @@
 call plug#begin('~/.local/share/nvim/plugged')
 " LSP and Completion
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-path'
+Plug 'ray-x/lsp_signature.nvim'
 
 " UI
 Plug 'onsails/lspkind-nvim'
 Plug 'ntpeters/vim-better-whitespace'
+
+" Treesitter
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
-Plug 'p00f/nvim-ts-rainbow'
+Plug 'p00f/nvim-ts-rainbow' " rainbow parens
+Plug 'nvim-treesitter/nvim-treesitter-textobjects' " additional text objects
+
 Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
 Plug 'akinsho/nvim-bufferline.lua'
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'ray-x/lsp_signature.nvim'
 
 " Colorscheme
 Plug 'christianchiarulli/nvcode-color-schemes.vim'
@@ -20,16 +29,11 @@ Plug 'christianchiarulli/nvcode-color-schemes.vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-" Installed via homebrew
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 
-" Linter
-Plug 'psf/black', { 'branch': 'stable' }
-
-" Docker
-Plug 'ekalinin/dockerfile.vim'
+" Telescope
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 " Debuggers
 Plug 'mfussenegger/nvim-dap'
@@ -37,25 +41,30 @@ Plug 'theHamsta/nvim-dap-virtual-text'
 
 " Snippets
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
 " Git
 Plug 'tpope/vim-fugitive'
 
-" Syntax
-Plug 'raimon49/requirements.txt.vim'
-
-" Terminal
-Plug 'kassio/neoterm'
-
 call plug#end()
 
 lua << EOF
-  require('appearance');
   require('settings');
-  require('mappings');
+
+  require('plugins.icons');
+  require('plugins.kind');
+  require('plugins.bufferline');
+  require('plugins.galaxyline');
+  require('plugins.cmp');
+  require('plugins.treesitter');
+
+  require('plugins.signature');
+  require('plugins.lspconfig');
+  require('plugins.dap');
+  require('plugins.telescope');
   require('lsp');
-  require('debuggers');
+
+  require('mappings');
 EOF
 
 au FocusGained * :checktime
@@ -73,7 +82,7 @@ augroup two_space_ft
 augroup end
 
 " Linting
-autocmd BufWritePre *.py execute ':Black'
+" autocmd BufWritePre *.py execute ':Black'
 
 " Quickfix
 autocmd BufWinEnter quickfix nnoremap <silent> <buffer>

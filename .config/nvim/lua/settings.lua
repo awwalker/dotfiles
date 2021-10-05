@@ -50,6 +50,7 @@ vim.bo.softtabstop = 4;
 vim.bo.shiftwidth = 4;
 vim.bo.tabstop = 4;
 vim.bo.expandtab = true;
+vim.bo.smartindent = true;
 
 vim.wo.cursorline = true;
 vim.o.backspace = 'indent,eol,start';
@@ -59,6 +60,7 @@ vim.o.lazyredraw = true; -- Redraw only as needed.
 vim.o.showmatch = true; -- Highlight matching parens.
 
 -- SIDEBAR
+vim.wo.number = true;
 vim.wo.relativenumber = true;
 vim.o.showcmd = true; -- Show command in bottom bar.
 
@@ -69,7 +71,8 @@ vim.o.wildignore = vim.o.wildignore .. '*/tmp/*,*.so,*.swp,*.zip,*~';
 vim.o.foldenable = true;
 vim.o.foldlevelstart = 10;
 vim.o.foldnestmax = 10;
-vim.o.foldmethod = 'indent';
+vim.o.foldmethod = 'expr';
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
 
 -- SPLITS
 vim.o.splitbelow = true;
