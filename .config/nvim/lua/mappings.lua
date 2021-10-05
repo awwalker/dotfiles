@@ -46,6 +46,13 @@ vim.api.nvim_set_keymap("n", "<leader>yn", "<cmd> lua filepath_and_lineno() <CR>
 -- Terminal
 vim.api.nvim_set_keymap("t", "<esc>", "<C-\\><C-n>", noremap)
 vim.api.nvim_set_keymap("t", "jk", "<C-\\><C-n>", noremap)
+vim.api.nvim_set_keymap("t", "<C-j>", [[<C-\><C-n><C-W>j]], noremap)
+vim.api.nvim_set_keymap("t", "<C-k>", [[<C-\><C-n><C-W>k]], noremap)
+vim.api.nvim_set_keymap("t", "<C-w><C-l>", [[<C-\><C-n><C-W>l]], noremap)
+vim.api.nvim_set_keymap("t", "<C-w><C-h>", [[<C-\><C-n><C-W>h]], noremap)
+vim.api.nvim_set_keymap("t", "<c-p>", [[<C-\><C-n><C-W>p]], noremap)
+-- Clost the current terminal tab.
+vim.api.nvim_set_keymap("t", "<leader>tc", '<cmd> lua vim.cmd("tabclose") <CR>', noremap)
 
 -- Buffers
 vim.api.nvim_set_keymap("n", "<c-j>", "<c-w>j", noremap)
@@ -60,8 +67,6 @@ vim.api.nvim_set_keymap("n", "<leader>dt", '<cmd> r! date "+%Y-%m-%d %H:%M:%S" <
 -- TABS
 vim.api.nvim_set_keymap("n", "<leader>tf", '<cmd> lua vim.cmd("tabedit %") <CR>', noremap) -- Pull buffer into new tab.
 vim.api.nvim_set_keymap("n", "<leader>tc", '<cmd> lua vim.cmd("tabclose") <CR>', noremap) -- Close current tab.
-vim.api.nvim_set_keymap("t", "<leader>tf", '<cmd> lua vim.cmd("tabedit %") <CR>', noremap) -- Pull terminal buffer into new tab.
-vim.api.nvim_set_keymap("t", "<leader>tc", '<cmd> lua vim.cmd("tabclose") <CR>', noremap) -- Close current tab.
 
 -- LSP
 vim.api.nvim_set_keymap("n", "<leader><space>", "<cmd> lua toggle_diagnostics()<CR>", noremap_silent)

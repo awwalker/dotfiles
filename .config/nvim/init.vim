@@ -65,6 +65,7 @@ lua << EOF
   require('plugins.lspconfig');
   require('plugins.dap');
   require('plugins.telescope');
+  require('plugins.toggleterm');
   require('lsp');
 
   require('mappings');
