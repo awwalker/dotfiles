@@ -72,6 +72,9 @@ M.adapters.dlv_spawn = function(cb, config)
 	end, 100)
 end
 
+-- =============================
+--         CONFIGURATIONS
+-- =============================
 M.configurations = {
 	{
 		type = "go",
