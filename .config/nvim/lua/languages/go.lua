@@ -1,4 +1,5 @@
 local lsp = require("languages.lsp")
+
 local M = {}
 
 M.efm = {
@@ -43,10 +44,7 @@ M.lsp = {
 		},
 		staticcheck = true,
 	},
-	on_attach = function(client)
-		client.resolved_capabilities.document_formatting = false
-		lsp.post_attach(client)
-	end,
+	on_attach = lsp.on_attach,
 }
 
 return M

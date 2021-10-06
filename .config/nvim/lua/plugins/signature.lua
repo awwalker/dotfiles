@@ -1,5 +1,6 @@
-require('lsp_signature').setup({
-    handler_opts = {
-        border = 'none',
-    },
+require("lsp_signature").setup({
+	handler_opts = {
+		border = "none",
+		hint_prefix = "",
+	},
 })

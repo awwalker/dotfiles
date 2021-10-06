@@ -69,7 +69,18 @@ vim.api.nvim_set_keymap("n", "<leader>tf", '<cmd> lua vim.cmd("tabedit %") <CR>'
 vim.api.nvim_set_keymap("n", "<leader>tc", '<cmd> lua vim.cmd("tabclose") <CR>', noremap) -- Close current tab.
 
 -- LSP
-vim.api.nvim_set_keymap("n", "<leader><space>", "<cmd> lua toggle_diagnostics()<CR>", noremap_silent)
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader><space>",
+	"<cmd> lua require('telescope.builtin').lsp_document_diagnostics() <CR>",
+	noremap_silent
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>r",
+	"<cmd> lua require('telescope.builtin').lsp_references() <CR>",
+	noremap_silent
+)
 
 -- PLUGINS
 

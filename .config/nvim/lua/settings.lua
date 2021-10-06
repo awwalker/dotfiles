@@ -23,11 +23,6 @@ vim.g.fzf_action = {
 }
 vim.g.fzf_buffers_jump = 1;
 
--- ULTISNIPS
-vim.g.UltiSnipsExpandTrigger = '<tab>';
-vim.g.UltiSnipsJumpForwardTrigger = '<c-p>';
-vim.g.UltiSnipsJumpBackwardTrigger = '<c-n>';
-
 -- BACKUPS
 vim.o.backup = true;
 vim.o.backupdir = home .. '/.nvim/_backups';
