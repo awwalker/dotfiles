@@ -2,7 +2,7 @@ local lsp = require("languages.lsp")
 
 local M = {}
 
-local home = os.getenv("HOME")
+-- local home = os.getenv("HOME")
 
 local black = {
 	formatCommand = "black --line-length 100 -",
@@ -41,11 +41,11 @@ M.all_format = { efm = "Black" }
 
 M.default_format = "efm"
 
-M.pylsp = {
-	cmd = { home .. "/.pyenv/versions/neovim3/bin/pylsp" },
-	capabilities = lsp.capabilities,
-	on_attach = lsp.on_attach,
-}
+-- M.pylsp = {
+-- 	cmd = { home .. "/.pyenv/versions/neovim3/bin/pylsp" },
+-- 	capabilities = lsp.capabilities,
+-- 	on_attach = lsp.on_attach,
+-- }
 
 M.lsp = {
 	capabilities = lsp.capabilities,

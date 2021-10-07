@@ -4,7 +4,14 @@ local M = {}
 
 vim.lsp.set_log_level("debug")
 -- Credit https://github.com/neovim/nvim-lspconfig#keybindings-and-completion
-function M.on_attach(_, bufnr)
+function M.on_attach(client, bufnr)
+	if client.resolved_capabilities.document_formatting then
+		vim.cmd([[augroup lsp_formatting]])
+		vim.cmd([[autocmd!]])
+		vim.cmd([[autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync()]])
+		vim.cmd([[augroup END]])
+	end
+
 	local opts = { noremap = true, silent = true }
 
 	local function buf_set_keymap(mode, mapping, command)

@@ -1,8 +1,6 @@
 local lsp = require("languages.lsp")
 
-local M = {}
-
-M.lsp = {
+require("lspconfig").efm.setup({
 	root_dir = vim.loop.cwd,
 	filetypes = {
 		"typescript",
@@ -16,7 +14,7 @@ M.lsp = {
 
 	init_options = { documentFormatting = true, codeAction = true },
 	settings = {
-		rootMarkers = { ".git/", ".config/" },
+		rootMarkers = { ".git/" },
 		languages = {
 			["="] = require("languages.misspell").efm,
 			typescript = require("languages.typescript").efm,
@@ -30,6 +28,4 @@ M.lsp = {
 	},
 	on_attach = lsp.on_attach,
 	capabilities = lsp.capabilities,
-}
-
-return M
+})

@@ -17,6 +17,7 @@ require('packer').startup(function()
     'glepnir/galaxyline.nvim', branch = 'main',
     requires = { {'kyazdani42/nvim-web-devicons'} }
   }
+  use 'ntpeters/vim-better-whitespace'
   -- LSP and Autocompletion.
   use "neovim/nvim-lspconfig" -- Collection of configurations for built-in LSP client
   use {
@@ -40,10 +41,7 @@ require('packer').startup(function()
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
   use 'mfussenegger/nvim-dap' -- DAP.
-  use {
-    'theHamsta/nvim-dap-virtual-text',
-    after = { 'mfussenegger/nvim-dap', 'nvim-treesitter/nvim-treesitter' }
-  }
+  use 'theHamsta/nvim-dap-virtual-text'
   -- Movement.
   use 'rhysd/clever-f.vim'
   use 'tpope/vim-surround'

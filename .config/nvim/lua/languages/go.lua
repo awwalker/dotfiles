@@ -11,7 +11,7 @@ M.efm = {
 		formatCommand = "gofumpt",
 		formatStdin = true,
 	},
-  -- Provides too many false positive U1000.
+	-- Provides too many false positive U1000.
 	-- {
 	-- 	lintCommand = "staticcheck ${INPUT}",
 	-- 	lintFormats = {
@@ -44,7 +44,11 @@ M.lsp = {
 		},
 		staticcheck = true,
 	},
-	on_attach = lsp.on_attach,
+	on_attach = function(client)
+		client.resolved_capabilities.document_formatting = false
+
+		lsp.on_attach(client, 0)
+	end,
 }
 
 return M
