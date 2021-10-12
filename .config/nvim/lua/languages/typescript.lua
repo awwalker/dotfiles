@@ -25,7 +25,11 @@ M.default_format = 'efm'
 
 M.lsp = {
     capabilities = lsp.capabilities,
-    on_attach = lsp.on_attach,
+	  on_attach = function(client)
+	  	client.resolved_capabilities.document_formatting = false
+
+	  	lsp.on_attach(client, 0)
+	  end,
 }
 
 return M

@@ -29,8 +29,8 @@ require("nvim-treesitter.configs").setup({
 				["fi"] = "@function.inner",
 				["co"] = "@class.outer",
 				["ci"] = "@class.inner",
-        ["bi"] = "@block.inner",
-        ["bo"] = "@block.outer",
+				["bi"] = "@block.inner",
+				["bo"] = "@block.outer",
 			},
 		},
 		move = {
