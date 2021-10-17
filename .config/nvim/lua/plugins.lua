@@ -30,15 +30,12 @@ require("packer").startup(function()
 	-- Snippets.
 	use("saadparwaiz1/cmp_luasnip")
 	use("L3MON4D3/LuaSnip")
-
+	-- Treesitter.
 	use({
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
 	})
-	use({
-		"p00f/nvim-ts-rainbow",
-		after = { { "nvim-treesitter/nvim-treesitter" } },
-	})
+	use("p00f/nvim-ts-rainbow")
 	use({ -- Telescope.
 		"nvim-telescope/telescope.nvim",
 		requires = { { "nvim-lua/plenary.nvim" } },
@@ -51,6 +48,7 @@ require("packer").startup(function()
 	use("rhysd/clever-f.vim")
 	use("tpope/vim-surround")
 	use("tpope/vim-repeat")
+	use("chentau/marks.nvim")
 	-- Git.
 	use("tpope/vim-fugitive")
 	-- Terminal.

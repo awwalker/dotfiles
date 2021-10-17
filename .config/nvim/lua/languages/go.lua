@@ -32,7 +32,9 @@ M.default_format = "efm"
 
 M.lsp = {
 	capabilities = lsp.capabilities,
+	-- Default command.
 	cmd = { "gopls", "serve" },
+	-- cmd = { "gopls", "-remote=auto", "-logfile=auto", "-debug=:0", "-remote.debug=:0", "-rpc.trace" },
 	flags = {
 		debounce_text_changes = 300,
 	},
