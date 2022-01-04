@@ -1,13 +1,16 @@
+-- =============================
+--          STATUSLINE
+-- =============================
 local gl = require('galaxyline')
 local colors = require('galaxyline.theme').default
 local condition = require('galaxyline.condition')
-local utils = require('utils')
+local utils = require('utils.core')
 local gls = gl.section
 
 gls.left[1] = {
   RainbowRed = {
     provider = function()
-      return vim.fn.expand("%:F")
+      return vim.fn.expand("%:F ")
     end,
     highlight = { colors.blue, colors.bg }
   },
@@ -27,7 +30,7 @@ gls.left[2] = {
         ['!']  = colors.red, t = colors.red,
       }
       vim.api.nvim_command('hi GalaxyViMode guifg=' .. mode_color[vim.fn.mode()] .. ' guibg=' ..colors.bg)
-      return '  '
+      return '   '
     end,
   },
 }
