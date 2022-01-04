@@ -3,7 +3,7 @@ local lsp = require("languages.lsp")
 local M = {}
 
 local black = {
-	formatCommand = "black --line-length 100 -",
+	formatCommand = "black --line-length 100 --quiet -",
 	formatStdin = true,
 }
 local flake8 = {
@@ -29,9 +29,9 @@ local mypy = {
 --         formatStdin = true,
 -- }
 M.efm = {
+	black,
 	flake8,
 	mypy,
-	black,
 	-- isort,
 }
 
@@ -41,6 +41,10 @@ M.default_format = "efm"
 
 M.lsp = {
 	capabilities = lsp.capabilities,
-	on_attach = lsp.on_attach,
+	on_attach = function(client)
+		client.resolved_capabilities.document_formatting = false
+
+		lsp.on_attach(client, 0)
+	end,
 }
 return M

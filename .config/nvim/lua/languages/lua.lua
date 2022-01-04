@@ -22,7 +22,12 @@ table.insert(runtime_path, "lua/?/init.lua")
 
 M.lsp = {
 	capabilities = lsp.capabilities,
-	on_attach = lsp.on_attach,
+	on_attach = function(client)
+    -- Handled by EFM.
+		client.resolved_capabilities.document_formatting = false
+
+		lsp.on_attach(client, 0)
+	end,
 	cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
 	settings = {
 		Lua = {

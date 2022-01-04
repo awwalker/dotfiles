@@ -7,10 +7,10 @@ M.efm = {
 		formatCommand = "goimports",
 		formatStdin = true,
 	},
-	{
-		formatCommand = "gofumpt",
-		formatStdin = true,
-	},
+	-- {
+	-- 	formatCommand = "gofumpt",
+	-- 	formatStdin = true,
+	-- },
 	-- Provides too many false positive U1000.
 	-- {
 	-- 	lintCommand = "staticcheck ${INPUT}",
@@ -23,10 +23,11 @@ M.efm = {
 		lintIgnoreExitCode = true,
 		lintFormats = { "%f:%l:%c: %m" },
 		lintSource = "golint",
+		lintStdin = true,
 	},
 }
 
-M.all_format = { efm = "Goimports gofumpt" }
+M.all_format = { efm = "goimports" }
 
 M.default_format = "efm"
 

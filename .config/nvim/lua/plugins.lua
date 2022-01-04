@@ -36,16 +36,28 @@ require("packer").startup(function()
 		run = ":TSUpdate",
 	})
 	use("p00f/nvim-ts-rainbow")
-	use({ -- Telescope.
+	-- Telescope.
+	use({
 		"nvim-telescope/telescope.nvim",
-		requires = { { "nvim-lua/plenary.nvim" } },
+		requires = {
+			{ "nvim-lua/plenary.nvim" },
+			{ "nvim-telescope/telescope-live-grep-raw.nvim" },
+		},
 	})
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
-
-	use("mfussenegger/nvim-dap") -- DAP.
+	-- DAP.
+	use("mfussenegger/nvim-dap")
 	use("theHamsta/nvim-dap-virtual-text")
+	use({
+		"mfussenegger/nvim-dap-python",
+		requires = { { "mfussenegger/nvim-dap" } },
+	})
+	use({
+		"leoluz/nvim-dap-go",
+		requires = { { "mfussenegger/nvim-dap" } },
+	})
 	-- Movement.
-	use("rhysd/clever-f.vim")
+	use("ggandor/lightspeed.nvim")
 	use("tpope/vim-surround")
 	use("tpope/vim-repeat")
 	use("chentau/marks.nvim")
@@ -53,4 +65,20 @@ require("packer").startup(function()
 	use("tpope/vim-fugitive")
 	-- Terminal.
 	use("akinsho/toggleterm.nvim")
+	-- Command prompt.
+	use({
+		"VonHeikemen/fine-cmdline.nvim",
+		requires = {
+			{ "MunifTanjim/nui.nvim" },
+		},
+	})
+	-- Conjure.
+	use("Olical/conjure")
+	use({
+		"clojure-vim/vim-jack-in",
+		requires = {
+			{ "tpope/vim-dispatch" },
+			{ "radenling/vim-dispatch-neovim" },
+		},
+	})
 end)

@@ -2,6 +2,7 @@
 --              DAP
 -- =============================
 local dap = require("dap")
+local dap_ui = require("nvim-dap-virtual-text")
 -- Language specific configurations.
 local typescript = require("plugins.debuggers.typescript")
 local go = require("plugins.debuggers.go")
@@ -10,7 +11,9 @@ local python = require("plugins.debuggers.python")
 dap.set_log_level("TRACE") -- logs live at ~/.cache/nvim/dap.log
 
 -- Enable virtual text.
-vim.g.dap_virtual_text = true
+dap_ui.setup({
+	commented = true,
+})
 -- Fancy breakpoint symbol.
 local breakpoint = "DapBreakpoint"
 local logpoint = "DapLogPoint"

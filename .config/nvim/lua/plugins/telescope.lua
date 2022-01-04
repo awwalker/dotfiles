@@ -1,9 +1,11 @@
 local telescope = require("telescope")
 local actions = require("telescope.actions")
+local builtins = require("telescope.builtin")
 
 -- Credit https://github.com/nvim-telescope/telescope.nvim/issues/223#issuecomment-810091610
 local previewers = require("telescope.previewers")
 local Job = require("plenary.job")
+local noremap_silent = { noremap = true, silent = true }
 
 local new_maker = function(filepath, bufnr, opts)
 	filepath = vim.fn.expand(filepath)
@@ -55,7 +57,9 @@ telescope.setup({
 			override_file_sorter = true, -- override the file sorter
 			case_mode = "ignore_case", -- or "ignore_case" or "respect_case" or "smart_case"
 		},
+		live_grep_raw = {},
 	},
 })
 
 telescope.load_extension("fzf")
+telescope.load_extension("live_grep_raw")

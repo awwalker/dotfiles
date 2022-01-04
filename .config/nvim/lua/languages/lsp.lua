@@ -3,6 +3,12 @@ local api = vim.api
 local M = {}
 
 vim.lsp.set_log_level("debug")
+
+vim.fn.sign_define("LspDiagnosticsSignError", {text=""})
+vim.fn.sign_define("LspDiagnosticsSignWarning", {text=""})
+vim.fn.sign_define("LspDiagnosticsSignInformation", {text=""})
+vim.fn.sign_define("LspDiagnosticsSignHint", {text=""})
+
 -- Credit https://github.com/neovim/nvim-lspconfig#keybindings-and-completion
 function M.on_attach(client, bufnr)
 	if client.resolved_capabilities.document_formatting then

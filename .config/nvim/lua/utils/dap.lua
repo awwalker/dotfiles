@@ -34,7 +34,7 @@ function M.get_devenv_host()
 	local remoteness = vim.fn.input("\nRemote or Local Devenv: ")
 	local host
 	if remoteness == "remote" then
-		host = "10.131.1.149"
+		host = "10.132.2.22"
 	elseif remoteness == "local" then
 		host = "127.0.0.1"
 	else

@@ -102,4 +102,5 @@ M.configurations = {
 	},
 }
 
+require("dap-go").setup()
 return M
