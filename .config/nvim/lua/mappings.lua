@@ -15,11 +15,9 @@ end
 -- NATIVE
 -- Folds.
 vim.api.nvim_set_keymap("n", "<space>", "za", noremap)
-
 -- Move the screen.
 vim.api.nvim_set_keymap("n", "mt", "zt", noremap) -- Top.
 vim.api.nvim_set_keymap("n", "mb", "zb", noremap) -- Middle.
-vim.api.nvim_set_keymap("n", "mm", "z.", noremap) -- Bottom.
 
 -- Movement.
 vim.api.nvim_set_keymap("n", "j", "gj", noremap)
@@ -41,7 +39,7 @@ vim.api.nvim_set_keymap("t", "<C-k>", [[<C-\><C-n><C-W>k]], noremap)
 vim.api.nvim_set_keymap("t", "<C-w><C-l>", [[<C-\><C-n><C-W>l]], noremap)
 vim.api.nvim_set_keymap("t", "<C-w><C-h>", [[<C-\><C-n><C-W>h]], noremap)
 vim.api.nvim_set_keymap("t", "<c-p>", [[<C-\><C-n><C-W>p]], noremap)
--- Clost the current terminal tab.
+-- Close the current terminal tab.
 vim.api.nvim_set_keymap("t", "<leader>tc", '<cmd> lua vim.cmd("tabclose") <CR>', noremap)
 
 -- Buffers
@@ -92,10 +90,9 @@ vim.api.nvim_set_keymap(
 	"<cmd> lua require('telescope.builtin').lsp_document_diagnostics()<CR>",
 	noremap_silent
 )
-vim.api.nvim_set_keymap("n", "<leader>k", "<cmd> lua require('telescope.builtin').lsp_references()<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>r", "<cmd> lua require('telescope.builtin').lsp_references()<CR>", noremap_silent)
 
 -- CMD LINE
-
 vim.api.nvim_set_keymap(
 	"n",
 	"<localleader><localleader>",

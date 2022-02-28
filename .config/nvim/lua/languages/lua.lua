@@ -12,9 +12,6 @@ M.efm = {
 M.all_format = { efm = "Stylua" }
 
 M.default_format = "efm"
-local cache = "/Users/awalker/.cache/"
-local sumneko_root_path = cache .. "nvim/lspconfig/sumneko_lua/lua-language-server"
-local sumneko_binary = cache .. "nvim/lspconfig/sumneko_lua/lua-language-server/bin/macOS/lua-language-server"
 
 local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
@@ -23,12 +20,11 @@ table.insert(runtime_path, "lua/?/init.lua")
 M.lsp = {
 	capabilities = lsp.capabilities,
 	on_attach = function(client)
-    -- Handled by EFM.
+		-- Handled by EFM.
 		client.resolved_capabilities.document_formatting = false
 
 		lsp.on_attach(client, 0)
 	end,
-	cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
 	settings = {
 		Lua = {
 			runtime = {
@@ -49,5 +45,4 @@ M.lsp = {
 		},
 	},
 }
-
 return M

@@ -19,17 +19,18 @@ require("packer").startup(function()
 		requires = { { "kyazdani42/nvim-web-devicons" } },
 	})
 	use("ntpeters/vim-better-whitespace")
+	use("karb94/neoscroll.nvim")
+
 	-- LSP and Autocompletion.
+	-- Snippets.
+	use("saadparwaiz1/cmp_luasnip")
+	use("L3MON4D3/LuaSnip")
 	use("neovim/nvim-lspconfig") -- Collection of configurations for built-in LSP client
 	use({
 		"hrsh7th/nvim-cmp",
 		requires = { { "onsails/lspkind-nvim" } },
 	})
 	use("hrsh7th/cmp-nvim-lsp")
-	use("ray-x/lsp_signature.nvim")
-	-- Snippets.
-	use("saadparwaiz1/cmp_luasnip")
-	use("L3MON4D3/LuaSnip")
 	-- Treesitter.
 	use({
 		"nvim-treesitter/nvim-treesitter",
@@ -63,6 +64,12 @@ require("packer").startup(function()
 	use("chentau/marks.nvim")
 	-- Git.
 	use("tpope/vim-fugitive")
+	use({
+		"lewis6991/gitsigns.nvim",
+		requires = {
+			"nvim-lua/plenary.nvim",
+		},
+	})
 	-- Terminal.
 	use("akinsho/toggleterm.nvim")
 	-- Command prompt.
