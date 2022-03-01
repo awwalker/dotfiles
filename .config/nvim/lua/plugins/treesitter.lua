@@ -10,7 +10,8 @@ require("nvim-treesitter.configs").setup({
 		enable = true,
 	},
 	indent = {
-		enable = true,
+		enable = false,
+		disable = { "python", "typescript" },
 	},
 	pairs = {
 		enable = true,

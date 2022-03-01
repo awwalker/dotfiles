@@ -3,7 +3,7 @@
 -- =============================
 require("marks").setup({
 	mappings = {
-		set_next = "m<space>",
+		set_next = "mm",
 		next = "m+",
 		prev = "m-",
 	},

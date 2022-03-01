@@ -2,20 +2,24 @@ local api = vim.api
 
 local M = {}
 
-vim.lsp.set_log_level("debug")
+vim.lsp.set_log_level("error")
 
-vim.fn.sign_define("LspDiagnosticsSignError", {text=""})
-vim.fn.sign_define("LspDiagnosticsSignWarning", {text=""})
-vim.fn.sign_define("LspDiagnosticsSignInformation", {text=""})
-vim.fn.sign_define("LspDiagnosticsSignHint", {text=""})
+vim.fn.sign_define("LspDiagnosticsSignError", { text = "" })
+vim.fn.sign_define("LspDiagnosticsSignWarning", { text = "" })
+vim.fn.sign_define("LspDiagnosticsSignInformation", { text = "" })
+vim.fn.sign_define("LspDiagnosticsSignHint", { text = "" })
+
+vim.diagnostic.config({
+	virtual_text = false,
+})
 
 -- Credit https://github.com/neovim/nvim-lspconfig#keybindings-and-completion
 function M.on_attach(client, bufnr)
 	if client.resolved_capabilities.document_formatting then
-		vim.cmd([[augroup lsp_formatting]])
-		vim.cmd([[autocmd!]])
-		vim.cmd([[autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync()]])
-		vim.cmd([[augroup END]])
+		vim.api.nvim_command("augroup Format")
+		vim.api.nvim_command("autocmd! * <buffer>")
+		vim.api.nvim_command("autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting()")
+		vim.api.nvim_command("augroup END")
 	end
 
 	local opts = { noremap = true, silent = true }
@@ -32,8 +36,10 @@ function M.on_attach(client, bufnr)
 	-- Handled by telescope.
 	-- buf_set_keymap('n', '<leader>r', '<cmd> lua vim.lsp.buf.references()<CR>')
 	buf_set_keymap("n", "<leader>K", "<cmd> lua vim.lsp.buf.hover()<CR>")
-	buf_set_keymap("n", "<leader>e", "<cmd> lua vim.lsp.diagnostic.goto_next()<CR>")
-	buf_set_keymap("n", "<leader>E", "<cmd> lua vim.lsp.diagnostic.goto_prev()<CR>")
+	buf_set_keymap("n", "<C-k>", "<cmd> lua vim.lsp.buf.signature_help()<CR>")
+	buf_set_keymap("n", "<leader>e", "<cmd> lua vim.diagnostic.goto_next()<CR>")
+	buf_set_keymap("n", "<leader>E", "<cmd> lua vim.diagnostic.goto_prev()<CR>")
+	buf_set_keymap("n", "<localleader>e", "<cmd> lua vim.diagnostic.open_float()<CR>")
 	buf_set_keymap("n", "<leader>u", "<cmd> lua vim.lsp.buf.incoming_calls()<CR>")
 	buf_set_keymap("n", "<leader>U", "<cmd> lua vim.lsp.buf.outgoing_calls()<CR>")
 end
