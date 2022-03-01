@@ -68,7 +68,22 @@ M.adapters.dlv_spawn = function(cb, config)
 	end)
 	-- Wait for delve to start
 	vim.defer_fn(function()
-		cb({ type = "server", host = "127.0.0.1", port = port })
+		local cb_input = {
+			type = "server",
+			host = "127.0.0.1",
+			port = port,
+		}
+		if config.request == "launch" and config.mode == "test" then
+			cb_input.enrich_config = function(config, on_config)
+				local f_config = vim.deepcopy(config)
+				if f_config.program == nil then
+					local package = vim.fn.input("\nWhich go package to debug: ")
+					f_config.program = os.getenv("PLAID_PATH") .. "/go.git/" .. package
+				end
+				on_config(f_config)
+			end
+			cb(cb_input)
+		end
 	end, 100)
 end
 
@@ -102,5 +117,4 @@ M.configurations = {
 	},
 }
 
-require("dap-go").setup()
 return M
