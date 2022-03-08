@@ -30,7 +30,7 @@ M.adapters.go = function(cb, config)
 			if f_config.program == nil then
 				local package = vim.fn.input("\nWhich go package to debug: ")
 				-- TODO gate plaid addition based on path.
-				f_config.program = os.getenv("PLAID_PATH") .. "/go.git/" .. package
+				f_config.program = debug_utils.get_plaid_path() .. "/go.git/" .. package
 			end
 			print(utils.debug_print(f_config))
 			on_config(f_config)
@@ -78,7 +78,7 @@ M.adapters.dlv_spawn = function(cb, config)
 				local f_config = vim.deepcopy(config)
 				if f_config.program == nil then
 					local package = vim.fn.input("\nWhich go package to debug: ")
-					f_config.program = os.getenv("PLAID_PATH") .. "/go.git/" .. package
+					f_config.program = debug_utils.get_plaid_path() .. "/go.git/" .. package
 				end
 				on_config(f_config)
 			end
@@ -112,7 +112,7 @@ M.configurations = {
 		request = "launch",
 		mode = "test",
 		name = "Local Test Debugger",
-		envFile = os.getenv("PLAID_PATH") .. "/go.git/environment/devenv",
+		envFile = debug_utils.get_plaid_path() .. "/go.git/environment/devenv",
 		dlvToolPath = vim.fn.exepath("dlv"),
 	},
 }

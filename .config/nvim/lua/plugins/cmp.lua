@@ -1,11 +1,13 @@
 -- =============================
 --          COMPLETION
 -- =============================
-vim.o.completeopt = "menu,menuone,noselect"
 local cmp = require("cmp")
 local lspkind = require("lspkind")
 
 cmp.setup({
+	completion = {
+		completeopt = "menu,menuone,noinsert",
+	},
 	snippet = {
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body)
@@ -16,7 +18,7 @@ cmp.setup({
 		["<c-k>"] = cmp.mapping.scroll_docs(4),
 		["<c-Space>"] = cmp.mapping.complete(),
 		["<c-c>"] = cmp.mapping.close(),
-		["<CR>"] = cmp.mapping.confirm({ select = true }),
+		["<CR>"] = cmp.mapping.confirm({ select = false }),
 	},
 	sources = {
 		{ name = "nvim_lsp" },
@@ -46,5 +48,13 @@ cmp.setup({
 			--   return vim_item
 			-- end
 		}),
+		documentation = {
+			border = "rounded",
+			winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
+			max_width = 50,
+			min_width = 50,
+			max_height = math.floor(vim.o.lines * 0.4),
+			min_height = 3,
+		},
 	},
 })

@@ -1,40 +1,27 @@
+fpath+=/opt/homebrew/share/zsh/site-functions
 autoload -U compinit && compinit
 autoload -U promptinit; promptinit
 prompt pure
 # ---------------------
 #   	  PATH
 # ---------------------
-export GOPATH="$HOME/go"
-export GOROOT=/usr/local/Cellar/go@1.15/1.15.13/libexec/
-
 export PATH="$HOME/bin:${PATH}"
 export PATH="$PATH:/usr/local/opt/gnupg@2.0/bin"
-export PATH="$PATH:$GOPATH/bin"
-export PATH="$PATH:$GOROOT/bin"
+export PATH="/opt/homebrew/bin:$PATH"
 
-source ~/.plaid_env ~/.quovo_env
+(source ~/.tprime_env || : )
 
-export PATH="$PATH:${PLAID_PATH}/go.git"
-export PATH="$PATH:${PLAID_PATH}/go.git/bin"
-export PATH="$PATH:$PYENV_ROOT/bin"
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="$PATH:/usr/local/bin"
-
-# NVM & RVM
-export NVM_DIR="$HOME/.nvm"
-export NVM_LAZY_LOAD=true
-
-alias loadrvm='[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"'
-alias loadnvm='[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"'
 
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
 # Preferred editor for local and remote sessions
-export EDITOR=/usr/local/bin/nvim
-alias vim=$EDITOR
-alias vi=$EDITOR
+if type nvim >/dev/null 2>/dev/null; then
+	alias vim=nvim
+	alias vi=nvim
+	export EDITOR=(which nvim)
+fi
 
 HISTFILE=~/.zsh_history
 setopt SHARE_HISTORY #Share history across terminals
@@ -79,23 +66,7 @@ alias grpt="git checkout --ours"
 # During merge pick the changes @HEAD
 alias gmpt="git checkout --theirs"
 # For interacing with dot files.
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-
-# -------------------
-# 	      GO
-# -------------------
-
-export GO11MODULE="on"
-
-# -------------------
-# 	  PYTHON
-# -------------------
-
-export PYTHONDONTWRITEBYTECODE=True
-eval "$(pyenv init -)"
-export PYENV_ROOT="$HOME/.pyenv"
-export PYTHONPATH="$PLAID_PYTHON:$QUOVO_PYTHON"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+alias config='/usr/bin/git --git-dir=$HOME/.config/ --work-tree=$HOME'
 
 # -------------------
 # 	   DOCKER
@@ -114,6 +85,12 @@ function rm_docks() {
 # -------------------
 
 alias luamake=/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/3rd/luamake/luamake
+
+# -------------------
+#      JAVA
+# -------------------
+JAVA_HOME=/opt/homebrew/opt/openjdk@11/11.0.8/libexec/openjdk.jdk/Contents/Home
+PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 
 source /usr/local/share/fzf-tab/fzf-tab.plugin.zsh
 source /usr/local/share/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh

@@ -2,17 +2,9 @@
 	helper = osxkeychain
 [user]
 	name = Aaron Walker
-	email = awalker@plaid.com
+	email = aaron@treasuryprime.com
 [push]
 	default = current
 [core]
 	excludesFile = /Users/awalker/.gitignore
 	pager = less -F -X
-[url "ssh://git@github.plaid.com/"]
-    insteadOf = https://github.plaid.com/
-[url "ssh://git@plaid/"]
-    insteadOf = ssh://git@github.plaid.com/
-[url "ssh://git@github.com:"]
-    insteadOf = https://github.com/quovo
-[url "git@quovo.com:"]
-    insteadOf = ssh://git@github.com:
