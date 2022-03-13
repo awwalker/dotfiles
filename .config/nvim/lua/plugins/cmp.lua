@@ -14,13 +14,15 @@ cmp.setup({
 		end,
 	},
 	mapping = {
-		["<c-j>"] = cmp.mapping.scroll_docs(-4),
-		["<c-k>"] = cmp.mapping.scroll_docs(4),
+		["<c-k>"] = cmp.mapping.scroll_docs(-4),
+		["<c-j>"] = cmp.mapping.scroll_docs(4),
 		["<c-Space>"] = cmp.mapping.complete(),
 		["<c-c>"] = cmp.mapping.close(),
 		["<CR>"] = cmp.mapping.confirm({ select = false }),
 	},
 	sources = {
+		{ name = "vim-dadbod-completion" },
+		{ name = "conjure" },
 		{ name = "nvim_lsp" },
 		{ name = "buffer" },
 		{ name = "path" },

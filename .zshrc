@@ -8,6 +8,9 @@ prompt pure
 export PATH="$HOME/bin:${PATH}"
 export PATH="$PATH:/usr/local/opt/gnupg@2.0/bin"
 export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@12/bin:$PATH"
+export PATH="/opt/homebrew/opt/node@12/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 
 (source ~/.tprime_env || : )
 
@@ -20,7 +23,7 @@ export LC_ALL="en_US.UTF-8"
 if type nvim >/dev/null 2>/dev/null; then
 	alias vim=nvim
 	alias vi=nvim
-	export EDITOR=(which nvim)
+	export EDITOR=$(which nvim)
 fi
 
 HISTFILE=~/.zsh_history
@@ -89,8 +92,7 @@ alias luamake=/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-serv
 # -------------------
 #      JAVA
 # -------------------
-JAVA_HOME=/opt/homebrew/opt/openjdk@11/11.0.8/libexec/openjdk.jdk/Contents/Home
-PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+export JAVA_HOME=/opt/homebrew/opt/openjdk@11/11.0.8/libexec/openjdk.jdk/Contents/Home
 
 source /usr/local/share/fzf-tab/fzf-tab.plugin.zsh
 source /usr/local/share/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
@@ -99,3 +101,7 @@ bindkey -e
 
 # disable sort when completing options of any command
 zstyle ':completion:complete:*:options' sort false
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

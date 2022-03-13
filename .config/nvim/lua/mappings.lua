@@ -105,3 +105,11 @@ vim.api.nvim_set_keymap(
 	"<cmd> lua require('fine-cmdline').open()<CR>",
 	noremap_silent
 )
+
+-- CONJURE
+vim.api.nvim_set_keymap("n", "<localleader>rt", ":ConjureCljRunCurrentTest<CR>", noremap)
+
+-- DADBOD
+vim.api.nvim_set_keymap("n", "<leader>du", ":DBUIToggle<CR>", noremap)
+vim.api.nvim_set_keymap("n", "<leader>df", ":DBUIFindBuffer<CR>", noremap)
+vim.api.nvim_set_keymap("n", "<leader>di", ":DBUILastQueryInfo<Cr>", noremap)

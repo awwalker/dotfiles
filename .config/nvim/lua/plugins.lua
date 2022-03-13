@@ -88,4 +88,20 @@ require("packer").startup(function()
 			{ "radenling/vim-dispatch-neovim" },
 		},
 	})
+	use({
+		"PaterJason/cmp-conjure",
+	})
+	-- Databases.
+	use({
+		"tpope/vim-dadbod",
+	})
+	use({
+		"kristijanhusak/vim-dadbod-completion",
+		requires = {
+			"kristijanhusak/vim-dadbod-ui",
+		},
+	})
+	use({
+		"kristijanhusak/vim-dadbod-ui",
+	})
 end)

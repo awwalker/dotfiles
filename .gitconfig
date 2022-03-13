@@ -8,3 +8,5 @@
 [core]
 	excludesFile = /Users/awalker/.gitignore
 	pager = less -F -X
+[init]
+	defaultBranch = main
