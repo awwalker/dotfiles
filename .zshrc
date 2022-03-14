@@ -7,6 +7,7 @@ prompt pure
 # ---------------------
 export PATH="$HOME/bin:${PATH}"
 export PATH="$PATH:/usr/local/opt/gnupg@2.0/bin"
+export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@12/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@12/bin:$PATH"

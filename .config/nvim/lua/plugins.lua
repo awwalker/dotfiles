@@ -79,8 +79,11 @@ require("packer").startup(function()
 			{ "MunifTanjim/nui.nvim" },
 		},
 	})
-	-- Conjure.
+	-- Clojure.
 	use("Olical/conjure")
+	use("Olical/aniseed")
+	-- use when developing on conjure
+	-- use("~/oss/conjure")
 	use({
 		"clojure-vim/vim-jack-in",
 		requires = {
@@ -91,6 +94,9 @@ require("packer").startup(function()
 	use({
 		"PaterJason/cmp-conjure",
 	})
+	use("bakpakin/fennel.vim")
+	use("guns/vim-sexp")
+	use("tpope/vim-sexp-mappings-for-regular-people")
 	-- Databases.
 	use({
 		"tpope/vim-dadbod",
