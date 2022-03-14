@@ -8,7 +8,7 @@ local noremap_silent = { noremap = true, silent = true }
 
 function _G.filepath_and_lineno()
 	local path_and_no = string.format("%s:%s", vim.fn.expand("%:p"), vim.fn.line("."))
-	local subbed = string.gsub(path_and_no, os.getenv("PLAID_PATH") .. "/", "")
+	local subbed = string.gsub(path_and_no, "" .. "/", "")
 	vim.api.nvim_command(string.format('call setreg("+", "%s")', subbed, {}))
 end
 
@@ -91,6 +91,12 @@ vim.api.nvim_set_keymap(
 	noremap_silent
 )
 vim.api.nvim_set_keymap("n", "<leader>r", "<cmd> lua require('telescope.builtin').lsp_references()<CR>", noremap_silent)
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>ca",
+	"<cmd> lua require('telescope.builtin').lsp_code_actions()<CR>",
+	noremap_silent
+)
 
 -- CMD LINE
 vim.api.nvim_set_keymap(
@@ -99,3 +105,11 @@ vim.api.nvim_set_keymap(
 	"<cmd> lua require('fine-cmdline').open()<CR>",
 	noremap_silent
 )
+
+-- CONJURE
+vim.api.nvim_set_keymap("n", "<localleader>rt", ":ConjureCljRunCurrentTest<CR>", noremap)
+
+-- DADBOD
+vim.api.nvim_set_keymap("n", "<leader>du", ":DBUIToggle<CR>", noremap)
+vim.api.nvim_set_keymap("n", "<leader>df", ":DBUIFindBuffer<CR>", noremap)
+vim.api.nvim_set_keymap("n", "<leader>di", ":DBUILastQueryInfo<Cr>", noremap)

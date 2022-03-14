@@ -1,13 +1,21 @@
 local M = {}
 
-local ensure_script = os.getenv("PLAID_PATH") .. "/go.git/scripts/ensure_debugger_session.sh"
+function M.get_plaid_path()
+  local plaid_path = os.getenv("PLAID_PATH")
+  if plaid_path ~= nil then
+    return plaid_path
+  end
+  return ''
+end
+
+local ensure_script = M.get_plaid_path() .. "/go.git/scripts/ensure_debugger_session.sh"
 local batch_mocha_script = os.getenv("HOME") .. "/.start_mocha_batch.sh"
 
 function M.get_debugging_port(service_name)
 	if service_name == "stasher" then
 		service_name = "scheduler_stasher"
 	end
-	local ports_compose = io.open(os.getenv("PLAID_PATH") .. "/go.git/proto/src/plaidtypes/coretypes/service.proto", "r")
+	local ports_compose = io.open(M.get_plaid_path() .. "/go.git/proto/src/plaidtypes/coretypes/service.proto", "r")
 	local port = nil
 	for line in ports_compose:lines() do
 		-- Match lines like: "    SERVICE_FEATURE_SERVER_CONSUMER = 181 [" and pull the 181.

@@ -71,7 +71,8 @@ vim.o.foldmethod = "expr"
 vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- SPLITS
-
 vim.o.splitbelow = true
-
 vim.o.splitright = true
+
+-- NETRW
+vim.g.netrw_liststyle = 3
