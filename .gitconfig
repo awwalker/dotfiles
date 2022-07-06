@@ -10,3 +10,5 @@
 	pager = less -F -X
 [init]
 	defaultBranch = main
+[pull]
+	default = current

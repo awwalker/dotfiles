@@ -13,12 +13,12 @@ export PATH="/opt/homebrew/opt/postgresql@12/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@12/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 
-(source ~/.tprime_env || : )
 
 export PATH="$PATH:/usr/local/bin"
 
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
+export GPG_TTY=$TTY
 
 # Preferred editor for local and remote sessions
 if type nvim >/dev/null 2>/dev/null; then
@@ -59,7 +59,7 @@ alias gp='git push'
 alias gu='git pull'
 alias ga='git add'
 alias gch='git checkout'
-alias gchm='git checkout master'
+alias gchm='git checkout main'
 alias gchb='git checkout -b '
 alias gd='git diff '
 alias gb='git branch'
@@ -107,3 +107,4 @@ export NVM_DIR="$HOME/.nvm"
 export NVM_LAZY_LOAD=true
 alias loadnvm='[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+source "$HOME/.tprime_env.zsh"
