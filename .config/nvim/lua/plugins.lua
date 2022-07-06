@@ -12,10 +12,9 @@ require("packer").startup(function()
 	use("wbthomason/packer.nvim")
 	-- UI.
 	use("christianchiarulli/nvcode-color-schemes.vim")
-	use("akinsho/nvim-bufferline.lua")
+	use({ "akinsho/nvim-bufferline.lua", branch = "main" })
 	use({
-		"glepnir/galaxyline.nvim",
-		branch = "main",
+		"nvim-lualine/lualine.nvim",
 		requires = { { "kyazdani42/nvim-web-devicons" } },
 	})
 	use("ntpeters/vim-better-whitespace")
@@ -31,12 +30,16 @@ require("packer").startup(function()
 		requires = { { "onsails/lspkind-nvim" } },
 	})
 	use("hrsh7th/cmp-nvim-lsp")
+	use("hrsh7th/cmp-buffer")
+	use("hrsh7th/cmp-path")
 	-- Treesitter.
 	use({
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
 	})
 	use("p00f/nvim-ts-rainbow")
+	use("windwp/nvim-autopairs")
+	use("nvim-treesitter/nvim-treesitter-context")
 	-- Telescope.
 	use({
 		"nvim-telescope/telescope.nvim",
@@ -46,6 +49,8 @@ require("packer").startup(function()
 		},
 	})
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+	use({ "nvim-telescope/telescope-ui-select.nvim" })
+
 	-- DAP.
 	use("mfussenegger/nvim-dap")
 	use("theHamsta/nvim-dap-virtual-text")
@@ -61,17 +66,19 @@ require("packer").startup(function()
 	use("ggandor/lightspeed.nvim")
 	use("tpope/vim-surround")
 	use("tpope/vim-repeat")
-	use("chentau/marks.nvim")
+	use("chentoast/marks.nvim")
 	-- Git.
 	use("tpope/vim-fugitive")
+	use("tpope/vim-rhubarb")
 	use({
 		"lewis6991/gitsigns.nvim",
 		requires = {
 			"nvim-lua/plenary.nvim",
 		},
 	})
+	use("ThePrimeagen/git-worktree.nvim")
 	-- Terminal.
-	use("akinsho/toggleterm.nvim")
+	use({ "akinsho/toggleterm.nvim", branch = "main" })
 	-- Command prompt.
 	use({
 		"VonHeikemen/fine-cmdline.nvim",
@@ -81,11 +88,12 @@ require("packer").startup(function()
 	})
 	-- Clojure.
 	use("Olical/conjure")
-	use("Olical/aniseed")
 	-- use when developing on conjure
 	-- use("~/oss/conjure")
+	use("Olical/aniseed")
 	use({
 		"clojure-vim/vim-jack-in",
+		-- removing dispatch to avoid opening a terminal tab.
 		requires = {
 			{ "tpope/vim-dispatch" },
 			{ "radenling/vim-dispatch-neovim" },
@@ -110,4 +118,10 @@ require("packer").startup(function()
 	use({
 		"kristijanhusak/vim-dadbod-ui",
 	})
+	-- CSV
+	use("chrisbra/csv.vim")
+	-- Startup
+	use({ "goolord/alpha-nvim", requires = {
+		"kyazdani42/nvim-web-devicons",
+	} })
 end)

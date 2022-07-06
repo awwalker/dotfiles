@@ -75,28 +75,14 @@ vim.api.nvim_set_keymap("n", "<leader>gp", ":Git push<CR>", noremap)
 vim.api.nvim_set_keymap("n", "<leader>gc", ":Git commit<CR>", noremap)
 
 -- TELESCOPE
-vim.api.nvim_set_keymap("n", "<c-f>", "<cmd> lua require('telescope.builtin').find_files()<CR>", noremap_silent)
-vim.api.nvim_set_keymap("n", "<c-b>", "<cmd> lua require('telescope.builtin').buffers()<CR>", noremap_silent)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>f",
-	"<cmd> lua require('telescope').extensions.live_grep_raw.live_grep_raw()<CR>",
-	noremap_silent
-)
-vim.api.nvim_set_keymap("n", "<c-g>", "<cmd> lua require('telescope.builtin').grep_string()<CR>", noremap_silent)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader><space>",
-	"<cmd> lua require('telescope.builtin').lsp_document_diagnostics()<CR>",
-	noremap_silent
-)
-vim.api.nvim_set_keymap("n", "<leader>r", "<cmd> lua require('telescope.builtin').lsp_references()<CR>", noremap_silent)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ca",
-	"<cmd> lua require('telescope.builtin').lsp_code_actions()<CR>",
-	noremap_silent
-)
+vim.api.nvim_set_keymap("n", "<c-f>", "<cmd> Telescope find_files<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<c-b>", "<cmd> Telescope buffers<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<c-g>", "<cmd> Telescope grep_string<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<c-m>", "<cmd> Telescope marks<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>f", "<cmd> Telescope live_grep_args<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader><space>", "<cmd> Telescope lsp_document_diagnostics<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>r", "<cmd> Telescope lsp_references<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>ca", "<cmd> lua vim.lsp.buf.code_action()<CR>", noremap_silent)
 
 -- CMD LINE
 vim.api.nvim_set_keymap(
@@ -113,3 +99,17 @@ vim.api.nvim_set_keymap("n", "<localleader>rt", ":ConjureCljRunCurrentTest<CR>",
 vim.api.nvim_set_keymap("n", "<leader>du", ":DBUIToggle<CR>", noremap)
 vim.api.nvim_set_keymap("n", "<leader>df", ":DBUIFindBuffer<CR>", noremap)
 vim.api.nvim_set_keymap("n", "<leader>di", ":DBUILastQueryInfo<Cr>", noremap)
+
+-- WORKTREES
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>wc",
+	"<cmd> lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>",
+	noremap
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>gb",
+	"<cmd> lua require('telescope').extensions.git_worktree.git_worktrees()<CR>",
+	noremap
+)

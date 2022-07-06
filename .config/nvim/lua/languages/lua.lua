@@ -21,7 +21,7 @@ M.lsp = {
 	capabilities = lsp.capabilities,
 	on_attach = function(client)
 		-- Handled by EFM.
-		client.resolved_capabilities.document_formatting = false
+		client.server_capabilities.document_formatting = false
 
 		lsp.on_attach(client, 0)
 	end,

@@ -3,7 +3,6 @@
 -- =============================
 require("bufferline").setup({
 	options = {
-		view = "multiwindow",
 		modifiedicon = "●",
 		diagnostics = "nvim_lsp",
 		diagnostics_indicator = function(_, _, diagnostics_dict)
@@ -14,5 +13,7 @@ require("bufferline").setup({
 			end
 			return s
 		end,
+		show_tab_indicators = true,
+		sort_by = "tabs",
 	},
 })

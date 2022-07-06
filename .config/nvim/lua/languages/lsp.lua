@@ -15,10 +15,10 @@ vim.diagnostic.config({
 
 -- Credit https://github.com/neovim/nvim-lspconfig#keybindings-and-completion
 function M.on_attach(client, bufnr)
-	if client.resolved_capabilities.document_formatting then
+	if client.server_capabilities.document_formatting then
 		vim.api.nvim_command("augroup Format")
 		vim.api.nvim_command("autocmd! * <buffer>")
-		vim.api.nvim_command("autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting()")
+		vim.api.nvim_command("autocmd BufWritePre <buffer> :lua vim.lsp.buf.format()")
 		vim.api.nvim_command("augroup END")
 	end
 
@@ -42,6 +42,7 @@ function M.on_attach(client, bufnr)
 	buf_set_keymap("n", "<localleader>e", "<cmd> lua vim.diagnostic.open_float()<CR>")
 	buf_set_keymap("n", "<leader>u", "<cmd> lua vim.lsp.buf.incoming_calls()<CR>")
 	buf_set_keymap("n", "<leader>U", "<cmd> lua vim.lsp.buf.outgoing_calls()<CR>")
+	buf_set_keymap("n", "<leader>R", "<cmd>lua vim.lsp.buf.rename()<CR>")
 end
 
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers.

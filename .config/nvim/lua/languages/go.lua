@@ -48,7 +48,7 @@ M.lsp = {
 		staticcheck = true,
 	},
 	on_attach = function(client)
-		client.resolved_capabilities.document_formatting = false
+		client.server_capabilities.document_formatting = false
 
 		lsp.on_attach(client, 0)
 	end,

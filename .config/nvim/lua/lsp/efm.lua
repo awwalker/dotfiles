@@ -15,7 +15,7 @@ require("lspconfig").efm.setup({
 		"yaml",
 	},
 
-	init_options = { documentFormatting = true, codeAction = true, document_formatting = true },
+	init_options = { codeAction = true, document_formatting = true },
 	settings = {
 		rootMarkers = { ".git/" },
 		languages = {

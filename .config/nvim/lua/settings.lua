@@ -9,7 +9,7 @@ vim.g.mapleader = ","
 vim.g.python3_host_prog = home .. "/.pyenv/versions/neovim3/bin/python"
 
 vim.o.autoread = true
-vim.o.completeopt = "menuone,noselect"
+vim.o.completeopt = "menu,menuone,noinsert"
 vim.o.mouse = "a"
 vim.o.ttyfast = true
 
@@ -76,3 +76,8 @@ vim.o.splitright = true
 
 -- NETRW
 vim.g.netrw_liststyle = 3
+
+-- SEXP
+vim.g.sexp_enable_insert_mode_mappings = false
+
+-- CONJURE
