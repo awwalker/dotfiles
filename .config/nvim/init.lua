@@ -13,14 +13,14 @@ require("plugins.cmdline")
 require("plugins.neoscroll")
 
 require("plugins.cmp")
-require("plugins.lspconfig")
-require("lsp.efm")
+require("lsp")
 
 require("plugins.dap")
 require("plugins.worktree")
 require("plugins.telescope")
 require("plugins.toggleterm")
 require("plugins.alpha")
+require("plugins.conjure")
 
 require("plugins.marks")
 require("mappings")

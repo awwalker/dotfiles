@@ -2,16 +2,51 @@ local api = vim.api
 
 local M = {}
 
-vim.lsp.set_log_level("error")
+M.setup = function()
+	local signs = {
+		{ name = "DiagnosticSignError", text = "" },
+		{ name = "DiagnosticSignWarn", text = "" },
+		{ name = "DiagnosticSignHint", text = "" },
+		{ name = "DiagnosticSignInfo", text = "" },
+	}
 
-vim.fn.sign_define("LspDiagnosticsSignError", { text = "" })
-vim.fn.sign_define("LspDiagnosticsSignWarning", { text = "" })
-vim.fn.sign_define("LspDiagnosticsSignInformation", { text = "" })
-vim.fn.sign_define("LspDiagnosticsSignHint", { text = "" })
+	for _, sign in ipairs(signs) do
+		vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "" })
+	end
 
-vim.diagnostic.config({
-	virtual_text = false,
-})
+	local config = {
+		-- disable virtual text
+		virtual_text = false,
+		-- show signs
+		signs = {
+			active = signs,
+		},
+		update_in_insert = true,
+		underline = true,
+		severity_sort = true,
+		float = {
+			focusable = false,
+			style = "minimal",
+			border = "rounded",
+			source = "if_many",
+			header = "",
+			prefix = "",
+      wrap_at = 35,
+		},
+	}
+
+	vim.diagnostic.config(config)
+
+	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+		border = "rounded",
+		width = 60,
+	})
+
+	vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+		border = "rounded",
+		width = 60,
+	})
+end
 
 -- Credit https://github.com/neovim/nvim-lspconfig#keybindings-and-completion
 function M.on_attach(client, bufnr)

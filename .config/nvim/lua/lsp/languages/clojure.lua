@@ -1,14 +1,14 @@
-local lsp = require("languages.lsp")
+local handlers = require("lsp.handlers")
 
 local M = {}
 
 M.efm = {}
 
 M.lsp = {
-	capabilities = lsp.capabilities,
+	capabilities = handlers.capabilities,
 	on_attach = function(client)
 		client.server_capabilities.document_formatting = true
-		lsp.on_attach(client, 0)
+		handlers.on_attach(client, 0)
 	end,
 }
 
