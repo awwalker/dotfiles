@@ -105,6 +105,7 @@ require("packer").startup(function()
 	use("bakpakin/fennel.vim")
 	use("guns/vim-sexp")
 	use("tpope/vim-sexp-mappings-for-regular-people")
+	use({ "eraserhd/parinfer-rust", run = "cargo build --release" })
 	-- Databases.
 	use({
 		"tpope/vim-dadbod",
@@ -118,6 +119,7 @@ require("packer").startup(function()
 	use({
 		"kristijanhusak/vim-dadbod-ui",
 	})
+	use("pbogut/vim-dadbod-ssh")
 	-- CSV
 	use("chrisbra/csv.vim")
 	-- Startup

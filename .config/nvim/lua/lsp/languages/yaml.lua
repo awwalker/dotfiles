@@ -1,4 +1,4 @@
-local lsp = require("languages.lsp")
+local handlers = require("lsp.handlers")
 
 local M = {}
 
@@ -18,8 +18,8 @@ M.all_format = { efm = "Prettier" }
 M.default_format = "efm"
 
 M.lsp = {
-	capabilities = lsp.capabilities,
-	on_attach = lsp.on_attach,
+	capabilities = handlers.capabilities,
+	on_attach = handlers.on_attach,
 }
 
 return M

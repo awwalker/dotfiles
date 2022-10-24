@@ -1,4 +1,4 @@
-local lsp = require("languages.lsp")
+local handlers = require("lsp.handlers")
 
 local M = {}
 
@@ -18,12 +18,12 @@ table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
 M.lsp = {
-	capabilities = lsp.capabilities,
+	capabilities = handlers.capabilities,
 	on_attach = function(client)
 		-- Handled by EFM.
 		client.server_capabilities.document_formatting = false
 
-		lsp.on_attach(client, 0)
+		handlers.on_attach(client, 0)
 	end,
 	settings = {
 		Lua = {

@@ -1,6 +1,7 @@
 local telescope = require("telescope")
 local actions = require("telescope.actions")
 local themes = require("telescope.themes")
+local lga_actions = require("telescope-live-grep-args.actions")
 
 -- Credit https://github.com/nvim-telescope/telescope.nvim/issues/223#issuecomment-810091610
 local previewers = require("telescope.previewers")
@@ -75,7 +76,16 @@ telescope.setup({
 			override_file_sorter = true, -- override the file sorter
 			case_mode = "ignore_case", -- or "ignore_case" or "respect_case" or "smart_case"
 		},
-		live_grep_args = {},
+		live_grep_args = {
+			auto_quoting = true, -- enable/disable auto-quoting
+			mappings = {
+				i = {
+					["<C-'>"] = lga_actions.quote_prompt(),
+					["<C-'>g"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+					["<C-'>t"] = lga_actions.quote_prompt({ postfix = " -t" }),
+				},
+			},
+		},
 		["ui-select"] = {
 			themes.get_cursor({}),
 		},
@@ -106,6 +116,9 @@ telescope.setup({
 				width = width_for_nopreview,
 				height = height_dropdown_nopreview,
 			},
+		},
+		live_grep = {
+			only_sort_text = true,
 		},
 	},
 })

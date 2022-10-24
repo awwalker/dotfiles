@@ -1,4 +1,4 @@
-local lsp = require("languages.lsp")
+local handlers = require("lsp.handlers")
 
 local M = {}
 
@@ -32,7 +32,7 @@ M.all_format = { efm = "goimports" }
 M.default_format = "efm"
 
 M.lsp = {
-	capabilities = lsp.capabilities,
+	capabilities = handlers.capabilities,
 	-- Default command.
 	cmd = { "gopls", "serve" },
 	-- cmd = { "gopls", "-remote=auto", "-logfile=auto", "-debug=:0", "-remote.debug=:0", "-rpc.trace" },
@@ -50,7 +50,7 @@ M.lsp = {
 	on_attach = function(client)
 		client.server_capabilities.document_formatting = false
 
-		lsp.on_attach(client, 0)
+		handlers.on_attach(client, 0)
 	end,
 }
 
