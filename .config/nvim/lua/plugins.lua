@@ -79,7 +79,6 @@ require("packer").startup(function()
       "nvim-lua/plenary.nvim",
     },
   })
-  use("ThePrimeagen/git-worktree.nvim")
   -- Terminal.
   use({ "akinsho/toggleterm.nvim", branch = "main" })
   -- Command prompt.
