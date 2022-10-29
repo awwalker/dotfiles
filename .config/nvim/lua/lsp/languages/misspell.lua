@@ -11,9 +11,9 @@ M.efm = {
 }
 
 M.all_format = {
-  efm = 'Misspell',
+  efm = "Misspell",
 }
 
-M.default_format = 'efm'
+M.default_format = "efm"
 
 return M

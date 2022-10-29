@@ -7,9 +7,9 @@ local noremap = { noremap = true }
 local noremap_silent = { noremap = true, silent = true }
 
 function _G.filepath_and_lineno()
-	local path_and_no = string.format("%s:%s", vim.fn.expand("%:p"), vim.fn.line("."))
-	local subbed = string.gsub(path_and_no, "" .. "/", "")
-	vim.api.nvim_command(string.format('call setreg("+", "%s")', subbed, {}))
+  local path_and_no = string.format("%s:%s", vim.fn.expand("%:p"), vim.fn.line("."))
+  local subbed = string.gsub(path_and_no, "" .. "/", "")
+  vim.api.nvim_command(string.format('call setreg("+", "%s")', subbed, {}))
 end
 
 -- NATIVE
@@ -59,12 +59,12 @@ vim.api.nvim_set_keymap("n", "<leader>tc", '<cmd> lua vim.cmd("tabclose") <CR>',
 -- PLUGINS
 
 -- DAP
-vim.api.nvim_set_keymap("n", "<leader>c", '<cmd> lua require"dap".continue()<CR>', silent)
-vim.api.nvim_set_keymap("n", "<leader>n", '<cmd> lua require"dap".step_over()<CR>', silent)
-vim.api.nvim_set_keymap("n", "<leader>b", '<cmd> lua require"dap".toggle_breakpoint()<CR>', silent)
-vim.api.nvim_set_keymap("n", "<leader>dr", '<cmd> lua require"dap".repl.open()<CR>', silent)
-vim.api.nvim_set_keymap("n", "<leader>si", '<cmd> lua require"dap".step_into()<CR>', silent)
-vim.api.nvim_set_keymap("n", "<leader>so", '<cmd> lua require"dap".step_out()<CR>', silent)
+vim.api.nvim_set_keymap("n", "<leader>c", '<cmd> lua require"dap".continue() <CR>', silent)
+vim.api.nvim_set_keymap("n", "<leader>n", '<cmd> lua require"dap".step_over() <CR>', silent)
+vim.api.nvim_set_keymap("n", "<leader>b", '<cmd> lua require"dap".toggle_breakpoint() <CR>', silent)
+vim.api.nvim_set_keymap("n", "<leader>dr", '<cmd> lua require"dap".repl.open() <CR>', silent)
+vim.api.nvim_set_keymap("n", "<leader>si", '<cmd> lua require"dap".step_into() <CR>', silent)
+vim.api.nvim_set_keymap("n", "<leader>so", '<cmd> lua require"dap".step_out() <CR>', silent)
 -- handled per language in ftplugin
 -- vim.api.nvim_set_keymap("n", "<leader>dt", '<cmd> lua require"dap-python".test_method()<CR>', silent)
 
@@ -83,33 +83,23 @@ vim.api.nvim_set_keymap("n", "<leader>f", "<cmd> Telescope live_grep_args<CR>", 
 vim.api.nvim_set_keymap("n", "<leader><space>", "<cmd> Telescope lsp_document_diagnostics<CR>", noremap_silent)
 vim.api.nvim_set_keymap("n", "<leader>r", "<cmd> Telescope lsp_references<CR>", noremap_silent)
 vim.api.nvim_set_keymap("n", "<leader>ca", "<cmd> lua vim.lsp.buf.code_action()<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>ae", "<cmd> Telescope diagnostics bufnr=0 <CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>Ae", "<cmd> Telescope diagnostics <CR>", noremap_silent)
 
 -- CMD LINE
 vim.api.nvim_set_keymap(
-	"n",
-	"<localleader><localleader>",
-	"<cmd> lua require('fine-cmdline').open()<CR>",
-	noremap_silent
+  "n",
+  "<localleader><localleader>",
+  "<cmd> lua require('fine-cmdline').open()<CR>",
+  noremap_silent
 )
 
 -- CONJURE
-vim.api.nvim_set_keymap("n", "<localleader>rt", ":ConjureCljRunCurrentTest<CR>", noremap)
+vim.api.nvim_set_keymap("n", "<localleader>rt", "<cmd> ConjureCljRunCurrentTest <CR>", noremap)
+vim.api.nvim_set_keymap("n", "<localleader>rf", "<cmd> ConjureCljRunCurrentNsTests <CR>", noremap)
+vim.api.nvim_set_keymap("n", "<localleader>le", "<cmd> ConjureCljLastException <CR>", noremap)
 
 -- DADBOD
 vim.api.nvim_set_keymap("n", "<leader>du", ":DBUIToggle<CR>", noremap)
 vim.api.nvim_set_keymap("n", "<leader>df", ":DBUIFindBuffer<CR>", noremap)
 vim.api.nvim_set_keymap("n", "<leader>di", ":DBUILastQueryInfo<Cr>", noremap)
-
--- WORKTREES
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>wc",
-	"<cmd> lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>",
-	noremap
-)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>gb",
-	"<cmd> lua require('telescope').extensions.git_worktree.git_worktrees()<CR>",
-	noremap
-)
