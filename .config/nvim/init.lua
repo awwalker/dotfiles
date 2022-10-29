@@ -16,7 +16,6 @@ require("plugins.cmp")
 require("lsp")
 
 require("plugins.dap")
-require("plugins.worktree")
 require("plugins.telescope")
 require("plugins.neorg")
 require("plugins.toggleterm")

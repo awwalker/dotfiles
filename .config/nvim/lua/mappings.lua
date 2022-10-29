@@ -29,7 +29,6 @@ vim.api.nvim_set_keymap("n", "E", "$", noremap)
 vim.api.nvim_set_keymap("i", "jk", "<esc>", noremap)
 vim.api.nvim_set_keymap("v", "<leader>y", '"+y', noremap) -- Copy.
 vim.api.nvim_set_keymap("n", "<leader>p", '"+gp', noremap) -- Paste.
-vim.api.nvim_set_keymap("n", "<leader>yn", "<cmd> lua filepath_and_lineno() <CR>", noremap) -- Get current relative filepath and line number of cursor.
 
 -- Terminal
 vim.api.nvim_set_keymap("t", "<esc>", "<C-\\><C-n>", noremap)
@@ -75,12 +74,14 @@ vim.api.nvim_set_keymap("n", "<leader>gp", ":Git push<CR>", noremap)
 vim.api.nvim_set_keymap("n", "<leader>gc", ":Git commit<CR>", noremap)
 
 -- TELESCOPE
+-- Searching
 vim.api.nvim_set_keymap("n", "<c-f>", "<cmd> Telescope find_files<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>f", "<cmd> Telescope live_grep_args<CR>", noremap_silent)
 vim.api.nvim_set_keymap("n", "<c-b>", "<cmd> Telescope buffers<CR>", noremap_silent)
 vim.api.nvim_set_keymap("n", "<c-g>", "<cmd> Telescope grep_string<CR>", noremap_silent)
 vim.api.nvim_set_keymap("n", "<c-m>", "<cmd> Telescope marks<CR>", noremap_silent)
-vim.api.nvim_set_keymap("n", "<leader>f", "<cmd> Telescope live_grep_args<CR>", noremap_silent)
-vim.api.nvim_set_keymap("n", "<leader><space>", "<cmd> Telescope lsp_document_diagnostics<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>yr", "<cmd> Telescope registers<CR>", noremap_silent)
+-- Lsp
 vim.api.nvim_set_keymap("n", "<leader>r", "<cmd> Telescope lsp_references<CR>", noremap_silent)
 vim.api.nvim_set_keymap("n", "<leader>ca", "<cmd> lua vim.lsp.buf.code_action()<CR>", noremap_silent)
 vim.api.nvim_set_keymap("n", "<leader>ae", "<cmd> Telescope diagnostics bufnr=0 <CR>", noremap_silent)
