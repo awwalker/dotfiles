@@ -76,6 +76,7 @@ function M.on_attach(client, bufnr)
   buf_set_keymap("n", "<leader>u", "<cmd> lua vim.lsp.buf.incoming_calls()<CR>")
   buf_set_keymap("n", "<leader>U", "<cmd> lua vim.lsp.buf.outgoing_calls()<CR>")
   buf_set_keymap("n", "<leader>R", "<cmd> lua vim.lsp.buf.rename()<CR>")
+  buf_set_keymap("n", "<leader>ca", "<cmd> lua vim.lsp.buf.code_action()<CR>")
 end
 
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers.

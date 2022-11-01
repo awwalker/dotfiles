@@ -120,6 +120,23 @@ telescope.setup({
     },
   },
 })
+-- ============================
+--           MAPPINGS
+-- ============================
+
+-- Searching
+local noremap_silent = { noremap = true, silent = true }
+vim.api.nvim_set_keymap("n", "<c-f>", "<cmd> Telescope find_files<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>f", "<cmd> Telescope live_grep_args<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<c-b>", "<cmd> Telescope buffers<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<c-g>", "<cmd> Telescope grep_string<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<c-m>", "<cmd> Telescope marks<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>yr", "<cmd> Telescope registers<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>gb", "<cmd> Telescope git_branches<CR>", noremap_silent)
+-- Lsp
+vim.api.nvim_set_keymap("n", "<leader>r", "<cmd> Telescope lsp_references<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>ae", "<cmd> Telescope diagnostics bufnr=0 <CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>Ae", "<cmd> Telescope diagnostics <CR>", noremap_silent)
 
 telescope.load_extension("fzf")
 telescope.load_extension("live_grep_args")

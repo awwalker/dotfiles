@@ -12,3 +12,10 @@ vim.api.nvim_create_autocmd("BufNewFile", {
     vim.diagnostic.disable(0)
   end,
 })
+-- ============================
+--           MAPPINGS
+-- ============================
+local noremap = { noremap = true }
+vim.api.nvim_set_keymap("n", "<localleader>rt", "<cmd> ConjureCljRunCurrentTest <CR>", noremap)
+vim.api.nvim_set_keymap("n", "<localleader>rf", "<cmd> ConjureCljRunCurrentNsTests <CR>", noremap)
+vim.api.nvim_set_keymap("n", "<localleader>le", "<cmd> ConjureCljLastException <CR>", noremap)
