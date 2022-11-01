@@ -24,4 +24,6 @@ require("plugins.conjure")
 
 require("plugins.marks")
 require("plugins.winsep")
+require("plugins.leap")
+require("plugins.flit")
 require("mappings")

@@ -67,9 +67,13 @@ require("packer").startup(function()
     requires = { { "mfussenegger/nvim-dap" } },
   })
   -- Movement.
-  use("ggandor/lightspeed.nvim")
-  use("tpope/vim-surround")
   use("tpope/vim-repeat")
+  use("ggandor/leap.nvim")
+  use({
+    "ggandor/flit.nvim",
+    requires = { { "ggandor/leap.nvim" } },
+  })
+  use("tpope/vim-surround")
   use("chentoast/marks.nvim")
   -- Git.
   use("tpope/vim-fugitive")
