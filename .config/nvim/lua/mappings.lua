@@ -81,6 +81,7 @@ vim.api.nvim_set_keymap("n", "<c-b>", "<cmd> Telescope buffers<CR>", noremap_sil
 vim.api.nvim_set_keymap("n", "<c-g>", "<cmd> Telescope grep_string<CR>", noremap_silent)
 vim.api.nvim_set_keymap("n", "<c-m>", "<cmd> Telescope marks<CR>", noremap_silent)
 vim.api.nvim_set_keymap("n", "<leader>yr", "<cmd> Telescope registers<CR>", noremap_silent)
+vim.api.nvim_set_keymap("n", "<leader>gb", "<cmd> Telescope git_branches<CR>", noremap_silent)
 -- Lsp
 vim.api.nvim_set_keymap("n", "<leader>r", "<cmd> Telescope lsp_references<CR>", noremap_silent)
 vim.api.nvim_set_keymap("n", "<leader>ca", "<cmd> lua vim.lsp.buf.code_action()<CR>", noremap_silent)

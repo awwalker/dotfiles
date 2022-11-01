@@ -23,4 +23,5 @@ require("plugins.alpha")
 require("plugins.conjure")
 
 require("plugins.marks")
+require("plugins.winsep")
 require("mappings")

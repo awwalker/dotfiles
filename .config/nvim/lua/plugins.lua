@@ -19,6 +19,7 @@ require("packer").startup(function()
   })
   use("ntpeters/vim-better-whitespace")
   use("karb94/neoscroll.nvim")
+  use("nvim-zh/colorful-winsep.nvim")
 
   -- LSP and Autocompletion.
   -- Snippets.

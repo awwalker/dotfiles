@@ -14,6 +14,8 @@ neorg.setup({
       },
     },
     ["core.norg.concealer"] = {},
+    ["core.norg.esupports.indent"] = {},
+    ["core.norg.journal"] = {},
     ["core.norg.completion"] = {
       config = {
         engine = "nvim-cmp",
