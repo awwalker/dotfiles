@@ -79,8 +79,9 @@ telescope.setup({
       mappings = {
         i = {
           ["<C-'>"] = lga_actions.quote_prompt(),
-          ["<C-'>g"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+          ["<C-'>i"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
           ["<C-'>t"] = lga_actions.quote_prompt({ postfix = " -t" }),
+          ["<C-f>"] = actions.to_fuzzy_refine,
         },
       },
     },
@@ -106,6 +107,9 @@ telescope.setup({
     },
     find_files = {
       find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
+      mappings = {
+        i = { ["<c-f>"] = actions.to_fuzzy_refine },
+      },
     },
     lsp_code_actions = {
       theme = "cursor",
@@ -117,6 +121,15 @@ telescope.setup({
     },
     live_grep = {
       only_sort_text = true,
+      mappings = {
+        i = { ["<c-f>"] = actions.to_fuzzy_refine },
+      },
+    },
+    grep_string = {
+      only_sort_text = true,
+      mappings = {
+        i = { ["<c-f>"] = actions.to_fuzzy_refine },
+      },
     },
   },
 })
