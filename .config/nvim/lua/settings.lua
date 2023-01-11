@@ -18,9 +18,9 @@ vim.g.black_linelength = 100
 
 -- FZF
 vim.g.fzf_action = {
-	["ctrl-t"] = "tab split",
-	["ctrl-s"] = "split",
-	["ctrl-v"] = "vsplit",
+  ["ctrl-t"] = "tab split",
+  ["ctrl-s"] = "split",
+  ["ctrl-v"] = "vsplit",
 }
 vim.g.fzf_buffers_jump = 1
 
@@ -79,5 +79,3 @@ vim.g.netrw_liststyle = 3
 
 -- SEXP
 vim.g.sexp_enable_insert_mode_mappings = false
-
--- CONJURE
