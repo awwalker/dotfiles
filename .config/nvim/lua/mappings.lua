@@ -18,8 +18,8 @@ vim.api.nvim_set_keymap("n", "E", "$", noremap)
 -- Shortcuts
 vim.api.nvim_set_keymap("i", "jk", "<esc>", noremap)
 vim.api.nvim_set_keymap("v", "<leader>y", '"+y', noremap) -- Copy.
+vim.api.nvim_set_keymap("v", "<leader>Y", '"+Y', noremap) -- Copy.
 vim.api.nvim_set_keymap("n", "<leader>p", '"+gp', noremap) -- Paste.
-
 -- Terminal
 vim.api.nvim_set_keymap("t", "<esc>", "<C-\\><C-n>", noremap)
 vim.api.nvim_set_keymap("t", "jk", "<C-\\><C-n>", noremap)
