@@ -86,13 +86,6 @@ require("packer").startup(function()
   })
   -- Terminal.
   use({ "akinsho/toggleterm.nvim", branch = "main" })
-  -- Command prompt.
-  use({
-    "VonHeikemen/fine-cmdline.nvim",
-    requires = {
-      { "MunifTanjim/nui.nvim" },
-    },
-  })
   -- Clojure.
   use("Olical/conjure")
   -- use when developing on conjure
@@ -109,6 +102,7 @@ require("packer").startup(function()
   use({
     "PaterJason/cmp-conjure",
   })
+  use("Invertisment/conjure-clj-additions-cider-nrepl-mw")
   use("bakpakin/fennel.vim")
   use("guns/vim-sexp")
   use("tpope/vim-sexp-mappings-for-regular-people")
@@ -137,6 +131,9 @@ require("packer").startup(function()
   use({
     "nvim-neorg/neorg",
     tag = "*",
-    requires = { "nvim-lua/plenary.nvim" },
+    requires = {
+      { "nvim-treesitter/nvim-treesitter" },
+      { "nvim-lua/plenary.nvim" },
+    },
   })
 end)

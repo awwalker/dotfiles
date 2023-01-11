@@ -9,12 +9,12 @@ require("plugins.bufferline")
 require("plugins.evil-lualine")
 require("plugins.treesitter")
 require("plugins.autopairs")
-require("plugins.cmdline")
 require("plugins.neoscroll")
 
 require("plugins.cmp")
 require("lsp")
 
+require("plugins.fugitive")
 require("plugins.dap")
 require("plugins.telescope")
 require("plugins.neorg")
