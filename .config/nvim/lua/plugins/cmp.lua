@@ -17,11 +17,11 @@ cmp.setup({
   mapping = {
     ["<c-k>"] = cmp.mapping.scroll_docs(-4),
     ["<c-j>"] = cmp.mapping.scroll_docs(4),
-    ["<c-Space>"] = cmp.mapping.complete(),
-    ["<c-c>"] = cmp.mapping.close(),
-    ["<CR>"] = cmp.mapping.confirm({ select = false }),
-    ["<Down>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-    ["<Up>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+    ["<c-Space>"] = cmp.mapping(cmp.mapping.complete({}), { "i", "c" }),
+    ["<c-c>"] = cmp.mapping(cmp.mapping.close(), { "i", "c" }),
+    ["<CR>"] = cmp.mapping(cmp.mapping.confirm({ select = false }), { "i", "c" }),
+    ["<Down>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }), { "i", "c" }),
+    ["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), { "i", "c" }),
   },
   sources = {
     { name = "vim-dadbod-completion" },
@@ -29,7 +29,9 @@ cmp.setup({
     { name = "nvim_lsp" },
     { name = "buffer" },
     { name = "cmdline" },
-    { name = "path" },
+    { name = "path", option = {
+      trailing_slash = true,
+    } },
     { name = "neorg" },
     { name = "dap" },
     { name = "nvim_lua" },
