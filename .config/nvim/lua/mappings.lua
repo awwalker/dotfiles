@@ -1,6 +1,7 @@
 -- =============================
 --            MAPPINGS
 -- =============================
+-- For <A-?> mappings to work in iTerm set <Alt> keys to Esc+ in iTerm prefs.
 local noremap = { noremap = true }
 
 -- Folds.

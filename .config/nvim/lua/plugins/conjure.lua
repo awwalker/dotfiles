@@ -2,6 +2,7 @@
 --            CONJURE
 -- =============================
 -- vim.g["conjure#debug"] = true
+vim.g["conjure#eval#gsubs"] = { ["comment"] = { "^%(comment[%s%c]", "(do " } }
 
 -- autocmd BufNewFile conjure-log-* lua vim.diagnostic.disable(0)
 vim.api.nvim_create_autocmd("BufNewFile", {
@@ -33,7 +34,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- ============================
 local noremap = { noremap = true }
 vim.api.nvim_set_keymap("n", "<localleader>rt", "<cmd> CcaNreplRunCurrentTest<CR>", noremap)
-vim.api.nvim_set_keymap("n", "<localleader>rf", "<cmd> CcaNreplRunTestsInTestNs<CR>", noremap)
+vim.api.nvim_set_keymap("n", "<localleader>rn", "<cmd> CcaNreplRunTestsInTestNs<CR>", noremap)
 vim.api.nvim_set_keymap("n", "<localleader>le", "<cmd> ConjureCljLastException <CR>", noremap)
 vim.api.nvim_set_keymap("n", "<leader>di", "<cmd> ConjureCljDebugInit<CR>", noremap)
 vim.api.nvim_set_keymap("n", "<leader>c", "<cmd> ConjureCljDebugInput continue<CR>", noremap)
