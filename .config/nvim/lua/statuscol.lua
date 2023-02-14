@@ -23,12 +23,7 @@ function M.column()
       sign = s
     end
   end
-  -- local components = {
-  --   sign and ("%#" .. sign.texthl .. "#" .. sign.text .. "%*") or " ",
-  --   [[%=]],
-  --   [[%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''} ]],
-  --   git_sign and ("%#" .. git_sign.texthl .. "#" .. git_sign.text .. "%*") or "  ",
-  -- }
+
   local components = {
     git_sign and ("%#" .. git_sign.texthl .. "#" .. git_sign.text .. "%*") or " ",
     [[%=]],

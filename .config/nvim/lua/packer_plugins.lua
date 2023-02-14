@@ -41,9 +41,7 @@ require("packer").startup(function()
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
   })
-  use("p00f/nvim-ts-rainbow")
   use("windwp/nvim-autopairs")
-  use("nvim-treesitter/nvim-treesitter-context")
   -- Telescope.
   use({
     "nvim-telescope/telescope.nvim",

@@ -2,9 +2,14 @@
 --          TREESITTER
 -- =============================
 require("nvim-treesitter.configs").setup({
-  ensure_installed = { "python", "clojure", "go", "lua", "java", "gitignore" },
-  rainbow = {
-    enable = true,
+  ensure_installed = {
+    "python",
+    "clojure",
+    "go",
+    "lua",
+    "java",
+    "gitignore",
+    "terraform",
   },
   highlight = {
     enable = true,
@@ -19,7 +24,6 @@ require("nvim-treesitter.configs").setup({
     goto_right_end = false,
     fallback_cmd_normal = "normal! %",
   },
-  autopairs = { enable = true },
   textobjects = {
     select = {
       enable = true,

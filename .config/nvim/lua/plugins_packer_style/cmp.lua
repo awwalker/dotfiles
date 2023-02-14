@@ -24,18 +24,18 @@ cmp.setup({
     ["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }), { "i", "c" }),
   },
   sources = {
-    { name = "vim-dadbod-completion" },
-    { name = "conjure" },
     { name = "nvim_lsp" },
+    { name = "conjure" },
+    { name = "neorg" },
+    { name = "nvim_lua" },
     { name = "buffer" },
     { name = "cmdline" },
     { name = "path", option = {
       trailing_slash = true,
     } },
-    { name = "neorg" },
     { name = "dap" },
-    { name = "nvim_lua" },
     { name = "luasnip" },
+    { name = "vim-dadbod-completion" },
   },
   window = {
     documentation = cmp.config.window.bordered(),

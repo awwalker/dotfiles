@@ -15,8 +15,10 @@ local new_maker = function(filepath, bufnr, opts)
     command = "file",
     args = { "--mime-type", "-b", filepath },
     on_exit = function(j)
-      local mime_type = vim.split(j:result()[1], "/")[1]
-      if mime_type == "text" then
+      local result = vim.split(j:result()[1], "/")
+      local mime_type = result[1]
+      local is_json = result[2] == "json"
+      if mime_type == "text" or is_json then
         previewers.buffer_previewer_maker(filepath, bufnr, opts)
       else
         -- maybe we want to write something to the buffer here
@@ -106,7 +108,16 @@ telescope.setup({
       },
     },
     find_files = {
-      find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
+      find_command = {
+        "fd",
+        "--type",
+        "f",
+        "--strip-cwd-prefix",
+        "-H",
+        "-E .git",
+        "-E *.pyc",
+        "-E node_modules",
+      },
       mappings = {
         i = { ["<c-f>"] = actions.to_fuzzy_refine },
       },
