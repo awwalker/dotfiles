@@ -1,6 +1,7 @@
 -- =============================
 --            DADBOD
 -- =============================
+-- connections managed as JSON in `~/.local/share/nvim/db_ui/connections.json`
 
 -- ============================
 --           MAPPINGS
