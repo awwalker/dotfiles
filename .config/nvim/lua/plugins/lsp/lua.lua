@@ -1,9 +1,8 @@
 local M = {}
 
 M.nls = {
-  condition = function(utils)
-    utils.root_has_file({ "stylua.toml", ".stylua.toml" })
-  end,
+  extra_args = { "--config-path", vim.fn.expand("~/.config/stylua/stylua.toml"),
+                 "--search-parent-directories" },
 }
 
 local runtime_path = vim.split(package.path, ";")

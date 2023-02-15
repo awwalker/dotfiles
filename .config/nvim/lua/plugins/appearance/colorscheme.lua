@@ -1,10 +1,15 @@
 local M = {
-  "connorholyday/vim-snazzy",
-  lazy = false,
-  priority = 1000,
-  config = function()
-    vim.cmd([[ colorscheme snazzy ]])
-  end,
+	"bbenzikry/snazzybuddy.nvim",
+	dependencies = {
+		"tjdevries/colorbuddy.nvim",
+	},
+	lazy = false,
+	priority = 1000,
+	config = function()
+		local colorbuddy = require("colorbuddy")
+		colorbuddy.colorscheme("snazzybuddy")
+		vim.g.snazzybuddy_icons = true
+	end,
 }
 
 return M

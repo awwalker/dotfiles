@@ -44,6 +44,10 @@ local M = {
         component_separators = "",
         section_separators = "",
         globalstatus = true,
+        disabled_filetypes = {
+          'alpha',
+          'lazy',
+        },
         theme = {
           -- We are going to use lualine_c an lualine_x as left and
           -- right section. Both are highlighted by c theme .  So we
