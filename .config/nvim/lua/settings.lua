@@ -80,7 +80,6 @@ vim.o.foldenable = true
 vim.o.foldlevelstart = 10
 vim.o.foldnestmax = 10
 vim.o.foldmethod = "expr"
-vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- SPLITS
 vim.o.splitbelow = true

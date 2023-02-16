@@ -1,14 +1,11 @@
 local M = {
-	"bbenzikry/snazzybuddy.nvim",
-	dependencies = {
-		"tjdevries/colorbuddy.nvim",
-	},
+	"christianchiarulli/nvcode-color-schemes.vim",
+	dependencies = {},
 	lazy = false,
 	priority = 1000,
 	config = function()
-		local colorbuddy = require("colorbuddy")
-		colorbuddy.colorscheme("snazzybuddy")
-		vim.g.snazzybuddy_icons = true
+		vim.g.nvcode_termcolors = 256
+		vim.cmd([[ color snazzy ]])
 	end,
 }
 

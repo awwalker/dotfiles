@@ -6,6 +6,4 @@ M.nls = {
 	args = { "--no-color", "--no-fail", "--format=json", "-" },
 }
 
-M.lsp = {}
-
 return M

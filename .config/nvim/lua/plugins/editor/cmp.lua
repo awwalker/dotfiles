@@ -1,7 +1,7 @@
 local dap_filetypes = { "dap-repl", "dapui_watches", "dapui_hover" }
 local M = {
 	"hrsh7th/nvim-cmp",
-	event = { "VimEnter", "BufReadPre" },
+	event = { "InsertEnter" },
 	dependencies = {
 		-- Snippets.
 		"saadparwaiz1/cmp_luasnip",
@@ -19,7 +19,13 @@ local M = {
 			},
 			ft = dap_filetypes,
 		},
-		"PaterJason/cmp-conjure",
+		{
+			"PaterJason/cmp-conjure",
+			dependencies = {
+				"Olical/conjure",
+				ft = { "clojure" },
+			},
+		},
 		"kristijanhusak/vim-dadbod-completion",
 	},
 	config = function()
@@ -98,6 +104,11 @@ local M = {
 		cmp.setup.filetype(dap_filetypes, {
 			sources = {
 				{ name = "dap" },
+			},
+		})
+		cmp.setup.filetype("clojure", {
+			sources = {
+				{ name = "cmp-conjure" },
 			},
 		})
 	end,

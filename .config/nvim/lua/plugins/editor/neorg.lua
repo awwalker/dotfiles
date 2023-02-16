@@ -1,7 +1,9 @@
 local M = {
 	"nvim-neorg/neorg",
 	ft = "norg",
-	build = ":Neorg sync-parsers",
+	build = "Neorg sync-parsers",
+	version = "*",
+	cmd = "Neorg",
 	dependencies = {
 		{ "nvim-lua/plenary.nvim" },
 		{ "nvim-treesitter/nvim-treesitter" },
@@ -10,7 +12,6 @@ local M = {
 		load = {
 			["core.defaults"] = {},
 			["core.autocommands"] = {},
-			["core.integrations.treesitter"] = {},
 			["core.norg.dirman"] = {
 				config = {
 					workspaces = {
