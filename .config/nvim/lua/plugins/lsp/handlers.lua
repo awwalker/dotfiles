@@ -89,9 +89,4 @@ M.on_attach = function(client, bufnr)
 	buf_set_keymap("n", "<leader>ca", "<cmd> lua vim.lsp.buf.code_action()<CR>")
 end
 
-M.capabilities = function()
-	local caps = vim.lsp.protocol.make_client_capabilities()
-	return require("cmp_nvim_lsp").default_capabilities(caps)
-end
-
 return M

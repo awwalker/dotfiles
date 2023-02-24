@@ -13,6 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("settings")
 require("mappings")
+require("statuscol")
 
 require("lazy").setup("plugins", {
 	spec = "plugins",

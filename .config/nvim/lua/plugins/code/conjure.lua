@@ -51,6 +51,8 @@ local M = {
 			{ "<leader>rt", "<cmd> CcaNreplRunCurrentTest<CR>", mode = "n", noremap },
 		},
 	},
+	{ "Olical/aniseed" },
+	{ "bakpakin/fennel.vim" },
 }
 
 return M

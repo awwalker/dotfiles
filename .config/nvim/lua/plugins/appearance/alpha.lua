@@ -40,7 +40,8 @@ local M = {
 	config = function()
 		local alpha = require("alpha")
 		local dashboard = require("alpha.themes.dashboard")
-		local leader = "<LD>"
+		local ctrl = "<ctrl>"
+		local ldr = "<LD>"
 
 		dashboard.section.header.val = {
 			"⠸⣷⣦⠤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣠⣤⠀⠀⠀ ",
@@ -60,14 +61,13 @@ local M = {
 			"⠀⠀⠀⠀⠀⠈⠻⠿⠿⠓⠄⠤⠘⠉⠙⠤⢀⠾⠿⣿⠟⠋         ",
 		}
 		dashboard.section.buttons.val = {
-			button("e", "ﱐ  New file", leader, "<cmd>ene<CR>"),
-			button("s", "  Sync plugins", leader, "<cmd>PackerSync<CR>"),
-			button("c", "  Configurations", leader, "<cmd>e ~/.config/nvim/<CR>"),
-			button(leader .. " f f", "  Find files", leader, "<cmd>Telescope find_files<CR>"),
-			button(leader .. " f o", "  Find old files", leader, "<cmd>Telescope oldfiles<CR>"),
-			button(leader .. " f ;", "ﭨ  Live grep", leader, "<cmd>Telescope live_grep<CR>"),
-			button(leader .. " g b", "  Git branches", leader, "<cmd> Telescope git_branches<CR>"),
-			button(leader .. "   q", "  Quit", leader, "<cmd>qa<CR>"),
+			button("e", "ﱐ  New file", ldr, "<cmd>ene<CR>"),
+			button("c", "  Configurations", ldr, "<cmd>e ~/.config/nvim/<CR>"),
+			button(ctrl .. " f", "  Find files", ctrl, "<cmd>Telescope find_files<CR>"),
+			button(ctrl .. " o", "  Find old files", ctrl, "<cmd>Telescope oldfiles<CR>"),
+			button(ldr .. " f", "ﭨ  Live grep", ldr, "<cmd>Telescope live_grep<CR>"),
+			button(ldr .. " g b", "  Git branches", ldr, "<cmd> Telescope git_branches<CR>"),
+			button(ldr .. "   q", "  Quit", ldr, "<cmd>qa<CR>"),
 		}
 
 		dashboard.section.footer.opts.hl = "Comment"
@@ -90,6 +90,20 @@ local M = {
 			{ type = "padding", val = foot_butt_padding },
 			dashboard.section.footer,
 		}
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "AlphaReady",
+			desc = "disable tabline for alpha",
+			callback = function()
+				vim.opt.showtabline = 0
+			end,
+		})
+		vim.api.nvim_create_autocmd("BufUnload", {
+			buffer = 0,
+			desc = "enable tabline after alpha",
+			callback = function()
+				vim.opt.showtabline = 2
+			end,
+		})
 		alpha.setup(dashboard.opts)
 	end,
 }

@@ -1,6 +1,7 @@
 local M = {
 	"akinsho/nvim-bufferline.lua",
 	branch = "main",
+	event = "BufEnter",
 	opts = {
 		options = {
 			hover = {

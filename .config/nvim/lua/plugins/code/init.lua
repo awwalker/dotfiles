@@ -5,9 +5,7 @@ local M = {
 		dependencies = {
 			{
 				"radenling/vim-dispatch-neovim",
-				dependencies = {
-					"tpope/vim-dispatch",
-				},
+				"tpope/vim-dispatch",
 			},
 		},
 		ft = { "clojure", "edn" },
@@ -23,20 +21,13 @@ local M = {
 	},
 	{
 		"eraserhd/parinfer-rust",
+		branch = "master",
+		version = false,
 		build = "cargo build --release",
+		event = "InsertCharPre",
 		ft = { "clojure", "scheme", "racket", "lisp", "elisp" },
 	},
 	require("plugins.code.toggleterm"),
-	{
-		"tpope/vim-fugitive",
-		cmd = "G",
-	},
-	{
-		"tpope/vim-rhubarb",
-		dependencies = {
-			"tpope/vim-fugitive",
-		},
-		cmd = "GBrowse",
-	},
+	require("plugins.code.git"),
 }
 return M

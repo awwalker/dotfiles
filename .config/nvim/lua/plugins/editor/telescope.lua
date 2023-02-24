@@ -30,7 +30,6 @@ local M = {
 		{ "<leader>f", "<cmd> Telescope live_grep_args<CR>", mode = "n", noremap_silent },
 		{ "<c-b>", "<cmd> Telescope buffers<CR>", mode = "n", noremap_silent },
 		{ "<c-g>", "<cmd> Telescope grep_string<CR>", mode = "n", noremap_silent },
-		{ "<c-m>", "<cmd> Telescope marks<CR>", mode = "n", noremap_silent },
 		{ "<leader>gb", "<cmd> Telescope git_branches<CR>", mode = "n", noremap_silent },
 		{ "<leader>r", "<cmd> Telescope lsp_references<CR>", mode = "n", noremap_silent },
 		{ "<c-m>", "<cmd> Telescope marks<CR>", mode = "n", noremap_silent },
@@ -65,10 +64,6 @@ local M = {
 				end,
 			}):sync()
 		end
-
-		telescope.load_extension("fzf")
-		telescope.load_extension("live_grep_args")
-		telescope.load_extension("ui-select")
 
 		telescope.setup({
 			defaults = {
@@ -150,10 +145,6 @@ local M = {
 				lsp_code_actions = {
 					theme = "cursor",
 					previewer = false,
-					layout_config = {
-						width = width_for_nopreview,
-						height = height_dropdown_nopreview,
-					},
 				},
 				live_grep = {
 					only_sort_text = true,
@@ -169,6 +160,9 @@ local M = {
 				},
 			},
 		})
+		telescope.load_extension("fzf")
+		telescope.load_extension("live_grep_args")
+		telescope.load_extension("ui-select")
 	end,
 }
 return M
