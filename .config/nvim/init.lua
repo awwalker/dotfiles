@@ -27,12 +27,14 @@ require("lazy").setup("plugins", {
 			disabled_plugins = {
 				"gzip",
 				"matchit",
+				-- easier to view matching parens.
 				-- "matchparen",
 				"netrwPlugin",
 				"tarPlugin",
 				"tohtml",
 				"tutor",
-				"zipPlugin",
+				-- required to view java source files.
+				-- "zipPlugin",
 			},
 		},
 	},
