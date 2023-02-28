@@ -12,18 +12,37 @@ local M = {
 		"tpope/vim-surround",
 		dependencies = {
 			"tpope/vim-repeat",
+			keys = {
+				{ "." },
+				{ "cs" },
+			},
 		},
 	},
 	{
 		"chentoast/marks.nvim",
-		opts = {
-			mappings = {
-				set_next = "mm",
-				next = "m[",
-				prev = "m]",
-			},
-			builtin_marks = { ".", "<", ">", "^" },
-		},
+		cmd = "MarksToggleSigns",
+		event = "VeryLazy",
+		config = function()
+			local marks = require("marks")
+			marks.setup({
+				mappings = {
+					toggle = "mm",
+					prev = "<localleader>m",
+					next = "<leader>m",
+				},
+				builtin_marks = { ".", "<", ">", "^" },
+			})
+		end,
+	},
+	{
+		"ellisonleao/glow.nvim",
+		event = "VeryLazy",
+		cmd = "Glow",
+		version = false,
+		config = function()
+			local glow = require("glow")
+			glow.setup()
+		end,
 	},
 }
 

@@ -5,14 +5,14 @@ local M = {
 		"Olical/conjure",
 		ft = { "clojure", "edn", "lua", "python" },
 		keys = {
-			{ "<leader>le", "<cmd> ConjureCljLastException<CR>", mode = "n", noremap },
-			{ "<leader>di", "<cmd> ConjureCljDebugInit<CR>", mode = "n", noremap },
 			{ "<leader>c", "<cmd> ConjureCljDebugInput continue<CR>", mode = "n", noremap },
-			{ "<leader>si", "<cmd> ConjureCljDebugInput in<CR>", mode = "n", noremap },
-			{ "<leader>so", "<cmd> ConjureCljDebugInput out<CR>", mode = "n", noremap },
-			{ "<leader>ll", "<cmd> ConjureCljDebugInput local<CR>", mode = "n", noremap },
 			{ "<leader>n", "<cmd> ConjureCljDebugInput next<CR>", mode = "n", noremap },
 			{ "<leader>de", "<cmd> ConjureCljDebugInput eval<CR>", mode = "n", noremap },
+			{ "<leader>di", "<cmd> ConjureCljDebugInit<CR>", mode = "n", noremap },
+			{ "<leader>le", "<cmd> ConjureCljLastException<CR>", mode = "n", noremap },
+			{ "<leader>ll", "<cmd> ConjureCljDebugInput local<CR>", mode = "n", noremap },
+			{ "<leader>si", "<cmd> ConjureCljDebugInput in<CR>", mode = "n", noremap },
+			{ "<leader>so", "<cmd> ConjureCljDebugInput out<CR>", mode = "n", noremap },
 		},
 		config = function()
 			vim.g["conjure#eval#gsubs"] = { ["comment"] = { "^%(comment[%s%c]", "(do " } }
@@ -47,8 +47,8 @@ local M = {
 		ft = { "clojure" },
 		cmd = { "CcaNreplRunTestsInTestNs", "CcaNreplRunCurrentTest", "CcaNreplJumpToFailingCljTest" },
 		keys = {
-			{ "<leader>rns", "<cmd> CcaNreplRunTestsInTestNs<CR>", mode = "n", noremap },
-			{ "<leader>rt", "<cmd> CcaNreplRunCurrentTest<CR>", mode = "n", noremap },
+			{ "<localleader>rns", "<cmd>CcaNreplRunTestsInTestNs<CR>", mode = "n", noremap },
+			{ "<localleader>rt", "<cmd>CcaNreplRunCurrentTest<CR>", mode = "n", noremap },
 		},
 	},
 	{ "Olical/aniseed" },

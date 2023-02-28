@@ -61,13 +61,13 @@ local M = {
 			"⠀⠀⠀⠀⠀⠈⠻⠿⠿⠓⠄⠤⠘⠉⠙⠤⢀⠾⠿⣿⠟⠋         ",
 		}
 		dashboard.section.buttons.val = {
-			button("e", "ﱐ  New file", ldr, "<cmd>ene<CR>"),
-			button("c", "  Configurations", ldr, "<cmd>e ~/.config/nvim/<CR>"),
 			button(ctrl .. " f", "  Find files", ctrl, "<cmd>Telescope find_files<CR>"),
 			button(ctrl .. " o", "  Find old files", ctrl, "<cmd>Telescope oldfiles<CR>"),
 			button(ldr .. " f", "ﭨ  Live grep", ldr, "<cmd>Telescope live_grep<CR>"),
 			button(ldr .. " g b", "  Git branches", ldr, "<cmd> Telescope git_branches<CR>"),
 			button(ldr .. "   q", "  Quit", ldr, "<cmd>qa<CR>"),
+			button("e", "ﱐ  New file", ldr, "<cmd>ene<CR>"),
+			button("c", "  Configurations", ldr, "<cmd>e ~/.config/nvim/<CR>"),
 		}
 
 		dashboard.section.footer.opts.hl = "Comment"

@@ -22,6 +22,7 @@ local M = {
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		"nvim-telescope/telescope-live-grep-args.nvim",
 		"nvim-telescope/telescope-ui-select.nvim",
+		"debugloop/telescope-undo.nvim",
 	},
 	event = "VeryLazy",
 	cmd = "Telescope",
@@ -32,13 +33,15 @@ local M = {
 		{ "<c-g>", "<cmd> Telescope grep_string<CR>", mode = "n", noremap_silent },
 		{ "<leader>gb", "<cmd> Telescope git_branches<CR>", mode = "n", noremap_silent },
 		{ "<leader>r", "<cmd> Telescope lsp_references<CR>", mode = "n", noremap_silent },
-		{ "<c-m>", "<cmd> Telescope marks<CR>", mode = "n", noremap_silent },
+		{ "<A-m>", "<cmd> Telescope marks<CR>", mode = "n", noremap_silent },
+		{ "<c-u>", "<cmd> Telescope undo<CR>", mode = "n", noremap_silent },
 	},
 	config = function()
 		local telescope = require("telescope")
 		local actions = require("telescope.actions")
 		local themes = require("telescope.themes")
 		local lga_actions = require("telescope-live-grep-args.actions")
+		local undo_actions = require("telescope-undo.actions")
 
 		-- Credit https://github.com/nvim-telescope/telescope.nvim/issues/223#issuecomment-810091610
 		local previewers = require("telescope.previewers")
@@ -75,17 +78,20 @@ local M = {
 				mappings = {
 					i = {
 						["<esc>"] = actions.close,
-						["<c-s>"] = actions.select_horizontal,
-						["<c-d>"] = actions.delete_buffer,
+						["<C-s>"] = actions.select_horizontal,
+						["<C-d>"] = actions.delete_buffer,
+						["<C-f>"] = actions.to_fuzzy_refine,
 					},
 					n = {
-						["<c-s>"] = actions.select_horizontal,
-						["<c-d>"] = actions.delete_buffer,
+						["<C-s>"] = actions.select_horizontal,
+						["<C-d>"] = actions.delete_buffer,
+						["<C-f>"] = actions.to_fuzzy_refine,
 					},
 				},
 				file_ignore_patterns = { "node_modules" },
 				set_env = { ["COLORTERM"] = "truecolor" },
 				buffer_previewer_maker = new_maker,
+				previewer = true,
 			},
 			extensions = {
 				fzf = {
@@ -108,6 +114,16 @@ local M = {
 				["ui-select"] = {
 					themes.get_cursor({}),
 				},
+				undo = {
+					use_delta = true,
+					mappings = {
+						i = {
+							["<C-space>"] = undo_actions.yank_additions,
+							["<CR>"] = undo_actions.restore,
+							["<A-CR>"] = undo_actions.yank_deletions,
+						},
+					},
+				},
 			},
 			pickers = {
 				buffers = {
@@ -120,8 +136,8 @@ local M = {
 						height = height_dropdown_nopreview,
 					},
 					mappings = {
-						n = { ["<c-d>"] = actions.delete_buffer },
-						i = { ["<c-f>"] = actions.to_fuzzy_refine },
+						n = { ["<C-d>"] = actions.delete_buffer },
+						i = { ["<C-f>"] = actions.to_fuzzy_refine },
 					},
 				},
 				find_files = {
@@ -139,7 +155,16 @@ local M = {
 						"node_modules",
 					},
 					mappings = {
-						i = { ["<c-f>"] = actions.to_fuzzy_refine },
+						i = { ["<C-f>"] = actions.to_fuzzy_refine },
+					},
+				},
+				git_branches = {
+					mappings = {
+						i = {
+							["<CR>"] = actions.git_switch_branch,
+							["<C-r>"] = actions.git_rebase_branch,
+							["<C-d>"] = actions.git_delete_branch,
+						},
 					},
 				},
 				lsp_code_actions = {
@@ -149,13 +174,13 @@ local M = {
 				live_grep = {
 					only_sort_text = true,
 					mappings = {
-						i = { ["<c-f>"] = actions.to_fuzzy_refine },
+						i = { ["<C-f>"] = actions.to_fuzzy_refine },
 					},
 				},
 				grep_string = {
 					only_sort_text = true,
 					mappings = {
-						i = { ["<c-f>"] = actions.to_fuzzy_refine },
+						i = { ["<C-f>"] = actions.to_fuzzy_refine },
 					},
 				},
 			},
@@ -163,6 +188,7 @@ local M = {
 		telescope.load_extension("fzf")
 		telescope.load_extension("live_grep_args")
 		telescope.load_extension("ui-select")
+		telescope.load_extension("undo")
 	end,
 }
 return M

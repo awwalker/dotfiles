@@ -18,30 +18,27 @@ local M = {
 		},
 		config = function()
 			local lsp = require("lspconfig")
+			local util = require("lspconfig.util")
 			local handlers = require("plugins.lsp.handlers")
-			local capabilities = function()
-				local caps = vim.lsp.protocol.make_client_capabilities()
-				return require("cmp_nvim_lsp").default_capabilities(caps)
-			end
+			local cmp_nvim = require("cmp_nvim_lsp")
+			local capabilities = cmp_nvim.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 			lsp.sumneko_lua.setup({
 				on_attach = handlers.on_attach,
-				capabilities = capabilities(),
+				capabilities = capabilities,
 				single_file_support = true,
 				settings = require("plugins.lsp.lua").lsp,
 			})
 
 			lsp.clojure_lsp.setup({
-				on_attach = function(client, bufnr)
-					client.server_capabilities.document_formatting = false
-					handlers.on_attach(client, bufnr)
-				end,
-				capabilities = capabilities(),
+				on_attach = handlers.on_attach,
+				capabilities = capabilities,
+				root_dir = util.root_pattern("project.clj", "deps.edn", "build.boot", "shadow-cljs.edn", ".git"),
 			})
 
 			lsp.dockerls.setup({
 				on_attach = handlers.on_attach,
-				capabilities = capabilities(),
+				capabilities = capabilities,
 			})
 
 			lsp.jsonls.setup({
@@ -49,7 +46,7 @@ local M = {
 					client.server_capabilities.document_formatting = false
 					handlers.on_attach(client, bufnr)
 				end,
-				capabilities = capabilities(),
+				capabilities = capabilities,
 				settings = {
 					{
 						init_options = {
@@ -61,12 +58,12 @@ local M = {
 
 			lsp.marksman.setup({
 				on_attach = handlers.on_attach,
-				capabilities = capabilities(),
+				capabilities = capabilities,
 			})
 
-			lsp.python.setup({
+			lsp.pyright.setup({
 				on_attach = handlers.on_attach,
-				capabilities = capabilities(),
+				capabilities = capabilities,
 			})
 		end,
 	},
@@ -80,17 +77,15 @@ local M = {
 		config = function()
 			local nls = require("null-ls")
 			local handlers = require("plugins.lsp.handlers")
-			local capabilities = function()
-				local caps = vim.lsp.protocol.make_client_capabilities()
-				return require("cmp_nvim_lsp").default_capabilities(caps)
-			end
+			local cmp_nvim = require("cmp_nvim_lsp")
+			local capabilities = cmp_nvim.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 			nls.setup({
 				debug = true,
 				debounce = 150,
 				save_after_format = false,
 				on_attach = handlers.on_attach,
-				capabilities = capabilities(),
+				capabilities = capabilities,
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", ".git"),
 				sources = {
 					-- DOCKER
