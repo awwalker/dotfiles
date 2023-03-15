@@ -16,6 +16,7 @@ local M = {
 		},
 		config = function()
 			vim.g["conjure#eval#gsubs"] = { ["comment"] = { "^%(comment[%s%c]", "(do " } }
+			vim.g["conjure#client#python#stdio#command"] = "python3.9 -iq"
 			-- autocmd BufNewFile conjure-log-* lua vim.diagnostic.disable(0)
 			vim.api.nvim_create_autocmd("BufNewFile", {
 				group = vim.api.nvim_create_augroup("ConjureLog", { clear = true }),
@@ -25,9 +26,9 @@ local M = {
 				end,
 			})
 			-- autocmd User ConjureEval if expand("%:t") =~ "^conjure-log-" | exec "normal G" | endif
-			vim.api.nvim_create_autocmd("User", {
+			vim.api.nvim_create_autocmd("BufEnter", {
 				group = vim.api.nvim_create_augroup("ConjureEval", { clear = true }),
-				pattern = "ConjureEval",
+				pattern = "conjure-log-*",
 				callback = function(params)
 					if string.match(vim.api.nvim_buf_get_name(0), "conjure%-log%-") then
 						vim.api.nvim_exec([[normal G]], true)
@@ -35,10 +36,10 @@ local M = {
 				end,
 			})
 
-			vim.api.nvim_create_autocmd("FileType", {
+			vim.api.nvim_create_autocmd("BufEnter", {
 				group = vim.api.nvim_create_augroup("ConjureSmartQ", { clear = true }),
 				pattern = "conjure-log-*",
-				command = "nmap <buffer> q gq",
+				command = "nmap <buffer> q :q<CR>",
 			})
 		end,
 	},

@@ -90,6 +90,10 @@ local M = {
 			{ type = "padding", val = foot_butt_padding },
 			dashboard.section.footer,
 		}
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "alpha",
+			command = "nmap <buffer> q :close<CR>",
+		})
 		vim.api.nvim_create_autocmd("User", {
 			pattern = "AlphaReady",
 			desc = "disable tabline for alpha",
