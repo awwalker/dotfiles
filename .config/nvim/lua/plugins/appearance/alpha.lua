@@ -33,7 +33,7 @@ end
 local M = {
 	"goolord/alpha-nvim",
 	lazy = true,
-	event = "BufEnter",
+	event = { "VimEnter" },
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
 	},
@@ -61,12 +61,12 @@ local M = {
 			"⠀⠀⠀⠀⠀⠈⠻⠿⠿⠓⠄⠤⠘⠉⠙⠤⢀⠾⠿⣿⠟⠋         ",
 		}
 		dashboard.section.buttons.val = {
-			button(ctrl .. " f", "  Find files", ctrl, "<cmd>Telescope find_files<CR>"),
-			button(ctrl .. " o", "  Find old files", ctrl, "<cmd>Telescope oldfiles<CR>"),
-			button(ldr .. " f", "ﭨ  Live grep", ldr, "<cmd>Telescope live_grep<CR>"),
-			button(ldr .. " g b", "  Git branches", ldr, "<cmd> Telescope git_branches<CR>"),
-			button(ldr .. "   q", "  Quit", ldr, "<cmd>qa<CR>"),
-			button("e", "ﱐ  New file", ldr, "<cmd>ene<CR>"),
+			button(ctrl .. " f", "󰍉  Find files", ctrl, "<cmd>Telescope find_files<CR>"),
+			button(ldr .. " f", "󱎸  Live grep", ldr, "<cmd>Telescope live_grep_args<CR>"),
+			button(ldr .. " g b", "  Git branches", ldr, "<cmd> Telescope git_branches<CR>"),
+			button(ldr .. " d b", "  Database connections", ldr, "<cmd>DBUI<CR>"),
+			button(ldr .. "   q", "󰗼  Quit", ldr, "<cmd>qa<CR>"),
+			button("e", "  New file", ldr, "<cmd>ene<CR>"),
 			button("c", "  Configurations", ldr, "<cmd>e ~/.config/nvim/<CR>"),
 		}
 
@@ -99,6 +99,7 @@ local M = {
 			desc = "disable tabline for alpha",
 			callback = function()
 				vim.opt.showtabline = 0
+				vim.opt.statuscolumn = [[]]
 			end,
 		})
 		vim.api.nvim_create_autocmd("BufUnload", {
@@ -106,6 +107,7 @@ local M = {
 			desc = "enable tabline after alpha",
 			callback = function()
 				vim.opt.showtabline = 2
+				vim.opt.statuscolumn = [[%!v:lua.Status.column()]]
 			end,
 		})
 		alpha.setup(dashboard.opts)

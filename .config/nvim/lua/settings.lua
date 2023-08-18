@@ -84,3 +84,6 @@ vim.g.netrw_liststyle = 3
 
 -- SEXP
 vim.g.sexp_enable_insert_mode_mappings = false
+
+-- DadBod SSH
+vim.g.db_ssh_default_async = true

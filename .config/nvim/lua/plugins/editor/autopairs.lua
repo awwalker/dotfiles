@@ -1,6 +1,6 @@
 local M = {
 	"windwp/nvim-autopairs",
-	event = "VeryLazy",
+	event = "InsertEnter",
 	config = function()
 		local autopairs = require("nvim-autopairs")
 		local cond = require("nvim-autopairs.conds")

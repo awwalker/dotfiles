@@ -1,9 +1,7 @@
 local M = {
-  "nvim-zh/colorful-winsep.nvim",
-  lazy = false,
-  config = function()
-    require('colorful-winsep').setup()
-  end,
+	"nvim-zh/colorful-winsep.nvim",
+	event = "WinNew",
+	config = true,
 }
 
 return M

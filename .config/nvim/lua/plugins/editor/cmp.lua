@@ -98,9 +98,7 @@ local M = {
 				},
 			})
 			cmp.setup.cmdline(":", {
-				view = {
-					entries = { name = "wildmenu" },
-				},
+				mapping = cmp.mapping.preset.cmdline(),
 				sources = cmp.config.sources({
 					{ name = "path" },
 				}, {

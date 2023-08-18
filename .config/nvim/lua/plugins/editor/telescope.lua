@@ -70,7 +70,10 @@ local M = {
 
 		telescope.setup({
 			defaults = {
-				prompt_prefix = " ",
+				path_display = {
+					"truncate",
+				},
+				prompt_prefix = "🔍 ",
 				layout_config = {
 					horizontal = { mirror = false, preview_width = 0.5 },
 					vertical = { mirror = false },
@@ -115,6 +118,12 @@ local M = {
 					themes.get_cursor({}),
 				},
 				undo = {
+					layout_strategy = "vertical",
+					side_by_side = true,
+					layout_config = {
+						preview_height = 0.8,
+					},
+					entry_format = "󰣜 #$ID, $STAT, $TIME",
 					use_delta = true,
 					mappings = {
 						i = {
@@ -164,6 +173,7 @@ local M = {
 							["<CR>"] = actions.git_switch_branch,
 							["<C-r>"] = actions.git_rebase_branch,
 							["<C-d>"] = actions.git_delete_branch,
+							["<C-n>"] = actions.git_create_branch,
 						},
 					},
 				},

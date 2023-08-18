@@ -47,8 +47,16 @@ local M = {
 					handlers.on_attach(client, bufnr)
 				end,
 				capabilities = capabilities,
+				init_options = {
+					provideFormatter = false,
+				},
 				settings = {
 					{
+						json = {
+							format = {
+								enable = false,
+							},
+						},
 						init_options = {
 							provideFormatter = false,
 						},
@@ -73,7 +81,7 @@ local M = {
 			"nvim-lua/plenary.nvim",
 			"hrsh7th/cmp-nvim-lsp",
 		},
-		event = { "BufRead", "BufWritePre" },
+		event = { "BufRead", "BufWritePre", "BufReadPre", "InsertEnter" },
 		config = function()
 			local nls = require("null-ls")
 			local handlers = require("plugins.lsp.handlers")
@@ -105,6 +113,8 @@ local M = {
 					nls.builtins.diagnostics.trail_space,
 					nls.builtins.formatting.trim_whitespace,
 					nls.builtins.formatting.trim_newlines,
+					-- GIT
+					nls.builtins.code_actions.gitsigns,
 				},
 			})
 		end,

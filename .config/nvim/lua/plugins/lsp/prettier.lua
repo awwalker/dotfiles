@@ -4,7 +4,7 @@ M.json = {
 	filetypes = { "json" },
 	extra_args = {
 		"--tab-width",
-		"2",
+		"4",
 	},
 }
 

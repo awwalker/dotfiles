@@ -44,12 +44,13 @@ local M = {
 		end,
 	},
 	{
-		"Invertisment/conjure-clj-additions-cider-nrepl-mw",
+		"https://gitlab.com/invertisment/conjure-clj-additions-cider-nrepl-mw.git",
 		ft = { "clojure" },
 		cmd = { "CcaNreplRunTestsInTestNs", "CcaNreplRunCurrentTest", "CcaNreplJumpToFailingCljTest" },
 		keys = {
 			{ "<localleader>rns", "<cmd>CcaNreplRunTestsInTestNs<CR>", mode = "n", noremap },
 			{ "<localleader>rt", "<cmd>CcaNreplRunCurrentTest<CR>", mode = "n", noremap },
+			{ "<localleader>rft", "<cmd>CcaNreplJumpToFailingCljTest<CR>", mode = "n", noremap },
 		},
 	},
 	{ "Olical/aniseed" },

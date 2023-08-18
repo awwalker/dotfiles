@@ -1,7 +1,7 @@
 local M = {
 	"nvim-neorg/neorg",
 	ft = "norg",
-	build = "Neorg sync-parsers",
+	build = ":Neorg sync-parsers",
 	version = "*",
 	cmd = "Neorg",
 	dependencies = {
@@ -12,7 +12,7 @@ local M = {
 		load = {
 			["core.defaults"] = {},
 			["core.autocommands"] = {},
-			["core.norg.dirman"] = {
+			["core.dirman"] = {
 				config = {
 					workspaces = {
 						work = "~/notes/work",
@@ -20,7 +20,7 @@ local M = {
 					},
 				},
 			},
-			["core.norg.concealer"] = {
+			["core.concealer"] = {
 				config = {
 					-- markup_preset = "dimmed",
 					markup_preset = "conceal",
@@ -76,7 +76,7 @@ local M = {
 					},
 				},
 			},
-			["core.norg.completion"] = {
+			["core.completion"] = {
 				config = {
 					engine = "nvim-cmp",
 				},
