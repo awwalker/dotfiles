@@ -106,6 +106,8 @@ local M = {
 					nls.builtins.diagnostics.markdownlint,
 					nls.builtins.formatting.prettier.with(require("plugins.lsp.prettier").md),
 					-- nls.builtins.formatting.markdownlint, Use Prettier instead.
+					-- PYTHON
+					nls.builtins.formatting.black,
 					-- XML
 					nls.builtins.diagnostics.tidy,
 					-- nls.builtins.formatting.tidy,
