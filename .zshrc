@@ -10,11 +10,12 @@ export PATH="$PATH:/usr/local/opt/gnupg@2.0/bin"
 export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@12/bin:$PATH"
-export PATH="/opt/homebrew/opt/node@12/bin:$PATH"
+export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 
 
 export PATH="$PATH:/usr/local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
@@ -56,11 +57,12 @@ eval "$(hub alias -s)"
 alias gs='git status'
 alias gc='git commit'
 alias gp='git push'
-alias gu='git pull'
+alias gpf='git push --force'
+alias gu='git pull --rebase'
 alias ga='git add'
 alias gch='git checkout'
 alias gchm='git checkout main'
-alias gchb='git checkout -b '
+alias gchb='git checkout -b'
 alias gd='git diff '
 alias gb='git branch'
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
@@ -95,6 +97,11 @@ alias luamake=/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-serv
 # -------------------
 export JAVA_HOME=/opt/homebrew/opt/openjdk@11/11.0.8/libexec/openjdk.jdk/Contents/Home
 
+# -------------------
+#      C++
+# -------------------
+export CC=/opt/homebrew/opt/llvm/bin/clang
+
 source /usr/local/share/fzf-tab/fzf-tab.plugin.zsh
 source /usr/local/share/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -108,3 +115,17 @@ export NVM_LAZY_LOAD=true
 alias loadnvm='[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 source "$HOME/.tprime_env.zsh"
+
+# -------------------
+#      PYTHON
+# -------------------
+function loadpyenv {
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+}
+export ENV=https://api-test.staging.tprime.net
+export BANK_ID=bank_treasuryprime
+export ORG_ID=org_treasuryprime
+export SETTING_ID=set_11fz5r3kg89r
+export KEY_ID_STAGE=key_staging_test_qa_001
+export SECRET_KEY_STAGE=YvNcuROl4kiXKw0iVtUjAzAX9LG5ReSK
