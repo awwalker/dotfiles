@@ -123,9 +123,3 @@ function loadpyenv {
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 }
-export ENV=https://api-test.staging.tprime.net
-export BANK_ID=bank_treasuryprime
-export ORG_ID=org_treasuryprime
-export SETTING_ID=set_11fz5r3kg89r
-export KEY_ID_STAGE=key_staging_test_qa_001
-export SECRET_KEY_STAGE=YvNcuROl4kiXKw0iVtUjAzAX9LG5ReSK
