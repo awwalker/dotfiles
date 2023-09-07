@@ -5,7 +5,7 @@
 local noremap = { noremap = true }
 
 -- Folds.
-vim.api.nvim_set_keymap("n", "<space>", "za", noremap)
+-- vim.api.nvim_set_keymap("n", "<space>", "za", noremap)
 -- Move the screen.
 vim.api.nvim_set_keymap("n", "mt", "zt", noremap) -- Top.
 vim.api.nvim_set_keymap("n", "mb", "zb", noremap) -- Middle.

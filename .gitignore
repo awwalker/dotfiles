@@ -3,3 +3,5 @@
 *~
 .vim/*
 .flake8
+/.clj-kondo
+/.lsp

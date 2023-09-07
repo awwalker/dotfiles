@@ -1,2 +1,0 @@
-require'treesitter-context'.setup{}
-

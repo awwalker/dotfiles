@@ -18,9 +18,9 @@ vim.g.black_linelength = 100
 
 -- FZF
 vim.g.fzf_action = {
-  ["ctrl-t"] = "tab split",
-  ["ctrl-s"] = "split",
-  ["ctrl-v"] = "vsplit",
+	["ctrl-t"] = "tab split",
+	["ctrl-s"] = "split",
+	["ctrl-v"] = "vsplit",
 }
 vim.g.fzf_buffers_jump = 1
 
@@ -35,12 +35,6 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.hlsearch = true
 
--- COLORS
-vim.o.termguicolors = true
-vim.o.syntax = "on"
-vim.g.nvcode_termcolors = 256
-vim.cmd([[ color snazzy ]])
-
 -- LINES
 vim.bo.softtabstop = 4
 vim.bo.shiftwidth = 4
@@ -52,8 +46,20 @@ vim.wo.cursorline = true
 vim.o.backspace = "indent,eol,start"
 vim.o.textwidth = 0
 vim.o.hidden = true
-vim.o.lazyredraw = true -- Redraw only as needed.
+-- vim.o.lazyredraw = true -- Redraw only as needed.
 vim.o.showmatch = true -- Highlight matching parens.
+
+-- Fillchars
+vim.opt.fillchars = {
+	vert = "│",
+	fold = "⠀",
+	eob = " ", -- suppress ~ at EndOfBuffer
+	--diff = "⣿", -- alternatives = ⣿ ░ ─ ╱
+	msgsep = "‾",
+	foldopen = "▾",
+	foldsep = "│",
+	foldclose = "▸",
+}
 
 -- SIDEBAR
 vim.wo.number = true
@@ -68,7 +74,6 @@ vim.o.foldenable = true
 vim.o.foldlevelstart = 10
 vim.o.foldnestmax = 10
 vim.o.foldmethod = "expr"
-vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- SPLITS
 vim.o.splitbelow = true
@@ -79,3 +84,6 @@ vim.g.netrw_liststyle = 3
 
 -- SEXP
 vim.g.sexp_enable_insert_mode_mappings = false
+
+-- DadBod SSH
+vim.g.db_ssh_default_async = true
