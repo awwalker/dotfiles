@@ -1,5 +1,6 @@
 local M = {
 	require("plugins.code.conjure"),
+	require("plugins.code.csv"),
 	{
 		"clojure-vim/vim-jack-in",
 		dependencies = {
