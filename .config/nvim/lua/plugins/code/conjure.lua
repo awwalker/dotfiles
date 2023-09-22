@@ -15,9 +15,11 @@ local M = {
 			{ "<leader>so", "<cmd> ConjureCljDebugInput out<CR>", mode = "n", noremap },
 		},
 		config = function()
+			require("conjure.main").main()
+			require("conjure.mapping")["on-filetype"]()
+		end,
+		init = function()
 			vim.g["conjure#eval#gsubs"] = { ["comment"] = { "^%(comment[%s%c]", "(do " } }
-			vim.g["conjure#client#python#stdio#command"] = "python3.9 -iq"
-			-- autocmd BufNewFile conjure-log-* lua vim.diagnostic.disable(0)
 			vim.api.nvim_create_autocmd("BufNewFile", {
 				group = vim.api.nvim_create_augroup("ConjureLog", { clear = true }),
 				pattern = "conjure-log-*",
