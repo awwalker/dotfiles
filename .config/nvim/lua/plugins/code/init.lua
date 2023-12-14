@@ -5,5 +5,7 @@ local M = {
 	require("plugins.code.databases"),
 	require("plugins.code.toggleterm"),
 	require("plugins.code.git"),
+	require("plugins.code.testing"),
+	require("plugins.code.debugging"),
 }
 return M

@@ -5,8 +5,6 @@ local M = {
 		"Olical/conjure",
 		ft = { "clojure", "edn", "lua", "python" },
 		keys = {
-			{ "<leader>c", "<cmd> ConjureCljDebugInput continue<CR>", mode = "n", noremap },
-			{ "<leader>n", "<cmd> ConjureCljDebugInput next<CR>", mode = "n", noremap },
 			{ "<leader>de", "<cmd> ConjureCljDebugInput eval<CR>", mode = "n", noremap },
 			{ "<leader>di", "<cmd> ConjureCljDebugInit<CR>", mode = "n", noremap },
 			{ "<leader>le", "<cmd> ConjureCljLastException<CR>", mode = "n", noremap },
@@ -20,6 +18,8 @@ local M = {
 		end,
 		init = function()
 			vim.g["conjure#eval#gsubs"] = { ["comment"] = { "^%(comment[%s%c]", "(do " } }
+			vim.g["conjure#client#clojure#nrepl#connection#auto_repl#cmd"] = "lein repl"
+			vim.g["conjure#client#clojure#nrepl#eval#raw_out"] = true
 			vim.api.nvim_create_autocmd("BufNewFile", {
 				group = vim.api.nvim_create_augroup("ConjureLog", { clear = true }),
 				pattern = "conjure-log-*",
@@ -43,17 +43,18 @@ local M = {
 				pattern = "conjure-log-*",
 				command = "nmap <buffer> q :q<CR>",
 			})
+			vim.api.nvim_set_keymap("n", "<leader>c", "<cmd> ConjureCljDebugInput continue<CR>", noremap)
+			vim.api.nvim_set_keymap("n", "<leader>n", "<cmd> ConjureCljDebugInput next<CR>", noremap)
 		end,
 	},
 	{
 		"https://gitlab.com/invertisment/conjure-clj-additions-cider-nrepl-mw.git",
 		ft = { "clojure" },
-		cmd = { "CcaNreplRunTestsInTestNs", "CcaNreplRunCurrentTest", "CcaNreplJumpToFailingCljTest" },
-		keys = {
-			{ "<localleader>rns", "<cmd>CcaNreplRunTestsInTestNs<CR>", mode = "n", noremap },
-			{ "<localleader>rt", "<cmd>CcaNreplRunCurrentTest<CR>", mode = "n", noremap },
-			{ "<localleader>rft", "<cmd>CcaNreplJumpToFailingCljTest<CR>", mode = "n", noremap },
-		},
+		config = function()
+			vim.api.nvim_set_keymap("n", "<localleader>rt", "<cmd>CcaNreplRunCurrentTest<CR>", noremap)
+			vim.api.nvim_set_keymap("n", "<localleader>rns", "<cmd>CcaNreplRunTestsInTestNs<CR>", noremap)
+			vim.api.nvim_set_keymap("n", "<localleader>rft", "<cmd>CcaNreplJumpToFailingCljTest<CR>", noremap)
+		end,
 	},
 	{ "Olical/aniseed" },
 	{ "bakpakin/fennel.vim" },

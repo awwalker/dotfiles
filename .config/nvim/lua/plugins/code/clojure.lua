@@ -12,6 +12,7 @@ local M = {
 	},
 	{
 		"julienvincent/nvim-paredit",
+		ft = { "clojure", "edn" },
 		config = function()
 			local paredit = require("nvim-paredit")
 			paredit.setup({
@@ -36,6 +37,7 @@ local M = {
 					-- should change the indentation of the form (such as when slurping or barfing).
 					--
 					-- When set to true then it will attempt to fix the indentation of nodes operated on.
+					-- Default is false.
 					enabled = false,
 					-- A function that will be called after a slurp/barf if you want to provide a custom indentation
 					-- implementation.
@@ -78,7 +80,7 @@ local M = {
 						paredit.api.select_around_form,
 						"Around form",
 						repeatable = false,
-						mode = { "o", "v" },
+						mode = { "o", "v", "n" },
 					},
 					["if"] = {
 						paredit.api.select_in_form,
@@ -110,8 +112,7 @@ local M = {
 						end,
 						"Wrap element insert head",
 					},
-
-					["<localleader>W"] = {
+					["<localleader>E"] = {
 						function()
 							paredit.cursor.place_cursor(
 								paredit.wrap.wrap_element_under_cursor("(", ")"),

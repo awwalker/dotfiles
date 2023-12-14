@@ -18,4 +18,6 @@ M.md = {
 	},
 }
 
+M.html = {}
+
 return M

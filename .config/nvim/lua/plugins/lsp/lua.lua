@@ -18,16 +18,14 @@ M.lsp = {
 			version = "LuaJIT",
 			path = runtime_path,
 		},
-		diagnostics = {
-			globals = { "vim" },
-		},
 		format = {
 			enable = false,
 		},
 		workspace = {
-			maxPreload = 2000,
-			preloadFileSize = 150,
-			library = vim.api.nvim_get_runtime_file("", true),
+			checkThirdParty = false,
+			library = {
+				vim.env.VIMRUNTIME,
+			},
 		},
 		telemetry = {
 			enable = false,
