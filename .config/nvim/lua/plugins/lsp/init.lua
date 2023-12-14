@@ -23,11 +23,14 @@ local M = {
 			local cmp_nvim = require("cmp_nvim_lsp")
 			local capabilities = cmp_nvim.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-			lsp.sumneko_lua.setup({
+			lsp.lua_ls.setup({
 				on_attach = handlers.on_attach,
 				capabilities = capabilities,
 				single_file_support = true,
-				settings = require("plugins.lsp.lua").lsp,
+				on_init = function(client)
+					client.config.settings = vim.tbl_deep_extend("force", client.config.settings, require("plugins.lsp.lua").lsp)
+					client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+				end,
 			})
 
 			lsp.clojure_lsp.setup({
@@ -100,6 +103,8 @@ local M = {
 					nls.builtins.diagnostics.hadolint.with(require("plugins.lsp.docker").nls),
 					-- JSON
 					nls.builtins.formatting.prettier.with(require("plugins.lsp.prettier").json),
+					-- HTML
+					nls.builtins.formatting.prettier.with(require("plugins.lsp.prettier").html),
 					-- LUA
 					nls.builtins.formatting.stylua,
 					-- MARKDOWN
