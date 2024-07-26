@@ -29,7 +29,7 @@ require("lazy").setup("plugins", {
 				"matchit",
 				-- easier to view matching parens.
 				-- "matchparen",
-				"netrwPlugin",
+				-- "netrwPlugin",
 				"tarPlugin",
 				"tohtml",
 				"tutor",
