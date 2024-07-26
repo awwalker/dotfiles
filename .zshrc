@@ -95,7 +95,7 @@ alias luamake=/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-serv
 # -------------------
 #      JAVA
 # -------------------
-export JAVA_HOME=/opt/homebrew/opt/openjdk@11/11.0.8/libexec/openjdk.jdk/Contents/Home
+export JAVA_HOME=/opt/homebrew/opt/openjdk@17/java
 
 # -------------------
 #      C++
@@ -123,3 +123,4 @@ function loadpyenv {
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 }
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
