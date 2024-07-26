@@ -18,7 +18,7 @@ local M = {
 		end,
 		init = function()
 			vim.g["conjure#eval#gsubs"] = { ["comment"] = { "^%(comment[%s%c]", "(do " } }
-			vim.g["conjure#client#clojure#nrepl#connection#auto_repl#cmd"] = "lein repl"
+			-- vim.g["conjure#client#clojure#nrepl#connection#auto_repl#cmd"] = "lein repl"
 			vim.g["conjure#client#clojure#nrepl#eval#raw_out"] = true
 			vim.api.nvim_create_autocmd("BufNewFile", {
 				group = vim.api.nvim_create_augroup("ConjureLog", { clear = true }),
@@ -42,6 +42,14 @@ local M = {
 				group = vim.api.nvim_create_augroup("ConjureSmartQ", { clear = true }),
 				pattern = "conjure-log-*",
 				command = "nmap <buffer> q :q<CR>",
+			})
+
+			vim.api.nvim_create_autocmd("BufEnter", {
+				group = vim.api.nvim_create_augroup("ConjureSmartB", { clear = true }),
+				pattern = "conjure-log-*",
+				callback = function(params)
+					vim.api.nvim_set_keymap("n", "B", "^", noremap)
+				end,
 			})
 			vim.api.nvim_set_keymap("n", "<leader>c", "<cmd> ConjureCljDebugInput continue<CR>", noremap)
 			vim.api.nvim_set_keymap("n", "<leader>n", "<cmd> ConjureCljDebugInput next<CR>", noremap)

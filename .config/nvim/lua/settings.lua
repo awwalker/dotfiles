@@ -46,7 +46,6 @@ vim.wo.cursorline = true
 vim.o.backspace = "indent,eol,start"
 vim.o.textwidth = 0
 vim.o.hidden = true
--- vim.o.lazyredraw = true -- Redraw only as needed.
 vim.o.showmatch = true -- Highlight matching parens.
 
 -- Fillchars

@@ -27,10 +27,7 @@ local M = {
 				on_attach = handlers.on_attach,
 				capabilities = capabilities,
 				single_file_support = true,
-				on_init = function(client)
-					client.config.settings = vim.tbl_deep_extend("force", client.config.settings, require("plugins.lsp.lua").lsp)
-					client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-				end,
+				settings = require("plugins.lsp.lua").lsp,
 			})
 
 			lsp.clojure_lsp.setup({

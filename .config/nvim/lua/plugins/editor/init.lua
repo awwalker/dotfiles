@@ -31,7 +31,7 @@ local M = {
 					prev = "<localleader>m",
 					next = "<leader>m",
 				},
-				builtin_marks = { ".", "<", ">", "^" },
+				builtin_marks = {},
 			})
 		end,
 	},

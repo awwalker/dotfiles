@@ -1,17 +1,39 @@
 local M = {
+	-- {
+	-- 	"christianchiarulli/nvcode-color-schemes.vim",
+	-- 	dependencies = {
+	-- 		{ "nvim-treesitter/nvim-treesitter" },
+	-- 	},
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	config = function()
+	-- 		vim.cmd([[ color snazzy ]])
+	-- 		vim.o.syntax = "on"
+	-- 		vim.g.background = "dark"
+	-- 	end,
+	-- },
+	--
 	{
-		"christianchiarulli/nvcode-color-schemes.vim",
-		dependencies = {
-			{ "nvim-treesitter/nvim-treesitter" },
-		},
+		"maxmx03/dracula.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
-			vim.g.nvcode_termcolors = 256
-			vim.cmd([[ color snazzy ]])
-			vim.o.termguicolors = true
-			vim.o.syntax = "on"
-			vim.g.background = "dark"
+			local dracula = require("dracula")
+
+			dracula.setup({
+				transparent = false,
+				plugins = {
+					["nvim-treesitter"] = true,
+					["nvim-lspconfig"] = true,
+					["nvim-cmp"] = true,
+					["dashboard-nvim"] = true,
+					["gitsigns.nvim"] = true,
+					["lazy.nvim"] = true,
+					["telescope.nvim"] = true,
+					["hop.nvim"] = true,
+				},
+			})
+			vim.cmd.colorscheme("dracula")
 		end,
 	},
 }

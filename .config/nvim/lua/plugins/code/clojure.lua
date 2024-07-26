@@ -8,7 +8,7 @@ local M = {
 			},
 		},
 		ft = { "clojure", "edn" },
-		cmd = "Lein",
+		cmd = { "Lein", "Clj" },
 	},
 	{
 		"julienvincent/nvim-paredit",

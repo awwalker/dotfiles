@@ -15,6 +15,10 @@ end
 
 local noremap_silent = { noremap = true, silent = true }
 
+local get_selection = function()
+	return vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"), { mode = vim.fn.mode() })
+end
+
 local M = {
 	"nvim-telescope/telescope.nvim",
 	dependencies = {

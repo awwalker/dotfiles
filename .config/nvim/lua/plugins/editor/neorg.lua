@@ -1,7 +1,8 @@
 local M = {
 	"nvim-neorg/neorg",
 	ft = "norg",
-	build = ":Neorg sync-parsers",
+	-- removed for https://github.com/nvim-neorg/neorg/issues/1342
+	-- build = ":Neorg sync-parsers",
 	version = "*",
 	cmd = "Neorg",
 	dependencies = {
