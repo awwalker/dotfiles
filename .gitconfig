@@ -5,6 +5,7 @@
 	email = aaron@treasuryprime.com
 [push]
 	default = current
+    autoSetupRemote = true
 [core]
 	excludesFile = /Users/awalker/.gitignore
 	pager = less -F -X
