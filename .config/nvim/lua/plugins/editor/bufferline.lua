@@ -1,3 +1,11 @@
+local lint_progress = function()
+  local linters = require("lint").get_running()
+  if #linters == 0 then
+      return "󰦕"
+  end
+  return "󱉶 " .. table.concat(linters, ", ")
+end
+
 local M = {
 	"akinsho/nvim-bufferline.lua",
 	branch = "main",
@@ -26,3 +34,5 @@ local M = {
 }
 
 return M
+
+

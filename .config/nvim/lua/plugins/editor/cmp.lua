@@ -1,16 +1,10 @@
-local dap_filetypes = { "dap-repl", "dapui_watches", "dapui_hover" }
 local M = {
 	{
-		"L3MON4D3/LuaSnip",
-		event = { "InsertEnter" },
-	},
-	{
 		"hrsh7th/nvim-cmp",
+		commit = "29fb485",
 		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
-			-- Snippets.
-			"saadparwaiz1/cmp_luasnip",
 			"onsails/lspkind-nvim",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
@@ -20,7 +14,7 @@ local M = {
 				dependencies = {
 					"mfussenegger/nvim-dap",
 				},
-				ft = dap_filetypes,
+				ft = { "dap-repl", "dapui_watches", "dapui_hover" },
 			},
 			{
 				"PaterJason/cmp-conjure",
@@ -42,7 +36,7 @@ local M = {
 				},
 				snippet = {
 					expand = function(args)
-						require("luasnip").lsp_expand(args.body)
+						vim.snippet.expand(args.body)
 					end,
 				},
 				experimental = {
@@ -102,17 +96,15 @@ local M = {
 				sources = cmp.config.sources({
 					{ name = "path" },
 				}, {
-					{ name = "cmdline" },
+					{
+						name = "cmdline",
+						option = {
+							ignore_cmds = { "Man" },
+						},
+					},
 				}),
 			})
 		end,
-	},
-	{
-		"saadparwaiz1/cmp_luasnip",
-		event = { "InsertEnter" },
-		dependencies = {
-			"hrsh7th/nvim-cmp",
-		},
 	},
 	{
 		"hrsh7th/cmp-nvim-lua",

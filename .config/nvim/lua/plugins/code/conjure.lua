@@ -24,7 +24,7 @@ local M = {
 				group = vim.api.nvim_create_augroup("ConjureLog", { clear = true }),
 				pattern = "conjure-log-*",
 				callback = function(params)
-					vim.diagnostic.disable(0)
+					vim.diagnostic.enable(false)
 				end,
 			})
 			-- autocmd User ConjureEval if expand("%:t") =~ "^conjure-log-" | exec "normal G" | endif
