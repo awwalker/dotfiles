@@ -92,7 +92,7 @@ function M.statuscolumn()
 
 	local components = { "", "", "" } -- left, middle, right
 
-	local show_open_folds = vim.g.lazyvim_statuscolumn and vim.g.lazyvim_statuscolumn.folds_open
+	local show_open_folds = true
 
 	if show_signs then
 		local signs = M.get_signs(buf, vim.v.lnum)
@@ -208,5 +208,7 @@ function M.foldexpr()
 	end)
 	return "0"
 end
+
+vim.opt.statuscolumn = [[%!v:lua.Status.statuscolumn()]]
 
 return M

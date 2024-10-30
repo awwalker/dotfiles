@@ -24,13 +24,18 @@ local config = {
 		severity_sort = true,
 		priority = 10,
 	},
+	-- Enable lsp cursor word highlighting
+	document_highlight = {
+		enabled = true,
+	},
+	-- add an
 	-- underline = true,
 	severity_sort = true,
 	float = {
 		focusable = false,
 		style = "minimal",
 		border = "rounded",
-		source = "if_many",
+		source = "always",
 		header = "",
 		prefix = "",
 		wrap_at = 35,

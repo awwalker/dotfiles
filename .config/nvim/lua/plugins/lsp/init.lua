@@ -20,15 +20,21 @@ local M = {
 			local lsp = require("lspconfig")
 			local cmp_nvim = require("cmp_nvim_lsp")
 			local lspconfig_defaults = require("lspconfig").util.default_config
-			lspconfig_defaults.capabilities =
-				vim.tbl_deep_extend("force", lspconfig_defaults.capabilities, cmp_nvim.default_capabilities())
-			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-				border = "rounded",
-				width = 80,
-			})
+			lspconfig_defaults.capabilities = vim.tbl_deep_extend(
+				"force",
+				{},
+				lspconfig_defaults.capabilities,
+				vim.lsp.protocol.make_client_capabilities(),
+				cmp_nvim.default_capabilities()
+			)
+			local capabilities = vim.deepcopy(lspconfig_defaults.capabilities)
 			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
 				border = "rounded",
 				width = 80,
+			})
+			vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+				-- Enable signs
+				signs = true,
 			})
 
 			vim.api.nvim_create_autocmd("LspAttach", {
@@ -51,24 +57,38 @@ local M = {
 
 			lsp.lua_ls.setup({
 				settings = require("plugins.lsp.lua").lsp,
+				capabilities = capabilities,
 			})
 
 			lsp.clojure_lsp.setup({
 				filetypes = { "clojure", "edn" },
 				root_dir = lsp.util.root_pattern("project.clj", "deps.edn", "build.boot", "shadow-cljs.edn", ".git"),
+				capabilities = capabilities,
 			})
 
-			lsp.dockerls.setup({})
+			lsp.dockerls.setup({
+				capabilities = capabilities,
+			})
 
-			lsp.jsonls.setup({})
+			lsp.jsonls.setup({
+				capabilities = capabilities,
+			})
 
-			lsp.marksman.setup({})
+			lsp.marksman.setup({
+				capabilities = capabilities,
+			})
 
-			lsp.pyright.setup({})
+			lsp.pyright.setup({
+				capabilities = capabilities,
+			})
 
-			lsp.cssmodules_ls.setup({})
+			lsp.cssmodules_ls.setup({
+				capabilities = capabilities,
+			})
 
-			lsp.ts_ls.setup({})
+			lsp.ts_ls.setup({
+				capabilities = capabilities,
+			})
 		end,
 	},
 	require("plugins.lsp.linting"),

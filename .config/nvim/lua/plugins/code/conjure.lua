@@ -20,11 +20,14 @@ local M = {
 			vim.g["conjure#eval#gsubs"] = { ["comment"] = { "^%(comment[%s%c]", "(do " } }
 			-- vim.g["conjure#client#clojure#nrepl#connection#auto_repl#cmd"] = "lein repl"
 			vim.g["conjure#client#clojure#nrepl#eval#raw_out"] = true
-			vim.api.nvim_create_autocmd("BufNewFile", {
+			vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile", "BufEnter" }, {
 				group = vim.api.nvim_create_augroup("ConjureLog", { clear = true }),
 				pattern = "conjure-log-*",
 				callback = function(params)
-					vim.diagnostic.enable(false)
+					print("Triggered")
+					for i, ns in pairs(vim.diagnostic.get_namespaces()) do
+						vim.diagnostic.reset(i, 0)
+					end
 				end,
 			})
 			-- autocmd User ConjureEval if expand("%:t") =~ "^conjure-log-" | exec "normal G" | endif
