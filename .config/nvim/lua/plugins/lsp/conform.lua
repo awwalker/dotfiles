@@ -3,7 +3,7 @@ local M = {
 		"stevearc/conform.nvim",
 		event = { "BufWritePre", "BufNewFile" },
 		cmd = { "ConformInfo" },
-		setup = { log_level = vim.log.levels.DEBUG },
+		setup = { log_level = vim.log.levels.ERROR },
 		-- This will provide type hinting with LuaLS
 		---@module "conform"
 		opts = {

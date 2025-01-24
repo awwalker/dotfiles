@@ -30,7 +30,7 @@ local M = {
 		},
 		config = function()
 			local lint = require("lint")
-			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+			vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 				callback = debounce(10, function()
 					lint.try_lint()
 				end),

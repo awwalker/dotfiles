@@ -20,22 +20,23 @@ local M = {
 			local lsp = require("lspconfig")
 			local cmp_nvim = require("cmp_nvim_lsp")
 			local lspconfig_defaults = require("lspconfig").util.default_config
-			lspconfig_defaults.capabilities = vim.tbl_deep_extend(
+			local capabilities = vim.tbl_deep_extend(
 				"force",
 				{},
 				lspconfig_defaults.capabilities,
 				vim.lsp.protocol.make_client_capabilities(),
 				cmp_nvim.default_capabilities()
 			)
-			local capabilities = vim.deepcopy(lspconfig_defaults.capabilities)
+			capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
 				border = "rounded",
 				width = 80,
 			})
-			vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-				-- Enable signs
-				signs = true,
-			})
+			-- no lag.
+			-- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+			-- insane lag.
+			-- vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {})
+			vim.lsp.set_log_level("error")
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				desc = "LSP actions",
@@ -91,7 +92,7 @@ local M = {
 			})
 		end,
 	},
-	require("plugins.lsp.linting"),
+	-- require("plugins.lsp.linting"),
 	require("plugins.lsp.conform"),
 }
 
