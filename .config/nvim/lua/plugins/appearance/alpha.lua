@@ -107,7 +107,7 @@ local M = {
 			desc = "enable tabline after alpha",
 			callback = function()
 				vim.opt.showtabline = 2
-				vim.opt.statuscolumn = [[%!v:lua.Status.statuscolumn()]]
+				-- vim.opt.statuscolumn = [[%!v:lua.Status.statuscolumn()]]
 			end,
 		})
 		alpha.setup(dashboard.opts)
