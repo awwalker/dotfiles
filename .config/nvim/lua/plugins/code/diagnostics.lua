@@ -49,6 +49,5 @@ local config = {
 		},
 	},
 }
-
 vim.diagnostic.config(config)
 return M
