@@ -1,13 +1,5 @@
 local M = {}
 
-M.nls = {
-	extra_args = {
-		"--config-path",
-		vim.fn.expand("~/.config/stylua/stylua.toml"),
-		"--search-parent-directories",
-	},
-}
-
 local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")

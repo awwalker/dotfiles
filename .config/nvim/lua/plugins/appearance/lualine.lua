@@ -141,6 +141,9 @@ local M = {
 			path = 1,
 			cond = conditions.buffer_not_empty,
 			color = { fg = colors.magenta, gui = "bold" },
+			fmt = function(s, ctx)
+				return string.format("%-50s", s)
+			end,
 		})
 
 		ins_left({ "location" })
@@ -170,19 +173,16 @@ local M = {
 			-- Lsp server name .
 			function()
 				local msg = "No Active Lsp"
-				local clients = vim.lsp.get_active_clients()
-				if next(clients) == nil then
-					return msg
-				end
-				if #clients == 1 then
-					return clients[0].name
-				end
-				local clients_str = ""
-				for _, client in ipairs(clients) do
-					clients_str = clients_str .. client.name .. " + "
-				end
-				local s = string.sub(clients_str, 1, -3)
-				return s
+				local clients = vim.lsp.get_clients({ bufnr = 0 })
+
+				return #clients > 0
+						and table.concat(
+							vim.tbl_map(function(client)
+								return client.name
+							end, clients),
+							","
+						)
+					or msg
 			end,
 			icon = " LSP:",
 			color = { fg = "#ffffff", gui = "bold" },
@@ -211,7 +211,7 @@ local M = {
 		ins_right({
 			"diff",
 			-- Is it me or the symbol for modified us really weird
-			symbols = { added = " ", modified = "柳", removed = " " },
+			symbols = { added = " ", modified = " ", removed = " " },
 			diff_color = {
 				added = { fg = colors.green },
 				modified = { fg = colors.orange },

@@ -18,111 +18,82 @@ local M = {
 		},
 		config = function()
 			local lsp = require("lspconfig")
-			local util = require("lspconfig.util")
-			local handlers = require("plugins.lsp.handlers")
 			local cmp_nvim = require("cmp_nvim_lsp")
-			local capabilities = cmp_nvim.default_capabilities(vim.lsp.protocol.make_client_capabilities())
+			local lspconfig_defaults = require("lspconfig").util.default_config
+			local capabilities = vim.tbl_deep_extend(
+				"force",
+				{},
+				lspconfig_defaults.capabilities,
+				vim.lsp.protocol.make_client_capabilities(),
+				cmp_nvim.default_capabilities()
+			)
+			capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+				border = "rounded",
+				width = 80,
+			})
+			-- no lag.
+			-- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+			-- insane lag.
+			-- vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {})
+			vim.lsp.set_log_level("error")
+
+			vim.api.nvim_create_autocmd("LspAttach", {
+				desc = "LSP actions",
+				callback = function(event)
+					local opts = { buffer = event.buf }
+
+					vim.keymap.set("n", "<leader>d", "<cmd> lua vim.lsp.buf.definition()<CR>", opts)
+					vim.keymap.set("n", "<leader>i", "<cmd> lua vim.lsp.buf.implementation()<CR>", opts)
+					vim.keymap.set("n", "<C-k>", "<cmd> lua vim.lsp.buf.signature_help()<CR>", opts)
+					vim.keymap.set("n", "<leader>k", "<cmd> lua vim.lsp.buf.hover()<CR>", opts)
+					vim.keymap.set("n", "<leader>e", "<cmd> lua vim.diagnostic.jump({count = 1})<CR>", opts)
+					vim.keymap.set("n", "<leader>E", "<cmd> lua vim.diagnostic.jump({count = -1})<CR>", opts)
+					vim.keymap.set("n", "<leader>u", "<cmd> lua vim.lsp.buf.incoming_calls()<CR>", opts)
+					vim.keymap.set("n", "<leader>U", "<cmd> lua vim.lsp.buf.outgoing_calls()<CR>", opts)
+					vim.keymap.set("n", "<leader>R", "<cmd> lua vim.lsp.buf.rename()<CR>", opts)
+					vim.keymap.set("n", "<leader>ca", "<cmd> lua vim.lsp.buf.code_action()<CR>", opts)
+				end,
+			})
 
 			lsp.lua_ls.setup({
-				on_attach = handlers.on_attach,
-				capabilities = capabilities,
-				single_file_support = true,
 				settings = require("plugins.lsp.lua").lsp,
+				capabilities = capabilities,
 			})
 
 			lsp.clojure_lsp.setup({
-				on_attach = handlers.on_attach,
+				filetypes = { "clojure", "edn" },
+				root_dir = lsp.util.root_pattern("project.clj", "deps.edn", "build.boot", "shadow-cljs.edn", ".git"),
 				capabilities = capabilities,
-				root_dir = util.root_pattern("project.clj", "deps.edn", "build.boot", "shadow-cljs.edn", ".git"),
 			})
 
 			lsp.dockerls.setup({
-				on_attach = handlers.on_attach,
 				capabilities = capabilities,
 			})
 
 			lsp.jsonls.setup({
-				on_attach = function(client, bufnr)
-					client.server_capabilities.document_formatting = false
-					handlers.on_attach(client, bufnr)
-				end,
 				capabilities = capabilities,
-				init_options = {
-					provideFormatter = false,
-				},
-				settings = {
-					{
-						json = {
-							format = {
-								enable = false,
-							},
-						},
-						init_options = {
-							provideFormatter = false,
-						},
-					},
-				},
 			})
 
 			lsp.marksman.setup({
-				on_attach = handlers.on_attach,
 				capabilities = capabilities,
 			})
 
 			lsp.pyright.setup({
-				on_attach = handlers.on_attach,
 				capabilities = capabilities,
 			})
-		end,
-	},
-	{
-		"jose-elias-alvarez/null-ls.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"hrsh7th/cmp-nvim-lsp",
-		},
-		event = { "BufRead", "BufWritePre", "BufReadPre", "InsertEnter" },
-		config = function()
-			local nls = require("null-ls")
-			local handlers = require("plugins.lsp.handlers")
-			local cmp_nvim = require("cmp_nvim_lsp")
-			local capabilities = cmp_nvim.default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-			nls.setup({
-				debug = true,
-				debounce = 150,
-				save_after_format = false,
-				on_attach = handlers.on_attach,
+			lsp.cssmodules_ls.setup({
 				capabilities = capabilities,
-				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", ".git"),
-				sources = {
-					-- DOCKER
-					nls.builtins.diagnostics.hadolint.with(require("plugins.lsp.docker").nls),
-					-- JSON
-					nls.builtins.formatting.prettier.with(require("plugins.lsp.prettier").json),
-					-- HTML
-					nls.builtins.formatting.prettier.with(require("plugins.lsp.prettier").html),
-					-- LUA
-					nls.builtins.formatting.stylua,
-					-- MARKDOWN
-					nls.builtins.diagnostics.markdownlint,
-					nls.builtins.formatting.prettier.with(require("plugins.lsp.prettier").md),
-					-- nls.builtins.formatting.markdownlint, Use Prettier instead.
-					-- PYTHON
-					nls.builtins.formatting.black,
-					-- XML
-					nls.builtins.diagnostics.tidy,
-					-- nls.builtins.formatting.tidy,
-					-- WHITESPACE
-					nls.builtins.diagnostics.trail_space,
-					nls.builtins.formatting.trim_whitespace,
-					nls.builtins.formatting.trim_newlines,
-					-- GIT
-					nls.builtins.code_actions.gitsigns,
-				},
+			})
+
+			lsp.ts_ls.setup({
+				capabilities = capabilities,
 			})
 		end,
 	},
+	-- require("plugins.lsp.linting"),
+	require("plugins.lsp.conform"),
 }
 
 return M

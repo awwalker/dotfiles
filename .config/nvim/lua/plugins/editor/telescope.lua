@@ -52,7 +52,7 @@ local M = {
 		local Job = require("plenary.job")
 
 		local new_maker = function(filepath, bufnr, opts)
-			filepath = vim.fn.expand(filepath)
+			filepath = vim.fn.expand(filepath:gsub("%$", [[\$]]))
 			Job:new({
 				command = "file",
 				args = { "--mime-type", "-b", filepath },

@@ -18,6 +18,19 @@ local M = {
 			"RainbowMultiDelim",
 		},
 	},
+	{
+		"chrisbra/csv.vim",
+		event = { "BufRead", "BufWritePre", "BufReadPre", "InsertEnter" },
+		ft = {
+			"csv",
+			"tsv",
+			"csv_semicolon",
+			"csv_whitespace",
+			"csv_pipe",
+			"rfc_csv",
+			"rfc_semicolon",
+		},
+	},
 }
 
 return M

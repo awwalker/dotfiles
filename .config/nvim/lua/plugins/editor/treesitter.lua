@@ -16,6 +16,8 @@ local M = {
 				"terraform",
 				"norg",
 				"vim",
+				"typescript",
+				"javascript",
 			},
 			highlight = {
 				enabled = true,
