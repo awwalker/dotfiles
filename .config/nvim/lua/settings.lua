@@ -64,7 +64,6 @@ vim.opt.fillchars = {
 vim.wo.number = true
 vim.wo.relativenumber = true
 vim.o.showcmd = true -- Show command in bottom bar.
-vim.o.statuscolumn = [[%!v:lua.require'statuscol'.statuscolumn()]]
 
 -- IGNORANCE
 vim.o.wildignore = vim.o.wildignore .. "*/tmp/*,*.so,*.swp,*.zip,*~"

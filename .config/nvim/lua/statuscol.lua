@@ -209,6 +209,4 @@ function M.foldexpr()
 	return "0"
 end
 
-vim.opt.statuscolumn = [[%!v:lua.Status.statuscolumn()]]
-
 return M
