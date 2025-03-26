@@ -1,0 +1,14 @@
+# vim: ft=ghostty
+theme 	     = "Dracula"
+font-family  = "Hack Nerd Font Mono"
+font-size = "12"
+
+cursor-style = "bar"
+cursor-style-blink = "true"
+bold-is-bright = "true"
+
+clipboard-write = "allow"
+clipboard-write = "allow"
+
+macos-option-as-alt = "true"
+working-directory = "home"

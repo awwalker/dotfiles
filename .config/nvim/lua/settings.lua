@@ -86,3 +86,6 @@ vim.g.sexp_enable_insert_mode_mappings = false
 
 -- DadBod SSH
 vim.g.db_ssh_default_async = true
+
+-- DIFF
+-- vim.o.diffopt = 'filler,internal,closeoff,indet-heuristic,linematch:60,algorithm:histogram'
