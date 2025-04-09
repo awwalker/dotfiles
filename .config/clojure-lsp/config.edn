@@ -1,0 +1,14 @@
+{:log-path "/tmp/clojure-lsp.out"
+ :cljfmt {:indents {;; try+   [[:inner 0]] mine
+                    if-not-let [[:block 1]]
+                    clj-time.core/do-at [[:block 1]]
+                    core.bank.driver.fis.ibs.api/ignore-errors [[:block 1]]
+                    if-not-let [[:block 1]]
+                    ;try+ [[:block 0]] ;; cores
+                    thrown+? [[:block 1]]}}
+
+                                ;; #break [[:block 0] [:inner 10]]
+                                ;; #dbg   [[:block 0] [:inner 10]]}}
+ :auto-add-ns-to-new-files? true
+ :linters {:clj-kondo {:level :off}}
+ :clj-kondo {:level :off}}

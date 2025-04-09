@@ -1,0 +1,25 @@
+{:lint-as {shared.log/info                         clj-kondo.lint-as/def-catch-all
+           shared.error/ignore-errors-and-log      clj-kondo.lint-as/def-catch-all
+           backtick.core/define-cron               clojure.core/defn
+           backtick.core/define-worker             clojure.core/defn
+           core.controllers.ach/with-batch-key     clojure.core/fn
+           core.db/with-transaction                clojure.core/fn
+           core.services.vreq/define-vreq-endpoint clojure.core/defn
+           core.services.vreq/with-vreq-params     clojure.core/fn
+           shared.db/with-transaction              clojure.core/fn
+           shared.core/if-not-let                  clojure.core/let
+           shared.params/define-schema             clojure.core/def
+           shared.params/define-endpoint*          clojure.core/defn
+           core.services.rules/define-workflow     clojure.core/def}
+ :config-paths ["clj-kondo/slingshot" "treasuryprime/shared" "treasuryprime/core"]
+ :linters {:unresolved-namespace {:report-duplicates true}
+           :unresolved-symbol    {:exclude [;; General var/symbol should be ignored
+                                            _
+                                            &throw-context
+                                            ;; Make it so catch+ stuff does not
+                                            ;; give us errors.
+                                            (clojure.core/catch [e _ text body message])
+                                            ;; Slingshot things
+                                            (clojure.test/is    [thrown+? in?])]}
+            :unresolved-var {:exclude [;; Fix HugSQL warnings
+                                        core.db.sql]}}}
