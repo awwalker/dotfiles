@@ -3,11 +3,16 @@ local noremap = { noremap = true }
 local M = {
 	{
 		"kristijanhusak/vim-dadbod-ui",
-		cmd = "DBUI",
+		cmd = {
+			"DBUI",
+			"DBUIToggle",
+			"DBUIAddConnection",
+			"DBUIFindBuffer",
+		},
 		dependencies = {
-			"tpope/vim-dadbod",
+			{ "tpope/vim-dadbod", lazy = true },
 			"kristijanhusak/vim-dadbod-ui",
-			"kristijanhusak/vim-dadbod-completion",
+			{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
 			"pbogut/vim-dadbod-ssh",
 		},
 		keys = {

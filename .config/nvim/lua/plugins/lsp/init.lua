@@ -14,24 +14,24 @@ local M = {
 			{ "<leader>ca", mode = "n" },
 		},
 		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
+			"saghen/blink.cmp",
 		},
 		config = function()
 			local lsp = require("lspconfig")
-			local cmp_nvim = require("cmp_nvim_lsp")
+			local blink = require("blink.cmp")
 			local lspconfig_defaults = require("lspconfig").util.default_config
 			local capabilities = vim.tbl_deep_extend(
 				"force",
 				{},
 				lspconfig_defaults.capabilities,
-				vim.lsp.protocol.make_client_capabilities(),
-				cmp_nvim.default_capabilities()
+				vim.lsp.protocol.make_client_capabilities()
+				-- blink.get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities(), false)
 			)
 			capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
-			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-				border = "rounded",
-				width = 80,
-			})
+			-- vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+			-- 	border = "rounded",
+			-- 	width = 80,
+			-- })
 			-- no lag.
 			-- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 			-- insane lag.

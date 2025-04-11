@@ -8,6 +8,7 @@ local M = {
 	dependencies = {
 		{ "nvim-lua/plenary.nvim" },
 		{ "nvim-treesitter/nvim-treesitter" },
+		{ "benlubas/neorg-interim-ls" },
 	},
 	opts = {
 		load = {
@@ -22,9 +23,10 @@ local M = {
 				},
 			},
 			["core.concealer"] = {},
+			["external.interim-ls"] = {},
 			["core.completion"] = {
 				config = {
-					engine = "nvim-cmp",
+					engine = { module_name = "external.lsp-completion" },
 				},
 			},
 		},
