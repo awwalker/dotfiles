@@ -7,7 +7,7 @@
 	default = current
     autoSetupRemote = true
 [core]
-	excludesFile = /Users/awalker/.gitignore
+	excludesfile = /Users/aaronwalker/.gitignore
 	pager = less -F -X
 [init]
 	defaultBranch = main
@@ -25,6 +25,8 @@
 
 [merge]
     conflictstyle = diff3
+    tool = vimdiff
 
 [diff]
     colorMoved = default
+    tool = vimdiff

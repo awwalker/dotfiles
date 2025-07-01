@@ -6,3 +6,6 @@
 /.clj-kondo
 /.lsp
 .prettierrc
+.jshintrc
+.jshintignore
+.gitignore
