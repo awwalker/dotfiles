@@ -3,7 +3,8 @@ local noremap = { noremap = true }
 local M = {
 	{
 		"Olical/conjure",
-		ft = { "clojure", "edn", "lua", "python" },
+		-- dir = "/Users/aaronwalker/oss/conjure",
+		ft = { "clojure", "edn", "lua", "python", "fennel", "javascript" },
 		keys = {
 			{ "<leader>de", "<cmd> ConjureCljDebugInput eval<CR>", mode = "n", noremap },
 			{ "<leader>di", "<cmd> ConjureCljDebugInit<CR>", mode = "n", noremap },
@@ -21,6 +22,8 @@ local M = {
 			vim.g["conjure#client#clojure#nrepl#connection#auto_repl#cmd"] = "lein repl"
 			vim.g["conjure#client#clojure#nrepl#eval#raw_out"] = true
 			vim.g["conjure#log#hud#open_when"] = "log-win-not-visible"
+			vim.g["conjure#filetype#fennel"] = "conjure.client.fennel.nfnl"
+			-- vim.g["conjure#debug"] = true
 			vim.api.nvim_create_autocmd({ "BufNewFile" }, {
 				group = vim.api.nvim_create_augroup("ConjureLog", { clear = true }),
 				pattern = "conjure-log-*",
@@ -67,8 +70,13 @@ local M = {
 			vim.api.nvim_set_keymap("n", "<localleader>rft", "<cmd>CcaNreplJumpToFailingCljTest<CR>", noremap)
 		end,
 	},
-	{ "Olical/aniseed" },
-	{ "bakpakin/fennel.vim" },
+	{ "Olical/nfnl", ft = "fennel" },
+	{ "jaawerth/fennel.vim", ft = "fennel" },
+	{
+		dir = "/Users/aaronwalker/oss/conjure-deno",
+		ft = { "javascript", "typescript" },
+		dependencis = { "Olical/conjure", { "Olical/aniseed", branch = "master" } },
+	},
 }
 
 return M
