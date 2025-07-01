@@ -1,6 +1,6 @@
 local M = {
 	require("plugins.editor.treesitter"),
-	require("plugins.editor.cmp"),
+	require("plugins.editor.blink"),
 	require("plugins.editor.telescope"),
 	require("plugins.editor.gitsigns"),
 	require("plugins.editor.leap"),
