@@ -19,23 +19,7 @@ local M = {
 		config = function()
 			local lsp = require("lspconfig")
 			local blink = require("blink.cmp")
-			local lspconfig_defaults = require("lspconfig").util.default_config
-			local capabilities = vim.tbl_deep_extend(
-				"force",
-				{},
-				lspconfig_defaults.capabilities,
-				vim.lsp.protocol.make_client_capabilities()
-				-- blink.get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities(), false)
-			)
-			capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
-			-- vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-			-- 	border = "rounded",
-			-- 	width = 80,
-			-- })
-			-- no lag.
-			-- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
-			-- insane lag.
-			-- vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {})
+			local capabilities = blink.get_lsp_capabilities()
 			vim.lsp.set_log_level("error")
 
 			vim.api.nvim_create_autocmd("LspAttach", {
@@ -90,9 +74,26 @@ local M = {
 			lsp.ts_ls.setup({
 				capabilities = capabilities,
 			})
+			lsp.terraformls.setup({
+				capabilities = capabilities,
+			})
+			lsp.fennel_language_server.setup({
+				capabilities = capabilities,
+				root_dir = lsp.util.root_pattern("fnl", "lua"),
+				single_file_support = true,
+				settings = {
+					fennel = {
+						diagnostics = {
+							globals = { "vim", "jit", "comment" },
+							workspace = {
+								library = vim.env.VIMRUNTIME,
+							},
+						},
+					},
+				},
+			})
 		end,
 	},
-	-- require("plugins.lsp.linting"),
 	require("plugins.lsp.conform"),
 }
 
