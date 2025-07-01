@@ -96,11 +96,13 @@ alias luamake=/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-serv
 #      JAVA
 # -------------------
 export JAVA_HOME=/opt/homebrew/opt/openjdk@17/java
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 
 # -------------------
 #      C++
 # -------------------
-export CC=/opt/homebrew/opt/llvm/bin/clang
+# export CC=/opt/homebrew/opt/llvm/bin/clang
+export CPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/
 
 source /usr/local/share/fzf-tab/fzf-tab.plugin.zsh
 source /usr/local/share/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
@@ -110,11 +112,13 @@ bindkey -e
 # disable sort when completing options of any command
 zstyle ':completion:complete:*:options' sort false
 
+# -------------------
+#      JAVASCRIPT
+# -------------------
 export NVM_DIR="$HOME/.nvm"
 export NVM_LAZY_LOAD=true
 alias loadnvm='[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-source "$HOME/.tprime_env.zsh"
 
 # -------------------
 #      PYTHON
@@ -123,4 +127,14 @@ function loadpyenv {
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 }
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+
+export PATH="/opt/homebrew/bin/python3.11:$PATH"
+# -------------------
+#      SEARCH
+# -------------------
+source <(fzf --zsh)
+
+# -------------------
+#       TPRIME
+# -------------------
+source "$HOME/.tprime_env.zsh"
