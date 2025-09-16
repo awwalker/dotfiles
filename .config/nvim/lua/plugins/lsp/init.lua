@@ -92,6 +92,12 @@ local M = {
 					},
 				},
 			})
+			lsp.lemminx.setup({
+				capabilities = capabilities,
+			})
+			lsp.pylsp.setup({
+				capabilities = capabilities,
+			})
 		end,
 	},
 	require("plugins.lsp.conform"),
