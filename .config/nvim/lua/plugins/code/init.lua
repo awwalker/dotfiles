@@ -7,5 +7,7 @@ local M = {
 	require("plugins.code.typescript"),
 	require("plugins.code.readme"),
 	require("plugins.code.diagnostics"),
+	require("plugins.code.ai"),
+	require("plugins.code.testing"),
 }
 return M
