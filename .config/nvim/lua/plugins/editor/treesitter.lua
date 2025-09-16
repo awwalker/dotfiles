@@ -24,6 +24,9 @@ local M = {
 					"vim",
 					"typescript",
 					"javascript",
+					"markdown",
+					"markdown_inline",
+					"xml",
 				},
 				highlight = {
 					enabled = true,
