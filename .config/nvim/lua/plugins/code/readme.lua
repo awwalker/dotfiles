@@ -1,19 +1,28 @@
 local M = {
 	{
-		"toppair/peek.nvim",
-		event = { "VeryLazy" },
-		build = "deno task --quiet build:fast",
-		config = function()
-			require("peek").setup()
-			vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-			vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
-		end,
-	},
-	{
 		"vinnymeller/swagger-preview.nvim",
 		cmd = { "SwaggerPreview", "SwaggerPreviewStop", "SwaggerPreviewToggle" },
 		build = "npm i",
 		config = true,
+	},
+	{
+		"OXY2DEV/markview.nvim",
+		lazy = false,
+
+		-- For `nvim-treesitter` users.
+		priority = 49,
+
+		-- For blink.cmp's completion
+		-- source
+		dependencies = {
+			"saghen/blink.cmp",
+		},
+		opts = {
+			preview = {
+				filetypes = { "markdown", "codecompanion" },
+				ignore_buftypes = {},
+			},
+		},
 	},
 }
 

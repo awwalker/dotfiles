@@ -1,6 +1,7 @@
 local M = {
 	"nvim-neorg/neorg",
 	ft = "norg",
+	lazy = false,
 	-- removed for https://github.com/nvim-neorg/neorg/issues/1342
 	-- build = ":Neorg sync-parsers",
 	version = "*",
@@ -23,6 +24,8 @@ local M = {
 				},
 			},
 			["core.concealer"] = {},
+			["core.export.markdown"] = {},
+			["core.export"] = {},
 			["external.interim-ls"] = {},
 			["core.completion"] = {
 				config = {

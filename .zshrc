@@ -95,8 +95,8 @@ alias luamake=/Users/awalker/.cache/nvim/lspconfig/sumneko_lua/lua-language-serv
 # -------------------
 #      JAVA
 # -------------------
-export JAVA_HOME=/opt/homebrew/opt/openjdk@17/java
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export JAVA_HOME=/opt/homebrew/opt/openjdk@23/java
+export PATH="/opt/homebrew/opt/openjdk@23/bin:$PATH"
 
 # -------------------
 #      C++
