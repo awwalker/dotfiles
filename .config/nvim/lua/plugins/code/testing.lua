@@ -2,10 +2,17 @@ local noremap = { noremap = true }
 local M = {
 	{
 		"nvim-neotest/neotest",
+		--commit = "52fca6717ef972113ddd6ca223e30ad0abb2800c",
 		ft = "typescript",
 		keys = {
 			{
 				"<leader>tt",
+				"<cmd> lua require('neotest').run.run({vim.fn.expand('%'), vitestCommand = 'turbo run test'})<CR>",
+				mode = "n",
+				noremap,
+			},
+			{
+				"<localleader>rt",
 				"<cmd> lua require('neotest').run.run({vim.fn.expand('%'), vitestCommand = 'turbo run test'})<CR>",
 				mode = "n",
 				noremap,
@@ -33,6 +40,25 @@ local M = {
 					end,
 				},
 			}, neotest_ns)
+			vim.api.nvim_set_keymap(
+				"n",
+				"<localleader>rt",
+				"<cmd> lua require('neotest').run.run({vim.fn.expand('%'), vitestCommand = 'turbo run test'})<CR>",
+				noremap
+			)
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>tt",
+				"<cmd> lua require('neotest').run.run({vim.fn.expand('%'), vitestCommand = 'turbo run test'})<CR>",
+				noremap
+			)
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>to",
+				"<cmd> lua require('neotest').output.open({ enter = true, auto_close = true })<CR>",
+				noremap
+			)
+			vim.api.nvim_set_keymap("n", "<leader>ts", "<cmd> lua require('neotest').summary.toggle()<CR>", noremap)
 			require("neotest").setup({
 				adapters = {
 					require("neotest-vitest")({

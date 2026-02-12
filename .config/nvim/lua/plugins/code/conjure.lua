@@ -3,7 +3,6 @@ local noremap = { noremap = true }
 local M = {
 	{
 		"Olical/conjure",
-		-- dir = "/Users/aaronwalker/oss/conjure",
 		ft = { "clojure", "edn", "lua", "python", "fennel", "javascript" },
 		keys = {
 			{ "<leader>de", "<cmd> ConjureCljDebugInput eval<CR>", mode = "n", noremap },
@@ -19,9 +18,10 @@ local M = {
 		end,
 		init = function()
 			vim.g["conjure#eval#gsubs"] = { ["comment"] = { "^%(comment[%s%c]", "(do " } }
-			vim.g["conjure#client#clojure#nrepl#connection#auto_repl#cmd"] = "lein repl"
+			vim.g["conjure#client#clojure#nrepl#connection#auto_repl#cmd"] = "clj -M:repl/conjure"
 			vim.g["conjure#client#clojure#nrepl#eval#raw_out"] = true
-			vim.g["conjure#log#hud#open_when"] = "log-win-not-visible"
+			vim.g["conjure#client#clojure#nrepl#eval#print_function"] = "cider.nrepl.pprint/pprint"
+			-- vim.g["conjure#log#hud#open_when"] = "log-win-not-visible"
 			vim.g["conjure#filetype#fennel"] = "conjure.client.fennel.nfnl"
 			-- vim.g["conjure#debug"] = true
 			vim.api.nvim_create_autocmd({ "BufNewFile" }, {
@@ -59,15 +59,8 @@ local M = {
 			})
 			vim.api.nvim_set_keymap("n", "<leader>c", "<cmd> ConjureCljDebugInput continue<CR>", noremap)
 			vim.api.nvim_set_keymap("n", "<leader>n", "<cmd> ConjureCljDebugInput next<CR>", noremap)
-		end,
-	},
-	{
-		"https://gitlab.com/invertisment/conjure-clj-additions-cider-nrepl-mw.git",
-		ft = { "clojure" },
-		config = function()
-			vim.api.nvim_set_keymap("n", "<localleader>rt", "<cmd>CcaNreplRunCurrentTest<CR>", noremap)
-			vim.api.nvim_set_keymap("n", "<localleader>rns", "<cmd>CcaNreplRunTestsInTestNs<CR>", noremap)
-			vim.api.nvim_set_keymap("n", "<localleader>rft", "<cmd>CcaNreplJumpToFailingCljTest<CR>", noremap)
+			vim.api.nvim_set_keymap("n", "<localleader>rt", "<cmd> ConjureCljRunCurrentTest<Cr>", noremap)
+			vim.api.nvim_set_keymap("n", "<localleader>rns", "<cmd> ConjureCljRunCurrentNsTests<Cr>", noremap)
 		end,
 	},
 	{ "Olical/nfnl", ft = "fennel" },

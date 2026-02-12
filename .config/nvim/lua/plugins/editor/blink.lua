@@ -3,6 +3,7 @@ local M = {
 		"saghen/blink.compat",
 		-- use the latest release, via version = '*', if you also use the latest release for blink.cmp
 		version = "*",
+		-- branch = "main",
 		-- lazy.nvim will automatically load the plugin when it's required by blink.cmp
 		lazy = true,
 		-- make sure to set opts so that lazy.nvim calls blink.compat's setup
@@ -10,7 +11,9 @@ local M = {
 	},
 	{
 		"saghen/blink.cmp",
-		version = "1.*",
+		version = "*",
+		-- branch = "main",
+		build = "cargo build --release",
 		dependencies = {
 			"onsails/lspkind-nvim",
 			"nvim-tree/nvim-web-devicons",
@@ -59,6 +62,9 @@ local M = {
 					sql = { "dadbod", "buffer" },
 				},
 				providers = {
+					lsp = {
+						fallbacks = {},
+					},
 					dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
 					conjure = { name = "conjure", module = "blink.compat.source" },
 					nvim_lua = { name = "nvim_lua", module = "blink.compat.source" },

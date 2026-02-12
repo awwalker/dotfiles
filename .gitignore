@@ -9,3 +9,6 @@
 .jshintrc
 .jshintignore
 .gitignore
+.claude
+.cpcache
+.clojure-mcp

@@ -112,23 +112,13 @@ bindkey -e
 # disable sort when completing options of any command
 zstyle ':completion:complete:*:options' sort false
 
-# -------------------
-#      JAVASCRIPT
-# -------------------
-export NVM_DIR="$HOME/.nvm"
-export NVM_LAZY_LOAD=true
-alias loadnvm='[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# -------------------
-#      PYTHON
-# -------------------
-function loadpyenv {
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-}
-
 export PATH="/opt/homebrew/bin/python3.11:$PATH"
+
+
+# -------------------
+#      MISE
+# -------------------
+eval "$(mise activate zsh)"
 # -------------------
 #      SEARCH
 # -------------------

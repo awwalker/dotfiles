@@ -6,7 +6,8 @@ local home = os.getenv("HOME")
 -- GLOBALS
 vim.g.maplocalleader = ";"
 vim.g.mapleader = ","
-vim.g.python3_host_prog = home .. "/.pyenv/versions/neovim3/bin/python"
+-- vim.g.python3_host_prog = home .. "/.pyenv/versions/neovim3/bin/python"
+vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
 
 vim.o.autoread = true
 vim.o.completeopt = "menu,menuone,noinsert"
@@ -80,9 +81,6 @@ vim.o.splitright = true
 
 -- NETRW
 vim.g.netrw_liststyle = 3
-
--- SEXP
-vim.g.sexp_enable_insert_mode_mappings = false
 
 -- DadBod SSH
 vim.g.db_ssh_default_async = true
