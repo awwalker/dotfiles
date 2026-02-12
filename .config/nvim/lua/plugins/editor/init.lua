@@ -2,9 +2,9 @@ local M = {
 	require("plugins.editor.treesitter"),
 	require("plugins.editor.blink"),
 	require("plugins.editor.telescope"),
+	require("plugins.editor.fff"),
 	require("plugins.editor.gitsigns"),
 	require("plugins.editor.leap"),
-	require("plugins.editor.flit"),
 	require("plugins.editor.neorg"),
 	require("plugins.editor.autopairs"),
 	require("plugins.editor.bufferline"),
@@ -16,6 +16,7 @@ local M = {
 			keys = {
 				{ "." },
 				{ "cs" },
+				{ "ds" },
 			},
 		},
 	},

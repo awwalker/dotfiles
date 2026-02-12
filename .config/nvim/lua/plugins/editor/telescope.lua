@@ -31,7 +31,6 @@ local M = {
 	event = "VeryLazy",
 	cmd = "Telescope",
 	keys = {
-		{ "<c-f>", "<cmd> Telescope find_files<CR>", mode = "n", noremap_silent },
 		{ "<leader>f", "<cmd> Telescope live_grep_args<CR>", mode = "n", noremap_silent },
 		{ "<c-b>", "<cmd> Telescope buffers<CR>", mode = "n", noremap_silent },
 		{ "<c-g>", "<cmd> Telescope grep_string<CR>", mode = "n", noremap_silent },
@@ -39,6 +38,7 @@ local M = {
 		{ "<leader>r", "<cmd> Telescope lsp_references<CR>", mode = "n", noremap_silent },
 		{ "<A-m>", "<cmd> Telescope marks<CR>", mode = "n", noremap_silent },
 		{ "<c-u>", "<cmd> Telescope undo<CR>", mode = "n", noremap_silent },
+		{ "<c-q>", "<cmd> Telescope quickfix<CR>", mode = "n", noremap_silent },
 	},
 	config = function()
 		local telescope = require("telescope")

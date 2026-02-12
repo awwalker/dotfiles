@@ -11,6 +11,7 @@ local M = {
 				-- Define your formatters
 				formatters_by_ft = {
 					-- clojure = { "cljfmt " },
+					typescript = { "prettier", stop_after_first = true },
 					lua = { "stylua" },
 					markdown = { "prettier_md" }, --, "markdownlint" },
 					python = { "isort", "black" },

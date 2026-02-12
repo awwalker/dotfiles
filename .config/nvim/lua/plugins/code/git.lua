@@ -27,6 +27,10 @@ local M = {
 		},
 		event = "VeryLazy",
 	},
+	{
+		"barrettruth/diffs.nvim",
+		event = "VeryLazy",
+	},
 }
 
 return M

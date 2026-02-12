@@ -1,6 +1,6 @@
 local M = {
 	"nvim-zh/colorful-winsep.nvim",
-	event = "WinNew",
+	event = "WinLeave",
 	config = true,
 }
 

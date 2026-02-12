@@ -13,12 +13,12 @@ local M = {
 	{
 		"julienvincent/nvim-paredit",
 		ft = { "clojure", "edn" },
-		config = true,
+		config = function()
+			require("nvim-paredit").setup()
+		end,
 	},
 	{
-		"eraserhd/parinfer-rust",
-		branch = "master",
-		version = false,
+		dir = "~/oss/parinfer-rust",
 		build = "cargo build --release",
 		event = "InsertCharPre",
 		ft = { "clojure", "scheme", "racket", "lisp", "elisp" },

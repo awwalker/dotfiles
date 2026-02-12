@@ -2,6 +2,12 @@ local noremap = { noremap = true }
 
 local M = {
 	{
+		"pbogut/vim-dadbod-ssh",
+		init = function()
+			vim.g["db_ssh_default_async"] = true
+		end,
+	},
+	{
 		"kristijanhusak/vim-dadbod-ui",
 		cmd = {
 			"DBUI",
