@@ -6,6 +6,7 @@
            core.db/with-transaction                clojure.core/fn
            core.services.vreq/define-vreq-endpoint clojure.core/defn
            core.services.vreq/with-vreq-params     clojure.core/fn
+           core.services.checkalt-clearingworks/with-jwt! clojure.core/fn
            shared.db/with-transaction              clojure.core/fn
            shared.core/if-not-let                  clojure.core/let
            shared.params/define-schema             clojure.core/def
@@ -21,5 +22,5 @@
                                             (clojure.core/catch [e _ text body message])
                                             ;; Slingshot things
                                             (clojure.test/is    [thrown+? in?])]}
-            :unresolved-var {:exclude [;; Fix HugSQL warnings
-                                        core.db.sql]}}}
+           :unresolved-var {:exclude [;; Fix HugSQL warnings
+                                      core.db.sql]}}}
