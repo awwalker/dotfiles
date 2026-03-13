@@ -16,6 +16,24 @@ function M.get_signs(buf, lnum)
 	---@type Sign[]
 	local signs = {}
 
+	-- Get regular signs (used by neotest and other plugins)
+	if vim.fn.has("nvim-0.10") == 1 then
+		local regular_signs = vim.fn.sign_getplaced(buf, { group = "*", lnum = lnum })
+		if regular_signs and regular_signs[1] and regular_signs[1].signs then
+			for _, sign in ipairs(regular_signs[1].signs) do
+				local sign_def = vim.fn.sign_getdefined(sign.name)[1]
+				if sign_def then
+					signs[#signs + 1] = {
+						name = sign.name,
+						text = sign_def.text,
+						texthl = sign_def.texthl,
+						priority = sign.priority or 10,
+					}
+				end
+			end
+		end
+	end
+
 	-- Get extmark signs
 	local extmarks = vim.api.nvim_buf_get_extmarks(
 		buf,
@@ -90,34 +108,26 @@ function M.statuscolumn()
 	local is_file = vim.bo[buf].buftype == ""
 	local show_signs = vim.wo[win].signcolumn ~= "no"
 
-	local components = { "", "", "" } -- left, middle, right
-
-	local show_open_folds = true
+	local components = { "", "" } -- sign, number
 
 	if show_signs then
 		local signs = M.get_signs(buf, vim.v.lnum)
 
-		---@type Sign?,Sign?,Sign?
-		local left, right, fold, githl
+		---@type Sign?,Sign?
+		local sign, git
 		for _, s in ipairs(signs) do
 			if s.name and (s.name:find("GitSign") or s.name:find("MiniDiffSign")) then
-				right = s
-			else
-				left = s
+				git = s
+			elseif s.name and s.name:find("neotest") then
+				-- Prioritize neotest signs
+				sign = s
+			elseif not sign or not (sign.name and sign.name:find("neotest")) then
+				sign = s
 			end
 		end
 
-		vim.api.nvim_win_call(win, function()
-			if vim.fn.foldclosed(vim.v.lnum) >= 0 then
-				fold = { text = vim.opt.fillchars:get().foldclose or "", texthl = githl or "Folded" }
-			elseif show_open_folds and tostring(vim.treesitter.foldexpr(vim.v.lnum)):sub(1, 1) == ">" then -- fold start
-				fold = { text = vim.opt.fillchars:get().foldopen or "", texthl = githl }
-			end
-		end)
-		-- Left: mark or non-git sign
-		components[1] = M.icon(M.get_mark(buf, vim.v.lnum) or left)
-		-- Right: fold icon or git sign (only if file)
-		components[3] = is_file and M.icon(fold or right) or ""
+		-- Show mark, or diagnostic/neotest sign, or git sign
+		components[1] = M.icon(M.get_mark(buf, vim.v.lnum) or sign or git)
 	end
 
 	-- Numbers in Neovim are weird

@@ -188,6 +188,34 @@ local M = {
 			color = { fg = "#ffffff", gui = "bold" },
 		})
 		-- Add components to right sections
+		ins_right(require("codecompanion._extensions.spinner.styles.lualine").get_lualine_component())
+
+		-- CodeCompanion token count
+		ins_right({
+			function()
+				local bufnr = vim.api.nvim_get_current_buf()
+				if vim.bo[bufnr].filetype ~= "codecompanion" then
+					return ""
+				end
+
+				if not _G.codecompanion_chat_metadata then
+					return ""
+				end
+
+				local metadata = _G.codecompanion_chat_metadata[bufnr]
+				if not metadata then
+					return ""
+				end
+
+				if metadata.tokens and metadata.tokens > 0 then
+					return "  " .. metadata.tokens
+				end
+
+				return ""
+			end,
+			color = { fg = colors.cyan, gui = "bold" },
+		})
+
 		ins_right({
 			"o:encoding", -- option component same as &encoding in viml
 			fmt = string.upper, -- I'm not sure why it's upper case either ;)

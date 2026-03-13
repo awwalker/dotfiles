@@ -8,7 +8,9 @@ local M = {
 		-- Installs `mcp-hub` node binary globally.
 		build = "npm install -g mcp-hub@4.2.0",
 		config = function()
-			require("mcphub").setup()
+			local mcphub = require("mcphub")
+
+			mcphub.setup({})
 		end,
 	},
 	{
@@ -43,7 +45,7 @@ local M = {
 							["file"] = {
 								-- Use Telescope as the provider for the /file command
 								opts = {
-									provider = "telescope", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks"
+									provider = "snacks", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks"
 								},
 							},
 						},
@@ -93,9 +95,47 @@ local M = {
 						},
 					},
 					spinner = {
-						style = "lualine",
+						opts = {
+							style = "lualine",
+						},
 					},
 				},
+			})
+		end,
+		init = function()
+			local function ghostty_notify(title, body)
+				-- Send OSC 9 escape sequence for Ghostty notification
+				-- Format: \033]9;title;body\007
+				local notification = string.format("\027]9;%s;%s\007", title, body or "")
+				io.write(notification)
+				io.flush()
+			end
+			local last_autocmd = {}
+
+			-- Helper to debounce notifications
+			local function should_notify(event_name)
+				local cur = os.time()
+				if not last_autocmd[event_name] or cur - last_autocmd[event_name] > 2 then
+					last_autocmd[event_name] = cur
+					return true
+				end
+				return false
+			end
+
+			vim.api.nvim_create_autocmd("User", {
+				pattern = { "CodeCompanionChatDone", "CodeCompanionRequestFinished", "CodeCompanionToolApprovalRequested" },
+				callback = function(args)
+					if should_notify(args.match) then
+						if args.match == "CodeCompanionChatDone" then
+							ghostty_notify("CodeCompanion", "Chat is ready for interaction")
+						elseif args.match == "CodeCompanionRequestFinished" then
+							ghostty_notify("CodeCompanion", "LLM has generated a response")
+						elseif args.match == "CodeCompanionToolApprovalRequested" then
+							local tool_name = args.data.tool.name or "Tool"
+							ghostty_notify("CodeCompanion", "Waiting for approval: " .. tool_name)
+						end
+					end
+				end,
 			})
 		end,
 	},
