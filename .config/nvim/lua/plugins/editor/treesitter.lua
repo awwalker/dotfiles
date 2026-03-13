@@ -21,6 +21,7 @@ local M = {
 					"java",
 					"gitignore",
 					"terraform",
+					"tsx",
 					"norg",
 					"vim",
 					"typescript",

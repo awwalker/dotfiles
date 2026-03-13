@@ -22,7 +22,7 @@ local config = {
 			min = vim.diagnostic.severity.INFO,
 		},
 		severity_sort = true,
-		priority = 10,
+		priority = 50,
 	},
 	-- Enable lsp cursor word highlighting
 	document_highlight = {

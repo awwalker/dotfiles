@@ -61,9 +61,11 @@ local M = {
 			"⠀⠀⠀⠀⠀⠈⠻⠿⠿⠓⠄⠤⠘⠉⠙⠤⢀⠾⠿⣿⠟⠋         ",
 		}
 		dashboard.section.buttons.val = {
-			button(ctrl .. " f", "󰍉  Find files", ctrl, "<cmd>Telescope find_files<CR>"),
-			button(ldr .. "   f", "󱎸  Live grep", ldr, "<cmd>Telescope live_grep_args<CR>"),
-			button(ldr .. " g b", "  Git branches", ldr, "<cmd> Telescope git_branches<CR>"),
+			button(ctrl .. " f", "󰍉  Find files", ctrl, "<cmd>Seeker find_files<CR>"),
+			button(ldr .. "   f", "󱎸  Live grep", ldr, "<cmd>Seeker grep<CR>"),
+			button(ldr .. " g b", "  Git branches", ldr, function()
+				Snacks.picker.git_branches()
+			end),
 			button(ldr .. " d b", "  Database connections", ldr, "<cmd>e ~/.local/share/db_ui/connections.json<CR>"),
 			button(ldr .. "   q", "󰗼  Quit", ldr, "<cmd>qa<CR>"),
 			button("e", "  New file", ldr, "<cmd>ene<CR>"),
@@ -107,7 +109,7 @@ local M = {
 			desc = "enable tabline after alpha",
 			callback = function()
 				vim.opt.showtabline = 2
-				-- vim.opt.statuscolumn = [[%!v:lua.Status.statuscolumn()]]
+				vim.opt.statuscolumn = [[%!v:lua.Status.statuscolumn()]]
 			end,
 		})
 		alpha.setup(dashboard.opts)

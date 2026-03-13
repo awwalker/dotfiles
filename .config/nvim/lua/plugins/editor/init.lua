@@ -1,8 +1,9 @@
 local M = {
 	require("plugins.editor.treesitter"),
 	require("plugins.editor.blink"),
-	require("plugins.editor.telescope"),
-	require("plugins.editor.fff"),
+	require("plugins.editor.snacks"),
+	--require("plugins.editor.telescope"),
+	--require("plugins.editor.fff"),
 	require("plugins.editor.gitsigns"),
 	require("plugins.editor.leap"),
 	require("plugins.editor.neorg"),
