@@ -16,3 +16,11 @@ working-directory = "home"
 # Shaders
 custom-shader = ./shaders/cursor_smear.glsl
 custom-shader = ./shaders/cursor_blaze_no_trail.glsl
+
+keybind = cmd+ctrl+t=toggle_window_float_on_top
+
+desktop-notifications = true
+bell-features = system,attention
+notify-on-command-finish = always
+notify-on-command-finish-action = notify, bell
+notify-on-command-finish-after = 0s
