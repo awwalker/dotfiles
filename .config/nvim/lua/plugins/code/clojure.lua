@@ -18,7 +18,7 @@ local M = {
 		end,
 	},
 	{
-		dir = "~/oss/parinfer-rust",
+		"eraserhd/parinfer-rust",
 		build = "cargo build --release",
 		event = "InsertCharPre",
 		ft = { "clojure", "scheme", "racket", "lisp", "elisp" },

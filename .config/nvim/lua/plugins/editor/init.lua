@@ -6,7 +6,7 @@ local M = {
 	--require("plugins.editor.fff"),
 	require("plugins.editor.gitsigns"),
 	require("plugins.editor.leap"),
-	require("plugins.editor.neorg"),
+	--	require("plugins.editor.neorg"),
 	require("plugins.editor.autopairs"),
 	require("plugins.editor.bufferline"),
 	{

@@ -1,28 +1,38 @@
 local M = {
 	{
-		"ravitemer/mcphub.nvim",
+		"georgeharker/sharedserver",
+		build = "cargo install --path rust",
+		lazy = false,
+	},
+
+	-- mcp-companion: the bridge + Neovim plugin
+	{
+		"georgeharker/mcp-companion",
+		lazy = false,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
+			"olimorris/codecompanion.nvim",
 		},
-		cmd = "MCPHub",
-		-- Installs `mcp-hub` node binary globally.
-		build = "npm install -g mcp-hub@4.2.0",
+		build = "cd bridge && uv sync --frozen",
 		config = function()
-			local mcphub = require("mcphub")
-
-			mcphub.setup({})
+			require("mcp_companion").setup({
+				bridge = {
+					port = 9741,
+					config = vim.fn.expand("~/.config/mcp/servers.json"),
+				},
+				log = { level = "info", notify = "error" },
+			})
 		end,
 	},
+
 	{
 		"olimorris/codecompanion.nvim",
-		version = "^18.3.0",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-treesitter/nvim-treesitter",
-			"ravitemer/mcphub.nvim",
 			"lalitmee/codecompanion-spinners.nvim",
 		},
-		cmd = { "CodeCompanionChat", "CodeCompanion" },
+		cmd = { "CodeCompanionChat", "CodeCompanion", "CodeCompanionCLI" },
 		config = function()
 			require("codecompanion").setup({
 				opts = {
@@ -54,6 +64,17 @@ local M = {
 							model = "opus",
 						},
 					},
+					cli = {
+						agent = "claude_code",
+						agents = {
+							claude_code = {
+								cmd = "claude",
+								args = {},
+								description = "Claude Code CLI",
+								provider = "terminal",
+							},
+						},
+					},
 				},
 				adapters = {
 					acp = {
@@ -66,6 +87,7 @@ local M = {
 								},
 								defaults = {
 									timeout = 30000,
+									model = "opus",
 								},
 							})
 						end,
@@ -86,13 +108,9 @@ local M = {
 					},
 				},
 				extensions = {
-					mcphub = {
-						callback = "mcphub.extensions.codecompanion",
-						opts = {
-							make_vars = true,
-							make_slash_commands = true,
-							show_result_in_chat = true,
-						},
+					mcp_companion = {
+						callback = "mcp_companion.cc",
+						opts = {},
 					},
 					spinner = {
 						opts = {

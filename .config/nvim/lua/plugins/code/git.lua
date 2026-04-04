@@ -3,9 +3,6 @@ local M = {
 	{
 		"tpope/vim-fugitive",
 		cmd = "G",
-		keys = {
-			{ "<leader>gd", "<cmd>Gdiffsplit<CR>", mode = "n", noremap },
-		},
 		config = function()
 			local augroup = vim.api.nvim_create_augroup("FugitiveSmartQ", { clear = true })
 			vim.api.nvim_create_autocmd("FileType", {
@@ -28,8 +25,16 @@ local M = {
 		event = "VeryLazy",
 	},
 	{
-		"barrettruth/diffs.nvim",
-		event = "VeryLazy",
+		"esmuellert/codediff.nvim",
+		cmd = "CodeDiff",
+		keys = {
+			{ "<leader>gd", "<cmd>:CodeDiff main...<CR>", mode = "n", noremap },
+		},
+		opts = {
+			explorer = {
+				focus_on_select = true,
+			},
+		},
 	},
 }
 

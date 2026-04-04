@@ -18,11 +18,17 @@ local M = {
 		end,
 		init = function()
 			vim.g["conjure#eval#gsubs"] = { ["comment"] = { "^%(comment[%s%c]", "(do " } }
+			-- Hightlight evaluated forms
+			vim.g["conjure#highlight#enabled"] = true
+			-- Show HUD REPL log at startup
+			vim.g["conjure#log#hud#enabled"] = false
+			-- vim.g["conjure#client#clojure#nrepl#connection#auto_repl#hidden"] = true
+			-- vim.g["conjure#client#clojure#nrepl#eval#auto_require"] = false
 			vim.g["conjure#client#clojure#nrepl#connection#auto_repl#cmd"] = "clj -M:repl/conjure"
 			vim.g["conjure#client#clojure#nrepl#eval#raw_out"] = true
 			vim.g["conjure#client#clojure#nrepl#test#raw_out"] = true
-			vim.g["conjure#client#clojure#nrepl#test#runner"] = "kaocha" --"clojure"
-			vim.g["conjure#client#clojure#nrepl#test#call_suffix"] = '{:config-file "tests.edn"}'
+			vim.g["conjure#client#clojure#nrepl#test#runner"] = "clojure"
+			-- vim.g["conjure#client#clojure#nrepl#test#call_suffix"] = '{:config-file "tests.edn"}'
 			vim.g["conjure#client#clojure#nrepl#eval#print_function"] = "cider.nrepl.pprint/pprint"
 			-- vim.g["conjure#log#hud#open_when"] = "log-win-not-visible"
 			vim.g["conjure#filetype#fennel"] = "conjure.client.fennel.nfnl"

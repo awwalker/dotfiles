@@ -1,60 +1,8 @@
 local M = {
 	{
 		"nvim-neotest/neotest",
-		event = "VeryLazy",
 		branch = "master",
 		ft = { "javascript", "typescript", "tsx" },
-		keys = {
-			{
-				"<leader>tt",
-				"<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
-				mode = "n",
-				noremap = true,
-				desc = "Run test file",
-			},
-			{
-				"<localleader>rt",
-				"<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
-				mode = "n",
-				noremap = true,
-				desc = "Run test file",
-			},
-			{
-				"<leader>tn",
-				"<cmd>lua require('neotest').run.run()<CR>",
-				mode = "n",
-				noremap = true,
-				desc = "Run nearest test",
-			},
-			{
-				"<leader>to",
-				"<cmd>lua require('neotest').output.open({ enter = true, auto_close = true })<CR>",
-				mode = "n",
-				noremap = true,
-				desc = "Show test output",
-			},
-			{
-				"<leader>tp",
-				"<cmd>lua require('neotest').output_panel.toggle()<CR>",
-				mode = "n",
-				noremap = true,
-				desc = "Toggle output panel",
-			},
-			{
-				"<leader>ts",
-				"<cmd>lua require('neotest').summary.toggle()<CR>",
-				mode = "n",
-				noremap = true,
-				desc = "Toggle test summary",
-			},
-			{
-				"<leader>tw",
-				"<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<CR>",
-				mode = "n",
-				noremap = true,
-				desc = "Toggle watch mode",
-			},
-		},
 		dependencies = {
 			"nvim-neotest/nvim-nio",
 			"nvim-lua/plenary.nvim",
@@ -63,6 +11,48 @@ local M = {
 			"marilari88/neotest-vitest",
 		},
 		config = function()
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>tt",
+				"<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
+				{ noremap = true, desc = "Run test file" }
+			)
+			vim.api.nvim_set_keymap(
+				"n",
+				"<localleader>rt",
+				"<cmd>lua require('neotest').run.run()<CR>",
+				{ noremap = true, desc = "Run nearest test" }
+			)
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>tn",
+				"<cmd>lua require('neotest').run.run()<CR>",
+				{ noremap = true, desc = "Run nearest test" }
+			)
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>to",
+				"<cmd>lua require('neotest').output.open({ enter = true, auto_close = true })<CR>",
+				{ noremap = true, desc = "Show test output" }
+			)
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>tp",
+				"<cmd>lua require('neotest').output_panel.toggle()<CR>",
+				{ noremap = true, desc = "Toggle output panel" }
+			)
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>ts",
+				"<cmd>lua require('neotest').summary.toggle()<CR>",
+				{ noremap = true, desc = "Toggle test summary" }
+			)
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>tw",
+				"<cmd>lua require('neotest').watch.toggle(vim.fn.expand('%'))<CR>",
+				{ noremap = true, desc = "Toggle watch mode" }
+			)
 			-- Define highlight groups BEFORE setup
 			vim.api.nvim_set_hl(0, "NeotestPassed", { fg = "#00ff00", bold = true })
 			vim.api.nvim_set_hl(0, "NeotestFailed", { fg = "#ff0000", bold = true })

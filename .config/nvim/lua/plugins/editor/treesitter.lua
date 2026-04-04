@@ -4,53 +4,38 @@ local M = {
 		build = "make nvim_install",
 	},
 	{
+		"srazzak/tree-sitter-mdx",
+	},
+	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		lazy = false,
-		branch = "master",
 		version = false,
-		config = function()
-			local configs = require("nvim-treesitter.configs")
-			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-			configs.setup({
-				ensure_installed = {
-					"python",
-					"clojure",
-					"go",
-					"lua",
-					"java",
-					"gitignore",
-					"terraform",
-					"tsx",
-					"norg",
-					"vim",
-					"typescript",
-					"javascript",
-					"markdown",
-					"markdown_inline",
-					"xml",
-				},
-				highlight = {
-					enabled = true,
-				},
-				indent = {
-					enable = false,
-				},
-				pairs = {
-					enable = true,
-					highlight_self = false,
-					goto_right_end = false,
-					fallback_cmd_normal = "normal! %",
-				},
-			})
-			parser_config.ghostty = {
-				install_info = {
-					url = "https://github.com/bezhermoso/tree-sitter-ghostty",
-					files = { "src/parser.c" },
-					branch = "main",
-				},
-				filetype = "ghostty",
+		init = function()
+			local ensureInstalled = {
+				"python",
+				"clojure",
+				"go",
+				"lua",
+				"java",
+				"gitignore",
+				"terraform",
+				"tsx",
+				"vim",
+				"typescript",
+				"javascript",
+				"markdown",
+				"markdown_inline",
+				"xml",
 			}
+			local alreadyInstalled = require("nvim-treesitter.config").get_installed()
+			local parsersToInstall = vim
+				.iter(ensureInstalled)
+				:filter(function(parser)
+					return not vim.tbl_contains(alreadyInstalled, parser)
+				end)
+				:totable()
+			require("nvim-treesitter").install(parsersToInstall)
 		end,
 	},
 }
