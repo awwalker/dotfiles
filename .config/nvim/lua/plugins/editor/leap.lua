@@ -35,17 +35,23 @@ local M = {
 			-- For relative directions, set the `backward` flags according to:
 			-- local prev_backward = require('leap').state['repeat'].backward
 			vim.keymap.set({ "n", "x", "o" }, "<cr>", function()
+				if vim.bo.filetype == "qf" then
+					vim.api.nvim_feedkeys(vim.keycode("<cr>"), "n", false)
+					return
+				end
 				require("leap").leap({
 					["repeat"] = true,
 					opts = clever("<cr>", "<bs>"),
 				})
 			end)
 			vim.keymap.set({ "n", "x", "o" }, "<bs>", function()
-				require("leap").leap({
-					["repeat"] = true,
-					opts = clever("<bs>", "<cr>"),
-					backward = true,
-				})
+				if vim.bo.filetype ~= "qf" then
+					require("leap").leap({
+						["repeat"] = true,
+						opts = clever("<bs>", "<cr>"),
+						backward = true,
+					})
+				end
 			end)
 		end
 		do

@@ -42,7 +42,9 @@ local config = {
 		severity_sort = true,
 	},
 	jump = {
-		float = true,
+		on_jump = function(_, bufnr)
+			vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor" })
+		end,
 		wrap = true,
 		severity = {
 			min = vim.diagnostic.severity.INFO,

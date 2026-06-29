@@ -32,6 +32,7 @@ local M = {
 			"nvim-treesitter/nvim-treesitter",
 			"lalitmee/codecompanion-spinners.nvim",
 		},
+		branch = "main",
 		cmd = { "CodeCompanionChat", "CodeCompanion", "CodeCompanionCLI" },
 		config = function()
 			require("codecompanion").setup({
@@ -41,14 +42,14 @@ local M = {
 						timeout = 100000,
 					},
 				},
-				strategies = {
-					chat = {
-						adapter = {
-							name = "claude_code",
-							model = "opus",
-						},
-					},
-				},
+				-- strategies = {
+				-- 	chat = {
+				-- 		adapter = {
+				-- 			name = "claude_code",
+				-- 			model = "opus",
+				-- 		},
+				-- 	},
+				-- },
 				interactions = {
 					chat = {
 						slash_commands = {
@@ -61,7 +62,7 @@ local M = {
 						},
 						adapter = {
 							name = "claude_code",
-							model = "opus",
+							model = "opus-4.5",
 						},
 					},
 					cli = {
@@ -75,6 +76,9 @@ local M = {
 							},
 						},
 					},
+					inline = {
+						adapter = "anthropic",
+					},
 				},
 				adapters = {
 					acp = {
@@ -87,7 +91,7 @@ local M = {
 								},
 								defaults = {
 									timeout = 30000,
-									model = "opus",
+									model = "opus-4.5",
 								},
 							})
 						end,
@@ -119,6 +123,25 @@ local M = {
 					},
 				},
 			})
+			vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+			vim.keymap.set(
+				{ "n", "v" },
+				"<localleader>a",
+				"<cmd>CodeCompanionChat Toggle<cr>",
+				{ noremap = true, silent = true }
+			)
+			vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+
+			-- Expand 'cc' into 'CodeCompanion' in the command line
+			vim.cmd([[cab cc CodeCompanion]])
+			-- [C]odeCompanion [P]rompt]
+			vim.keymap.set({ "n", "v" }, "<localleader>cp", function()
+				return require("codecompanion").cli({ prompt = true })
+			end, { desc = "Prompt the CLI agent" })
+			-- [C]odeCompanion [A]dd
+			vim.keymap.set({ "n", "v" }, "<localleader>ca", function()
+				return require("codecompanion").cli("#{this}", { focus = false })
+			end, { desc = "Add context to the CLI agent" })
 		end,
 		init = function()
 			local function ghostty_notify(title, body)
