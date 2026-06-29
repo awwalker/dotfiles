@@ -61,8 +61,12 @@ local M = {
 			"⠀⠀⠀⠀⠀⠈⠻⠿⠿⠓⠄⠤⠘⠉⠙⠤⢀⠾⠿⣿⠟⠋         ",
 		}
 		dashboard.section.buttons.val = {
-			button(ctrl .. " f", "󰍉  Find files", ctrl, "<cmd>Seeker find_files<CR>"),
-			button(ldr .. "   f", "󱎸  Live grep", ldr, "<cmd>Seeker grep<CR>"),
+			button(ctrl .. " f", "󰍉  Find files", ctrl, function()
+				Snacks.picker.files()
+			end),
+			button(ldr .. "   f", "󱎸  Live grep", ldr, function()
+				Snacks.picker.grep()
+			end),
 			button(ldr .. " g b", "  Git branches", ldr, function()
 				Snacks.picker.git_branches()
 			end),

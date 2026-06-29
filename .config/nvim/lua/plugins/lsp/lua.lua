@@ -13,6 +13,9 @@ M.lsp = {
 		format = {
 			enable = false,
 		},
+		diagnostics = {
+			globals = { "vim" },
+		},
 		workspace = {
 			checkThirdParty = false,
 			library = {

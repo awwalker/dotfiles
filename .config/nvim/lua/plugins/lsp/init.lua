@@ -17,10 +17,9 @@ local M = {
 			"saghen/blink.cmp",
 		},
 		config = function()
-			local lsp = require("lspconfig")
 			local blink = require("blink.cmp")
 			local capabilities = blink.get_lsp_capabilities()
-			vim.lsp.set_log_level("error")
+			vim.lsp.log.set_level("error")
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				desc = "LSP actions",
@@ -40,46 +39,21 @@ local M = {
 				end,
 			})
 
-			lsp.lua_ls.setup({
+			vim.lsp.config("*", {
+				capabilities = capabilities,
+			})
+
+			vim.lsp.config("lua_ls", {
 				settings = require("plugins.lsp.lua").lsp,
-				capabilities = capabilities,
 			})
 
-			lsp.clojure_lsp.setup({
+			vim.lsp.config("clojure_lsp", {
 				filetypes = { "clojure", "edn" },
-				root_dir = lsp.util.root_pattern("project.clj", "deps.edn", "build.boot", "shadow-cljs.edn", ".git"),
-				capabilities = capabilities,
+				root_markers = { "project.clj", "deps.edn", "build.boot", "shadow-cljs.edn", ".git" },
 			})
 
-			lsp.dockerls.setup({
-				capabilities = capabilities,
-			})
-
-			lsp.jsonls.setup({
-				capabilities = capabilities,
-			})
-
-			lsp.marksman.setup({
-				capabilities = capabilities,
-			})
-
-			lsp.pyright.setup({
-				capabilities = capabilities,
-			})
-
-			lsp.cssmodules_ls.setup({
-				capabilities = capabilities,
-			})
-
-			lsp.ts_ls.setup({
-				capabilities = capabilities,
-			})
-			lsp.terraformls.setup({
-				capabilities = capabilities,
-			})
-			lsp.fennel_language_server.setup({
-				capabilities = capabilities,
-				root_dir = lsp.util.root_pattern("fnl", "lua"),
+			vim.lsp.config("fennel_language_server", {
+				root_markers = { "fnl", "lua" },
 				single_file_support = true,
 				settings = {
 					fennel = {
@@ -92,11 +66,20 @@ local M = {
 					},
 				},
 			})
-			lsp.lemminx.setup({
-				capabilities = capabilities,
-			})
-			lsp.pylsp.setup({
-				capabilities = capabilities,
+
+			vim.lsp.enable({
+				"lua_ls",
+				"clojure_lsp",
+				"dockerls",
+				"jsonls",
+				"marksman",
+				"pyright",
+				"cssmodules_ls",
+				"ts_ls",
+				"terraformls",
+				"fennel_language_server",
+				"lemminx",
+				"pylsp",
 			})
 		end,
 	},

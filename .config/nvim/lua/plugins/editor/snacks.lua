@@ -1,6 +1,8 @@
 local M = {
 	{
 		"folke/snacks.nvim",
+		lazy = false,
+		priority = 1000,
 		---@type snacks.Config
 		opts = {
 			picker = {
@@ -10,6 +12,28 @@ local M = {
 			},
 		},
 		keys = {
+			{
+				"<c-f>",
+				function()
+					Snacks.picker.files()
+				end,
+				desc = "Files",
+			},
+			{
+				"<c-g>",
+				function()
+					Snacks.picker.grep_word()
+				end,
+				desc = "Visual selection or word",
+				mode = { "n", "x" },
+			},
+			{
+				"<leader>f",
+				function()
+					Snacks.picker.grep()
+				end,
+				desc = "Grep",
+			},
 			{
 				"<leader>t",
 				function()
@@ -40,7 +64,6 @@ local M = {
 							input = {
 								keys = {
 									["<c-n>"] = { "git_branch_add", mode = { "n", "i" } },
-									--["<c-s>"] = { "git_branch_add", mode = { "n", "i" } },
 									["<c-d>"] = { "git_branch_del", mode = { "n", "i" } },
 								},
 							},
@@ -71,32 +94,19 @@ local M = {
 				end,
 				desc = "Marks",
 			},
-		},
-	},
-	{
-		"2kabhishek/seeker.nvim",
-		dependencies = { "folke/snacks.nvim" },
-		cmd = "Seeker",
-		setup = {
-			picker_provider = "snacks",
-			toggle_key = "<C-e>",
-		},
-		opts = {},
-		keys = {
 			{
-				"<c-f>",
-				"<cmd> Seeker files<CR>",
-				desc = "Smart Find Files",
+				"<leader>sq",
+				function()
+					Snacks.picker.qflist()
+				end,
+				desc = "Quickfix List",
 			},
 			{
-				"<leader>f",
-				"<cmd> Seeker grep<CR>",
-				desc = "Grep",
-			},
-			{
-				"<c-g>",
-				"<cmd> Seeker grep_word<CR>",
-				desc = "Visual selection or word",
+				"<leader>sR",
+				function()
+					Snacks.picker.resume()
+				end,
+				desc = "Resume",
 			},
 		},
 	},
