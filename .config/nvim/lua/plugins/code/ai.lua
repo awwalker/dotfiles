@@ -10,13 +10,12 @@ local M = {
 		"georgeharker/mcp-companion",
 		lazy = false,
 		dependencies = {
-			"nvim-lua/plenary.nvim",
 			"olimorris/codecompanion.nvim",
+			"georgeharker/sharedserver",
 		},
-		build = "cd bridge && uv sync --frozen",
 		config = function()
 			require("mcp_companion").setup({
-				bridge = {
+				combiner = {
 					port = 9741,
 					config = vim.fn.expand("~/.config/mcp/servers.json"),
 				},
