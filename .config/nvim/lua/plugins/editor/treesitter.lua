@@ -26,6 +26,7 @@ local M = {
 				"javascript",
 				"markdown",
 				"markdown_inline",
+				"mermaid",
 				"xml",
 			}
 			local alreadyInstalled = require("nvim-treesitter.config").get_installed()
