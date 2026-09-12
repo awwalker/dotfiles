@@ -3,6 +3,17 @@ local M = {
 	{
 		"tpope/vim-fugitive",
 		cmd = "G",
+		keys = {
+			{
+				"<leader>gc",
+				function()
+					vim.cmd("G commit")
+					vim.cmd("resize 14")
+				end,
+				mode = "n",
+				desc = "Git commit (14-line window)",
+			},
+		},
 		config = function()
 			local augroup = vim.api.nvim_create_augroup("FugitiveSmartQ", { clear = true })
 			vim.api.nvim_create_autocmd("FileType", {
