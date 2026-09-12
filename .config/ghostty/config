@@ -11,8 +11,48 @@ clipboard-write = "allow"
 clipboard-write = "allow"
 
 macos-option-as-alt = "true"
-working-directory = "home"
+# New tabs/splits stay in the current worktree instead of jumping to $HOME
+working-directory = "inherit"
+# Restore windows/tabs across quit + relaunch (your session survives cmd+q).
+window-save-state = "always"
 
 # Shaders
 custom-shader = ./shaders/cursor_smear.glsl
 custom-shader = ./shaders/cursor_blaze_no_trail.glsl
+
+# ---------------------
+#   TAB NAVIGATION
+# ---------------------
+# Quick terminal as the haunt summoner: a global hotkey (works in ANY app,
+# including inside nvim) drops an overlay in THIS instance, whose shell auto-runs
+# haunt (see ~/.zshrc GHOSTTY_QUICK_TERMINAL check). Needs Ghostty to have
+# Accessibility permission (global keybinds are a system-wide event tap).
+keybind = global:alt+t=toggle_quick_terminal
+quick-terminal-position = top
+# Compact panel: 45% tall, 40% wide (first value = primary axis = height for a
+# top position; second = width). Tune to taste; %/px accepted, bare numbers error.
+quick-terminal-size = 45%,40%
+quick-terminal-animation-duration = 0.15
+quick-terminal-autohide = true
+quick-terminal-space-behavior = move
+
+# NOTE: the tab overview (type-to-filter) is remapped to cmd+o via a macOS
+# App Shortcut on the native "Show All Tabs" menu item, NOT here —
+# toggle_tab_overview as a Ghostty keybind doesn't drive the native macOS
+# overview and would just swallow the keystroke.
+
+# Rename the active tab on the fly (branch label, TODO marker, etc.)
+keybind = cmd+shift+r=prompt_tab_title
+
+# Quick-jump to a tab by position.
+# (Also available: cmd+shift+\ opens the native tab overview — type part of a
+#  repo:branch label to filter it.)
+keybind = cmd+1=goto_tab:1
+keybind = cmd+2=goto_tab:2
+keybind = cmd+3=goto_tab:3
+keybind = cmd+4=goto_tab:4
+keybind = cmd+5=goto_tab:5
+keybind = cmd+6=goto_tab:6
+keybind = cmd+7=goto_tab:7
+keybind = cmd+8=goto_tab:8
+keybind = cmd+9=goto_tab:9

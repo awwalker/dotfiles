@@ -14,6 +14,11 @@ vim.o.completeopt = "menu,menuone,noinsert"
 vim.o.mouse = "a"
 vim.o.ttyfast = true
 
+-- TITLE (Ghostty tab bar + native tab overview: cmd+shift+\)
+vim.o.title = true
+vim.o.titlelen = 0
+vim.o.titlestring = "%{v:lua.require'utils.title'.tab()}"
+
 -- BLACK
 vim.g.black_linelength = 100
 

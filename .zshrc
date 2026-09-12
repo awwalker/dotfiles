@@ -128,3 +128,43 @@ source <(fzf --zsh)
 #       TPRIME
 # -------------------
 source "$HOME/.tprime_env.zsh"
+
+# -------------------
+#   TAB TITLES + WORKTREE NAV
+# -------------------
+# Label each shell tab as "repo:branch" so Ghostty's tab bar and native tab
+# overview (cmd+shift+\) are identifiable. nvim sets its own title while running.
+autoload -Uz add-zsh-hook
+_gt_title() {
+	local repo branch
+	repo=$(git rev-parse --show-toplevel 2>/dev/null) && repo=${repo:t} || repo=${PWD:t}
+	branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+	print -Pn "\e]2;${repo}${branch:+:$branch}\a"
+}
+add-zsh-hook precmd _gt_title
+add-zsh-hook chpwd _gt_title
+
+# wt: fuzzy-pick a git worktree and open it in nvim (current tab).
+wt() {
+	local dir
+	dir=$(git worktree list 2>/dev/null | fzf --with-nth=1,3 --prompt='worktree> ' | awk '{print $1}') || return
+	[ -n "$dir" ] && cd "$dir" && nvim
+}
+
+# wtn: same pick, but open it in a NEW Ghostty window.
+wtn() {
+	local dir
+	dir=$(git worktree list 2>/dev/null | fzf --with-nth=1,3 --prompt='worktree> ' | awk '{print $1}') || return
+	[ -n "$dir" ] && open -na Ghostty --args --working-directory="$dir" -e nvim
+}
+
+# h: launch-or-focus the haunt tab switcher (fzf picker across all Ghostty
+# tabs/windows/Spaces). Same wrapper the alt+t global hotkey uses.
+alias h='~/bin/haunt-summon'
+
+# In Ghostty's quick terminal, become the haunt dashboard (minimalist overlay
+# summoned by the global alt+t keybind). GHOSTTY_QUICK_TERMINAL is set by Ghostty
+# only in the quick-terminal surface, so this never affects normal tabs.
+if [[ -n "${GHOSTTY_QUICK_TERMINAL:-}" ]]; then
+	exec haunt
+fi

@@ -12,3 +12,5 @@
 .claude
 .cpcache
 .clojure-mcp
+/resources/secrets/dev/*
+.worktrees
