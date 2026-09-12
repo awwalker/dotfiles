@@ -24,6 +24,159 @@ local M = {
       red      = '#ec5f67',
     }
 
+		-- Git diff stats shown only in the fugitive status window.
+		-- Computed asynchronously and cached so statusline redraws never block.
+		local git_stats = { text = "", br_ins = 0, br_del = 0, wt_ins = 0, wt_del = 0 }
+
+		local function set_stat_hls()
+			vim.api.nvim_set_hl(0, "LualineGitAdd", { fg = colors.green, bg = colors.bg })
+			vim.api.nvim_set_hl(0, "LualineGitDel", { fg = colors.red, bg = colors.bg })
+			vim.api.nvim_set_hl(0, "LualineGitLbl", { fg = colors.violet, bg = colors.bg, bold = true })
+		end
+		set_stat_hls()
+		vim.api.nvim_create_autocmd("ColorScheme", { callback = set_stat_hls })
+
+		local function build_stats_text()
+			git_stats.text = string.format(
+				"%%#LualineGitLbl# %%#LualineGitAdd#+%d %%#LualineGitDel#-%d"
+					.. "  %%#LualineGitLbl# %%#LualineGitAdd#+%d %%#LualineGitDel#-%d%%*",
+				git_stats.br_ins,
+				git_stats.br_del,
+				git_stats.wt_ins,
+				git_stats.wt_del
+			)
+			vim.schedule(function()
+				vim.cmd("redrawstatus")
+			end)
+		end
+
+		local function run_git(cargs, cwd, cb)
+			vim.system(vim.list_extend({ "git" }, cargs), { cwd = cwd, text = true }, function(res)
+				vim.schedule(function()
+					cb(res.code == 0 and res.stdout or nil)
+				end)
+			end)
+		end
+
+		local function parse_shortstat(out)
+			if not out then
+				return 0, 0
+			end
+			return tonumber(out:match("(%d+) insertion")) or 0, tonumber(out:match("(%d+) deletion")) or 0
+		end
+
+		-- Find the base ref to diff the branch against (first that shares history).
+		local function find_base(cwd, cb)
+			local candidates = { "origin/main", "main", "origin/master", "master" }
+			local idx = 0
+			local function try()
+				idx = idx + 1
+				local ref = candidates[idx]
+				if not ref then
+					cb(nil)
+					return
+				end
+				run_git({ "merge-base", "HEAD", ref }, cwd, function(out)
+					if out and out:match("%w") then
+						cb(ref)
+					else
+						try()
+					end
+				end)
+			end
+			try()
+		end
+
+		local function refresh_git_stats()
+			local ok, wt = pcall(vim.fn.FugitiveWorkTree)
+			local cwd = (ok and wt ~= "") and wt or vim.fn.getcwd()
+
+			-- Uncommitted (staged + unstaged) changes vs the last commit.
+			run_git({ "diff", "HEAD", "--shortstat" }, cwd, function(out)
+				git_stats.wt_ins, git_stats.wt_del = parse_shortstat(out)
+				build_stats_text()
+			end)
+
+			-- Whole branch vs its merge-base with the base branch.
+			find_base(cwd, function(base)
+				if not base then
+					git_stats.br_ins, git_stats.br_del = 0, 0
+					build_stats_text()
+					return
+				end
+				run_git({ "diff", base .. "...HEAD", "--shortstat" }, cwd, function(out)
+					git_stats.br_ins, git_stats.br_del = parse_shortstat(out)
+					build_stats_text()
+				end)
+			end)
+		end
+
+		local stats_group = vim.api.nvim_create_augroup("LualineFugitiveStats", { clear = true })
+		vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
+			group = stats_group,
+			pattern = "fugitive",
+			callback = refresh_git_stats,
+		})
+		vim.api.nvim_create_autocmd("User", {
+			group = stats_group,
+			pattern = "FugitiveChanged",
+			callback = refresh_git_stats,
+		})
+
+		-- Dadbod query spinner: animates while an async DB query is in flight.
+		-- vim-dadbod (master) fires `User <output>/DBExecutePre` before and
+		-- `User <output>/DBExecutePost` after each async job. We count in-flight
+		-- queries (several can run at once) and drive a uv timer to animate,
+		-- since the statusline only redraws when something tells it to.
+		local dadbod = { active = 0, frame = 1, timer = nil }
+		local dadbod_frames = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+
+		local function dadbod_stop_timer()
+			if dadbod.timer then
+				dadbod.timer:stop()
+				dadbod.timer:close()
+				dadbod.timer = nil
+			end
+		end
+
+		local function dadbod_start_timer()
+			if dadbod.timer then
+				return
+			end
+			dadbod.timer = vim.uv.new_timer()
+			dadbod.timer:start(
+				0,
+				100,
+				vim.schedule_wrap(function()
+					dadbod.frame = dadbod.frame % #dadbod_frames + 1
+					vim.cmd("redrawstatus")
+				end)
+			)
+		end
+
+		local dadbod_group = vim.api.nvim_create_augroup("LualineDadbodSpinner", { clear = true })
+		vim.api.nvim_create_autocmd("User", {
+			group = dadbod_group,
+			pattern = "*DBExecutePre",
+			callback = function()
+				dadbod.active = dadbod.active + 1
+				dadbod_start_timer()
+			end,
+		})
+		vim.api.nvim_create_autocmd("User", {
+			group = dadbod_group,
+			pattern = "*DBExecutePost",
+			callback = function()
+				dadbod.active = math.max(0, dadbod.active - 1)
+				if dadbod.active == 0 then
+					dadbod_stop_timer()
+					vim.schedule(function()
+						vim.cmd("redrawstatus")
+					end)
+				end
+			end,
+		})
+
 		local conditions = {
 			buffer_not_empty = function()
 				return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
@@ -161,6 +314,16 @@ local M = {
 			},
 		})
 
+		-- Fugitive git stats: branch vs base | uncommitted working tree.
+		ins_left({
+			function()
+				return git_stats.text
+			end,
+			cond = function()
+				return vim.bo.filetype == "fugitive"
+			end,
+		})
+
 		-- Insert mid section. You can make any number of sections in neovim :)
 		-- for lualine it's any number greater then 2
 		ins_left({
@@ -188,6 +351,17 @@ local M = {
 			color = { fg = "#ffffff", gui = "bold" },
 		})
 		-- Add components to right sections
+		-- Dadbod query spinner (only visible while a query is running).
+		ins_right({
+			function()
+				return dadbod_frames[dadbod.frame] .. "  Running query"
+			end,
+			cond = function()
+				return dadbod.active > 0
+			end,
+			color = { fg = colors.orange, gui = "bold" },
+		})
+
 		ins_right(require("codecompanion._extensions.spinner.styles.lualine").get_lualine_component())
 
 		-- CodeCompanion token count
