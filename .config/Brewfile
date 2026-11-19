@@ -1,0 +1,220 @@
+tap "asmvik/formulae"
+tap "borkdude/brew"
+tap "clojure-lsp/brew"
+tap "clojure/tools"
+tap "dbt-labs/dbt"
+tap "hashicorp/tap"
+tap "jesseduffield/lazygit"
+tap "jolt-lang/jolt"
+tap "openresty/brew"
+tap "osx-cross/arm"
+tap "osx-cross/avr"
+tap "qmk/qmk"
+# Core application library for C
+brew "glib"
+# Vector graphics library with cross-device output support
+brew "cairo"
+# OpenType text shaping engine
+brew "harfbuzz"
+# Flexible lightweight test report tool
+brew "allure"
+# Atmel AVR MCU programmer
+brew "avrdude"
+# Official Amazon AWS command-line interface
+brew "awscli"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Readline wrapper: adds readline support to tools that lack it
+brew "rlwrap"
+# Dynamic, general-purpose programming language
+brew "clojure"
+# GNU File, Shell, and Text utilities
+brew "coreutils"
+# Secure runtime for JavaScript and TypeScript
+brew "deno"
+# Pack, ship and run any application as a lightweight container
+# brew "docker"  # CLI ships with docker-desktop cask below; the two conflict
+# Text processing system for reStructuredText
+brew "docutils"
+# General purpose Language Server
+brew "efm-langserver"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Lua Lisp Language
+brew "fennel"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# This library is for the GeoIP Legacy format (dat)
+brew "geoip"
+# GitHub command-line tool
+brew "gh"
+# Distributed revision control system
+brew "git"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
+# Git extension for versioning large files
+brew "git-lfs"
+# Render markdown on the CLI
+brew "glow"
+# GNU implementation of the famous stream editor
+brew "gnu-sed"
+# Library to load and enumerate PKCS#11 modules
+brew "p11-kit"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
+# GNU Transport Layer Security (TLS) Library
+brew "gnutls"
+# Assuan IPC Library
+brew "libassuan"
+# X.509 and CMS library
+brew "libksba"
+# GNU Privacy Guard (OpenPGP)
+brew "gnupg"
+# Toolkit for creating graphical user interfaces
+brew "gtk4"
+# Smarter Dockerfile linter to validate best practices
+brew "hadolint"
+# Command-line hex viewer
+brew "hexyl"
+# Improved top (interactive process viewer)
+brew "htop"
+# User-friendly cURL replacement (command-line HTTP client)
+brew "httpie"
+# Add GitHub support to git on the command-line
+brew "hub"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Build tool for Clojure
+brew "leiningen"
+# Postgres C API library
+brew "libpq"
+# NaCl networking and cryptography library
+brew "libsodium"
+# Next-gen compiler infrastructure
+brew "llvm"
+# Fully functional local AWS cloud stack
+brew "localstack"
+# Parsing Expression Grammars For Lua
+brew "lpeg"
+# Language Server for the Lua language
+brew "lua-language-server"
+# Package manager for the Lua programming language
+brew "luarocks"
+# Bare libuv bindings for lua
+brew "luv"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# CLI for Node.js style checker and lint tool for Markdown files
+brew "markdownlint-cli"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
+# Simple tool to make locally trusted development certificates
+brew "mkcert"
+# Incremental parsing library
+brew "tree-sitter"
+# Clean C library for processing UTF-8 Unicode data
+brew "utf8proc"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim", args: ["HEAD"]
+# Utility for managing network connections
+brew "netcat"
+# Platform built on V8 to build network applications
+brew "node@18"
+# Development kit for the Java programming language
+brew "openjdk@17"
+# Development kit for the Java programming language
+brew "openjdk@21"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
+# Fast, disk space efficient package manager
+brew "pnpm"
+# Object-relational database system
+brew "postgresql@18", restart_service: :changed, link: true
+# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
+brew "prettier"
+# Pretty, minimal and fast ZSH prompt
+brew "pure"
+# Static type checker for Python
+brew "pyright"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.10"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.11"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.9"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Opinionated Lua code formatter
+brew "stylua"
+# User interface to the TELNET protocol
+brew "telnet"
+# Terminal multiplexer
+brew "tmux"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
+# Parser generator tool
+brew "tree-sitter-cli"
+# Bundler for JavaScript and friends
+brew "webpack"
+# JavaScript package manager
+brew "yarn"
+# Simple hotkey-daemon for macOS.
+brew "asmvik/formulae/skhd", trusted: true
+# Clojure implementation on Chez Scheme — no JVM
+brew "jolt-lang/jolt/jolt", trusted: true
+# Command-line interface for 1Password
+cask "1password-cli"
+# Terminal-based AI coding assistant
+cask "claude-code"
+cask "font-3270-nerd-font"
+cask "font-hack-nerd-font"
+cask "font-meslo-lg-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty@tip"
+# Web browser
+cask "google-chrome"
+# Client for the Google Drive storage service
+cask "google-drive"
+# Reverse proxy, secure introspectable tunnels to localhost
+cask "ngrok"
+# App to write, plan, collaborate, and get organised
+cask "notion"
+# Team communication and collaboration software
+cask "slack"
+# OpenVPN client with AppleScript support
+cask "viscosity"
+# Video communication and virtual meeting platform
+cask "zoom"
+
+# --- Apps installed outside Homebrew on the old machine ---
+cask "1password"
+cask "claude"
+cask "datagrip"
+cask "discord"
+cask "docker-desktop"
+cask "insomnia"
+cask "keybase"
+cask "linear-linear"
+cask "postman"
+cask "readdle-spark"
+cask "roam"
+cask "soapui"
+cask "spotify"
+
+# Likely provisioned by work MDM (Iru Self Service) -- uncomment if not
+# cask "adobe-acrobat-pro"
+# cask "microsoft-word"
+# cask "microsoft-excel"
+# cask "microsoft-powerpoint"
+# cask "okta-verify"
+# cask "openvpn-connect"
+
+# No cask available -- install manually: Logi Tune, ZMK Studio
+
+# --- Language-level tools (need mise to have installed rust/node/uv first) ---
+cargo "fennel-language-server", source: "https://github.com/rydesun/fennel-language-server"
+cargo "parinfer_rust"
+cargo "sharedserver"
+uv "zmk"
+npm "corepack"
+npm "vercel"
