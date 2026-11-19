@@ -1,6 +1,8 @@
 local M = {
 	{
 		"cameron-wags/rainbow_csv.nvim",
+		-- Latest tag (4.3.0, 2019) is ~125 commits behind the default branch.
+		version = false,
 		ft = {
 			"csv",
 			"tsv",

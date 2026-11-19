@@ -19,6 +19,16 @@ local M = {
 		config = function()
 			local blink = require("blink.cmp")
 			local capabilities = blink.get_lsp_capabilities()
+			-- Disable LSP dynamic file-watching (workspace/didChangeWatchedFiles).
+			-- Neovim's watcher does not respect .gitignore, so clojure-lsp's
+			-- `**/*.{clj,cljc,cljs,edn}` watchers would walk core's entire tree,
+			-- including the ~100k files in nested worktrees (.claude/worktrees,
+			-- .worktrees) -- stalling the main loop and delaying pickers. Servers
+			-- still analyze buffers on edit/save; they just won't react to files
+			-- changed outside Neovim.
+			capabilities = vim.tbl_deep_extend("force", capabilities, {
+				workspace = { didChangeWatchedFiles = { dynamicRegistration = false } },
+			})
 			vim.lsp.log.set_level("error")
 
 			vim.api.nvim_create_autocmd("LspAttach", {

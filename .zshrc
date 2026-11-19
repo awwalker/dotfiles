@@ -9,9 +9,9 @@ export PATH="$HOME/bin:${PATH}"
 export PATH="$PATH:/usr/local/opt/gnupg@2.0/bin"
 export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
-export PATH="/opt/homebrew/opt/postgresql@12/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
-export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
 
 
 export PATH="$PATH:/usr/local/bin"
@@ -111,6 +111,8 @@ bindkey -e
 
 # disable sort when completing options of any command
 zstyle ':completion:complete:*:options' sort false
+# only show completing opts of make targets
+zstyle ':completion:*:*:make:*' tag-order 'targets'
 
 export PATH="/opt/homebrew/bin/python3.11:$PATH"
 

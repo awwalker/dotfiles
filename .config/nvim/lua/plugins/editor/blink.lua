@@ -11,10 +11,16 @@ local M = {
 	},
 	{
 		"saghen/blink.cmp",
-		version = "*",
+		-- v2 (tracks main). Requires nvim 0.12+ and the saghen/blink.lib dependency.
+		version = false,
 		-- branch = "main",
-		build = "cargo build --release",
+		build = function()
+			-- v2 build entrypoint for the Rust fuzzy matcher. Use `gb` in :Lazy to rebuild.
+			require("blink.cmp").build():pwait()
+		end,
 		dependencies = {
+			-- Required by blink.cmp v2; tracks main to stay in sync.
+			{ "saghen/blink.lib", version = false },
 			"onsails/lspkind-nvim",
 			"nvim-tree/nvim-web-devicons",
 		},
@@ -24,8 +30,8 @@ local M = {
 			},
 			keymap = {
 				["<CR>"] = { "accept", "fallback" },
-				["<c-k"] = { "scroll_documentation_up" },
-				["<c-j"] = { "scroll_documentation_down" },
+				["<C-k>"] = { "scroll_documentation_up" },
+				["<C-j>"] = { "scroll_documentation_down" },
 			},
 			completion = {
 				list = {
@@ -60,6 +66,14 @@ local M = {
 				default = { "lsp", "buffer", "path" },
 				per_filetype = {
 					sql = { "dadbod", "buffer" },
+					-- REPL-aware completion via the conjure compat source (the
+					-- provider is defined below but was never wired into any
+					-- filetype). Keep lsp first so clojure-lsp static completion
+					-- still leads, with live nREPL candidates behind it.
+					clojure = { "lsp", "conjure", "buffer" },
+					edn = { "lsp", "conjure", "buffer" },
+					fennel = { "lsp", "conjure", "buffer" },
+					lua = { "lsp", "nvim_lua", "buffer", "path" },
 				},
 				providers = {
 					lsp = {
@@ -82,17 +96,20 @@ local M = {
 			},
 			cmdline = {
 				enabled = true,
-				sources = function()
-					local type = vim.fn.getcmdtype()
+				-- v2: cmdline.sources is a SourceConfig table; the dynamic list moves to `default`.
+				sources = {
+					default = function()
+						local type = vim.fn.getcmdtype()
 
-					if type == "/" or type == "?" then
-						return { "buffer" }
-					end
-					if type == ":" or type == "@" then
-						return { "cmdline", "path", "buffer" }
-					end
-					return {}
-				end,
+						if type == "/" or type == "?" then
+							return { "buffer" }
+						end
+						if type == ":" or type == "@" then
+							return { "cmdline", "path", "buffer" }
+						end
+						return {}
+					end,
+				},
 				completion = {
 					menu = { auto_show = false },
 				},

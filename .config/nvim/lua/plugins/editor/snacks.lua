@@ -65,8 +65,39 @@ local M = {
 					},
 				},
 			},
+			-- Persistent, per-project, filetype-aware scratch buffers. Replaces
+			-- the hand-rolled "gitignored scratch buffer" the conjure config
+			-- describes for defining `user/reset-db` etc.: scratch buffers are
+			-- keyed by cwd + filetype, survive restarts, and are eval'able by
+			-- Conjure like any other Clojure buffer. Defaults to clojure since
+			-- that's the primary REPL workflow; <leader>S lists all scratches so
+			-- other filetypes stay one keystroke away.
+			scratch = {
+				ft = "clojure",
+			},
 		},
 		keys = {
+			{
+				"<leader>.",
+				function()
+					Snacks.scratch()
+				end,
+				desc = "Toggle scratch buffer",
+			},
+			{
+				"<leader>S",
+				function()
+					-- select() opens a picker of existing scratches; when none
+					-- exist yet it dead-ends on "No results found", so fall back
+					-- to creating one.
+					if #Snacks.scratch.list() > 0 then
+						Snacks.scratch.select()
+					else
+						Snacks.scratch()
+					end
+				end,
+				desc = "Select scratch buffer",
+			},
 			{
 				"<c-f>",
 				function()

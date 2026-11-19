@@ -11,14 +11,10 @@ local M = {
 	require("plugins.editor.bufferline"),
 	{
 		"tpope/vim-surround",
+		version = false,
 		event = "InsertEnter",
 		dependencies = {
-			"tpope/vim-repeat",
-			keys = {
-				{ "." },
-				{ "cs" },
-				{ "ds" },
-			},
+			{ "tpope/vim-repeat", version = false },
 		},
 	},
 	{

@@ -2,10 +2,9 @@ local M = {
 	{
 		"clojure-vim/vim-jack-in",
 		dependencies = {
-			{
-				"radenling/vim-dispatch-neovim",
-				"tpope/vim-dispatch",
-			},
+			"radenling/vim-dispatch-neovim",
+			-- tpope; latest tag (v1.8, 2019) is ~50 commits behind master.
+			{ "tpope/vim-dispatch", version = false },
 		},
 		ft = { "clojure", "edn" },
 		cmd = { "Lein", "Clj" },
@@ -19,6 +18,8 @@ local M = {
 	},
 	{
 		"eraserhd/parinfer-rust",
+		-- Latest tag (v0.5.0) is ~45 commits behind master.
+		version = false,
 		build = "cargo build --release",
 		event = "InsertCharPre",
 		ft = { "clojure", "scheme", "racket", "lisp", "elisp" },

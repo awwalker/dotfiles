@@ -108,6 +108,28 @@ local M = {
 				vim.opt.statuscolumn = [[]]
 			end,
 		})
+		vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+			desc = "close alpha when a real buffer is opened",
+			callback = function(args)
+				-- ignore alpha's own buffer and non-file (e.g. nofile) buffers
+				if vim.bo[args.buf].buftype ~= "" or vim.bo[args.buf].filetype == "alpha" then
+					return
+				end
+				-- Defer the wipe: deleting alpha's buffer closes its window, which
+				-- resizes siblings and fires alpha's WinResized handler. If that
+				-- handler is still registered it redraws into the now-dead window
+				-- and throws "Invalid window id", so tear down alpha's augroup
+				-- (alpha_temp) first, then wipe outside the current read event.
+				vim.schedule(function()
+					for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+						if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "alpha" then
+							pcall(vim.api.nvim_del_augroup_by_name, "alpha_temp")
+							pcall(vim.api.nvim_buf_delete, buf, { force = true })
+						end
+					end
+				end)
+			end,
+		})
 		vim.api.nvim_create_autocmd("BufUnload", {
 			buffer = 0,
 			desc = "enable tabline after alpha",

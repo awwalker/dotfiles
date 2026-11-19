@@ -21,6 +21,11 @@ local M = {
 			preview = {
 				filetypes = { "markdown", "codecompanion" },
 				ignore_buftypes = {},
+				-- Reveal the raw markdown (URLs, link syntax, etc.) on the line
+				-- under the cursor so links stay editable, while the rest of the
+				-- buffer stays rendered.
+				hybrid_modes = { "n", "i", "v" },
+				linewise_hybrid_mode = true,
 			},
 		},
 	},

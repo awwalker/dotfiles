@@ -4,7 +4,9 @@ local M = {
 	-- This event must match what is in alpha-nvim.
 	event = "BufEnter",
 	dependencies = {
-		"nvim-tree/nvim-web-devicons",
+		-- version = false applies globally (lazy merges specs by name); latest
+		-- devicons tag is ~120 commits behind the default branch.
+		{ "nvim-tree/nvim-web-devicons", version = false },
 	},
 	config = function()
 		local lualine = require("lualine")
@@ -322,6 +324,19 @@ local M = {
 			cond = function()
 				return vim.bo.filetype == "fugitive"
 			end,
+		})
+
+		-- Fugitive scroll indicator: the `:G` status window is capped at 14 lines,
+		-- so flag when the buffer overflows and there's more to scroll to.
+		ins_left({
+			function()
+				return ("↕ %d lines — scroll for more"):format(vim.api.nvim_buf_line_count(0))
+			end,
+			cond = function()
+				return vim.bo.filetype == "fugitive"
+					and vim.api.nvim_buf_line_count(0) > vim.api.nvim_win_get_height(0)
+			end,
+			color = { fg = colors.orange, gui = "bold" },
 		})
 
 		-- Insert mid section. You can make any number of sections in neovim :)

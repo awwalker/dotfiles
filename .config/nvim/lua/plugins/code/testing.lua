@@ -5,10 +5,12 @@ local M = {
 		ft = { "javascript", "typescript", "tsx" },
 		dependencies = {
 			"nvim-neotest/nvim-nio",
-			"nvim-lua/plenary.nvim",
+			-- plenary tags very rarely; latest tag is ~40 commits behind master.
+			{ "nvim-lua/plenary.nvim", version = false },
 			"antoinemadec/FixCursorHold.nvim",
 			"nvim-treesitter/nvim-treesitter",
-			"marilari88/neotest-vitest",
+			-- Latest tag (v0.2.0, 2022) is ~35 commits behind master.
+			{ "marilari88/neotest-vitest", version = false },
 		},
 		config = function()
 			vim.api.nvim_set_keymap(

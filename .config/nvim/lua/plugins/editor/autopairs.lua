@@ -1,5 +1,6 @@
 local M = {
 	"windwp/nvim-autopairs",
+	version = false,
 	event = "InsertEnter",
 	config = function()
 		local autopairs = require("nvim-autopairs")
@@ -7,7 +8,7 @@ local M = {
 
 		autopairs.setup({
 			enable_check_bracket_line = false,
-			disable_filetype = { "TelescopePrompt" },
+			disable_filetype = { "TelescopePrompt", "snacks_picker_input" },
 		})
 
 		autopairs.get_rule("'")[1].not_filetypes = { "scheme", "lisp", "clojure" }

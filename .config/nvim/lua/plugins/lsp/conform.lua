@@ -1,6 +1,8 @@
 local M = {
 	{
 		"stevearc/conform.nvim",
+		-- `stable` tag hadn't moved in ~a year (~95 commits behind master).
+		version = false,
 		event = { "BufWritePre", "BufNewFile" },
 		cmd = { "ConformInfo" },
 		config = function()
@@ -11,11 +13,11 @@ local M = {
 				-- Define your formatters
 				formatters_by_ft = {
 					-- clojure = { "cljfmt " },
-					typescript = { "prettier", stop_after_first = true },
+					typescript = { "biome", "prettier", stop_after_first = true },
 					lua = { "stylua" },
 					markdown = { "prettier_md" }, --, "markdownlint" },
 					python = { "isort", "black" },
-					javascript = { "prettier", stop_after_first = true },
+					javascript = { "biome", "prettier", stop_after_first = true },
 					json = { "prettier" },
 					xml = { "xmlformat" },
 				},
@@ -23,6 +25,7 @@ local M = {
 				format_on_save = { timeout_ms = 500, lsp_format = "fallback" },
 				-- Customize formatters
 				formatters = {
+					biome = {},
 					prettier = {
 						options = {
 							ft_parsers = {
